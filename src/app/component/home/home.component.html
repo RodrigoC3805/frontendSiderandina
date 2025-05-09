@@ -1,5 +1,60 @@
-<div style="text-align: center">
-    <img src="images/home_bg.jpeg" alt="" style="background-size: 100%;">    
+<div id="banner" style="background-image:  linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('images/home_bg.jpeg')">
     <h1 style="text-align: center">Bienvenido a SiderAndina,</h1>
-    <h2 style="text-align: center">somos líderes en la distribución de productos siderúrgicos de calidad a nivel nacional</h2>
+    <h2 style="text-align: center">somos líderes en la distribución de productos siderúrgicos de calidad a nivel
+        nacional</h2>
 </div>
+<div id="home_categories">
+    <h2 style="margin-bottom: 50px;"><strong>Nuestros productos</strong></h2>
+
+    <div id="categoria_list" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: left;">
+        <div class="card" style="width: 18rem;" *ngFor="let categoriaProducto of categoriaProductoArray; let i = index">
+            <a href="" style="text-decoration: none; color: inherit;"><img [src]="categoriaProducto.urlImagen" height="200rem" class="card-img-top"
+                alt="Imagen de {{categoriaProducto.nombre}}">
+            <div class="card-body">
+                <h5 class="card-title">{{categoriaProducto.nombre}}</h5>
+                </div></a>
+        </div>
+    </div>
+</div>
+<footer style="background-color: #343a40; color: white; padding: 40px 0; margin-top: 50px;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+
+            <div style="flex: 1; min-width: 250px; margin-bottom: 30px;">
+                <h5 style="font-size: 18px; margin-bottom: 20px; font-weight: bold;">SiderAndina</h5>
+                <p>Líderes en distribución de productos siderúrgicos de calidad a nivel nacional</p>
+                <p>2025 SiderAndina. Ningún derecho reservado.</p>
+                <p>Proyecto realizado con fines educativos</p>
+            </div>
+
+            <div style="flex: 1; min-width: 250px; margin-bottom: 30px;">
+                <h5 style="font-size: 18px; margin-bottom: 20px; font-weight: bold;">Contacto</h5>
+                <p><strong>Dirección:</strong> Av. Ficticia 00001, Lima, Perú</p>
+                <p><strong>Teléfono:</strong> (01) 9999999</p>
+                <p><strong>Email:</strong> ventas&#64;ejemplo.com</p>
+            </div>
+
+            <div style="flex: 1; min-width: 250px; margin-bottom: 30px;">
+                <h5 style="font-size: 18px; margin-bottom: 20px; font-weight: bold;">Enlaces rápidos</h5>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 10px;"><a href="/nosotros"
+                            style="color: white; text-decoration: none;">Iniciar sesión</a></li>
+                    <li style="margin-bottom: 10px;"><a href="/productos"
+                            style="color: white; text-decoration: none;">Catálogo completo</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div
+            style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <p>Síguenos en nuestras redes sociales</p>
+            <div style="display: flex; justify-content: center; gap: 15px;">
+                <a href="#" style="color: white; text-decoration: none;">Facebook</a>
+                <a href="#" style="color: white; text-decoration: none;">Twitter</a>
+                <a href="#" style="color: white; text-decoration: none;">LinkedIn</a>
+                <a href="#" style="color: white; text-decoration: none;">Instagram</a>
+            </div>
+        </div>
+    </div>
+</footer>
