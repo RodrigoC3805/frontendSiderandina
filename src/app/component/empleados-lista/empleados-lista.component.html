@@ -1,45 +1,38 @@
-<div class="container mt-4">
-  <h2><b>Lista de Empleados</b></h2>
-  <div *ngIf="loading">Cargando...</div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-  <div *ngIf="!loading && !error">
-    <div class="card mt-3">
-      <div class="card-body">
-        <div class="d-flex justify-content-between mb-2">
-          <input class="form-control w-50" placeholder="Buscar por nombre, DNI, etc." />
-          <button class="btn btn-primary ms-2">Buscar</button>
-        </div>
-        <table class="table table-bordered table-hover">
-          <thead class="table-light">
-            <tr>
-              <th>Nombre</th>
-              <th>Tipo de Doc.</th>
-              <th>Numero de Doc.</th>
-              <th>Cargo</th>
-              <th>Sueldo</th>
-              <th>Moneda</th>
-              <th>Estado del contrato</th>
-              <th>Más info</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let emp of empleados">
-              <td>{{ emp.nombres }} {{ emp.apellidoPaterno }} {{ emp.apellidoMaterno }}</td>
-              <td>{{ emp.tipoDocumento }}</td>
-              <td><b>{{ emp.numeroDocumento }}</b></td>
-              <td>{{ emp.cargo }}</td>
-              <td>{{ emp.sueldo }}</td>
-              <td>{{ emp.moneda }}</td>
-              <td>{{ emp.estadoContrato }}</td>
-              <td><button class="btn btn-primary btn-sm">+ Info</button></td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="d-flex justify-content-between">
-          <button class="btn btn-success">Generar planilla</button>
-          <button class="btn btn-primary rounded-circle" style="width:40px;height:40px;">+</button>
-        </div>
-      </div>
+<div class="empleados-container">
+  <h2 class="titulo-lista"><b>Lista de Empleados</b></h2>
+  <div class="card-lista">
+    <div class="header-lista">
+      <input class="input-buscar" placeholder="Buscar por nombre, DNI, etc." />
+      <button class="btn-buscar">Buscar</button>
+    </div>
+    <table class="tabla-empleados">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Tipo de Doc.</th>
+          <th>Numero de Doc.</th>
+          <th>Cargo</th>
+          <th>Sueldo</th>
+          <th>Moneda</th>
+          <th>Estado del contrato</th>
+          <th>Más info</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emp of empleados">
+            <td>{{ emp.nombreCompleto }}</td>
+            <td>{{ emp.tipoDocumento }}</td>
+            <td><b>{{ emp.numeroDocumento }}</b></td>
+            <td>{{ emp.cargo }}</td>
+            <td>{{ emp.sueldo }}</td>
+            <td>{{ emp.moneda }}</td>
+            <td>{{ emp.estadoContrato }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer-lista">
+      <button class="btn-planilla">Generar planilla</button>
+      <button class="btn-agregar">+</button>
     </div>
   </div>
 </div>
