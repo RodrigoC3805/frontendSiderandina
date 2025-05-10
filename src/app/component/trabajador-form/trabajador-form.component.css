@@ -1,0 +1,46 @@
+.form-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 32px;
+  max-width: 700px;
+  margin: 40px auto;
+}
+.row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+label {
+  width: 140px;
+  font-weight: bold;
+}
+input, select {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.acciones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+.btn-cancelar {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.btn-registrar {
+  background: #2ecc40;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-weight: bold;
+  cursor: pointer;
+}

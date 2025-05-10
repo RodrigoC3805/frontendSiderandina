@@ -27,13 +27,13 @@
       <td>{{ emp.sueldo }}</td>
       <td>{{ emp.moneda }}</td>
       <td>{{ emp.estadoContrato }}</td>
-      <td><button class="btn-info">+ Info</button></td>
+      <td><button type="button" class="btn-info" [routerLink]="['/sistema/trabajadores', emp.idTrabajador]">Más info</button></td>
       </tr>
       </tbody>
     </table>
     <div class="footer-lista">
       <button class="btn-planilla">Generar planilla</button>
-      <button class="btn-agregar">+</button>
+      <button type="button" class="btn-agregar" [routerLink]="['/sistema/trabajadores/nuevo']">+</button>
     </div>
   </div>
 </div>

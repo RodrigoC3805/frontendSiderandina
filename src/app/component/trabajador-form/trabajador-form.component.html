@@ -1,0 +1,39 @@
+<div class="form-container">
+  <h2>Información de Trabajador</h2>
+  <form [formGroup]="trabajadorForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <label>Nombres</label>
+      <input formControlName="nombres" />
+      <label>Apellidos</label>
+      <input formControlName="apellidos" />
+    </div>
+    <div class="row">
+      <label>Tipo de Doc.</label>
+      <select formControlName="tipoDocumento">
+        <option value="DNI">DNI</option>
+        <option value="CE">CE</option>
+      </select>
+      <label>Num. de Doc.</label>
+      <input formControlName="numeroDocumento" />
+    </div>
+    <div class="row">
+      <label>Fecha de Nac.</label>
+      <input type="date" formControlName="fechaNacimiento" />
+      <label>Teléfono</label>
+      <input formControlName="telefono" />
+    </div>
+    <div class="row">
+      <label>Monto de sueldo</label>
+      <input formControlName="sueldo" />
+      <label>Tipo de Moneda</label>
+      <select formControlName="moneda">
+        <option value="Soles">Soles</option>
+        <option value="Dólares">Dólares</option>
+      </select>
+    </div>
+    <div class="acciones">
+      <button type="button" (click)="cancelar()" class="btn-cancelar">Cancelar</button>
+      <button type="submit" class="btn-registrar">{{ isEdit ? 'Actualizar' : 'Registrar' }}</button>
+    </div>
+  </form>
+</div>
