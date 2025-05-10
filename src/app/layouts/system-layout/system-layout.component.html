@@ -8,6 +8,7 @@
             width: 280px;
             transition: all 0.3s;
             min-height: 100vh;
+            background-color: #121C3E;
         }
         
         .content {
@@ -50,26 +51,84 @@
                 display: block !important;
             }
         }
+        .sidebar-profile {
+            background-color: #0a1e3c;
+            color: white;
+            border-radius: 8px;
+
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-avatar {
+            background-color: #ffba08;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            border: 3px solid white;
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 0 5px 0;
+        }
+
+        .profile-position {
+            font-size: 16px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* Silueta genérica de persona (neutral) */
+        .person-silhouette {
+            width: 45px;
+            height: 45px;
+        }
     </style>
     <div class="d-flex">
         <!-- Sidebar -->
-        <div class="sidebar bg-dark text-white" id="sidebar">
+        <div class="sidebar text-white" id="sidebar">
             <div class="p-3">
-                <h3 class="text-center">Mi Sidebar</h3>
+                <h3 class="text-center" style="font-family:'Lucida Sans'; font-size: larger;">SiderAndina</h3>
             </div>
-            
+            <div class="sidebar-profile">
+                <div class="profile-avatar">
+                    <!-- Silueta genérica de persona (SVG) -->
+                    <svg class="person-silhouette" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"
+                            fill="#0a1e3c" />
+                    </svg>
+                </div>
+                <div class="profile-info">
+                    <h3 class="profile-name">Nombre Empleado</h3>
+                    <p class="profile-position">Cargo desempeñado</p>
+                </div>  </div>
             <!-- Links del sidebar -->
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a href="#" class="sidebar-link text-white">
                         <i class="bi bi-house-door"></i>
-                        <span>Inicio</span>
+                        <span>Compras</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="sidebar-link text-white">
                         <i class="bi bi-info-circle"></i>
-                        <span>Acerca de</span>
+                        <span>Registrar recepción</span>
                     </a>
                 </li>
                 <li class="nav-item">
