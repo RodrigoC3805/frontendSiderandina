@@ -1,0 +1,107 @@
+.empleados-lista-container {
+  background: #f6fafd;
+  padding: 32px;
+  border-radius: 16px;
+  max-width: 1100px;
+  margin: 40px auto;
+  box-shadow: 0 2px 8px #0001;
+}
+
+.titulo {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: #1a2a3a;
+}
+
+.buscador {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.buscador input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #cce;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.buscador button {
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tabla-empleados {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 4px #0001;
+}
+
+.tabla-empleados th, .tabla-empleados td {
+  padding: 12px 8px;
+  text-align: left;
+}
+
+.tabla-empleados th {
+  background: #e3f2fd;
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.tabla-empleados tr:nth-child(even) td {
+  background: #f6fafd;
+}
+
+.info-btn {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.planilla-btn {
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.agregar-btn {
+  background: #43a047;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

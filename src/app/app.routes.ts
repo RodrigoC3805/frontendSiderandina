@@ -5,6 +5,8 @@ import { RealizarCompraComponent } from './component/realizar-compra/realizar-co
 import { PortalLayoutComponent } from './layouts/portal-layout/portal-layout.component';
 import { SystemLayoutComponent } from './layouts/system-layout/system-layout.component';
 import { NgModule } from '@angular/core';
+import { EmpleadosListaComponent } from './component/empleados-lista/empleados-lista.component';
+
 export const routes: Routes = [
     {
         path: '',
@@ -18,7 +20,8 @@ export const routes: Routes = [
         path: 'sistema',
         component: SystemLayoutComponent,
         children: [
-            { path: 'realizar-compra', component: RealizarCompraComponent}
+            { path: 'realizar-compra', component: RealizarCompraComponent},
+            { path: 'rrhh', component: EmpleadosListaComponent }
         ]
     },
     { path: '**', redirectTo: '' }
