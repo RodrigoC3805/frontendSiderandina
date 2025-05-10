@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const EmpleadosLista = () => {
-  const [empleados, setEmpleados] = useState([]);
+  const [trabajadores, setTrabajadores] = useState([]);
   const [busqueda, setBusqueda] = useState("");
 
   useEffect(() => {
-    axios.get("/api/empleados").then((res) => setEmpleados(res.data));
+    axios.get("/api/empleados").then((res) => setTrabajadores(res.data));
   }, []);
 
-  const empleadosFiltrados = empleados.filter((emp) =>
+  const trabajadoresFiltrados = trabajadores.filter((emp) =>
     (emp.nombreCompleto + emp.numeroDocumento)
       .toLowerCase()
       .includes(busqueda.toLowerCase())
@@ -41,7 +41,7 @@ const EmpleadosLista = () => {
           </tr>
         </thead>
         <tbody>
-          {empleadosFiltrados.map((emp) => (
+          {trabajadoresFiltrados.map((emp) => (
             <tr key={emp.idTrabajador}>
               <td>{emp.nombreCompleto}</td>
               <td>{emp.tipoDocumento}</td>
@@ -56,7 +56,7 @@ const EmpleadosLista = () => {
             </tr>
           ))}
           {/* Rellenar filas vacías para igualar el diseño */}
-          {[...Array(5 - empleadosFiltrados.length)].map((_, i) => (
+          {[...Array(5 - trabajadoresFiltrados.length)].map((_, i) => (
             <tr key={`empty-${i}`}>
               <td colSpan={8} style={{ background: "#f6fafd" }}>&nbsp;</td>
             </tr>

@@ -8,7 +8,7 @@ const MenuLateral = () => (
         <Link to="/casos-uso">Casos de uso</Link>
       </li>
       <li>
-        <Link to="/empleados">R.R.H.H.</Link>
+        <Link to="/Trabajadores">R.R.H.H.</Link>
       </li>
       {/* otras opciones */}
     </ul>

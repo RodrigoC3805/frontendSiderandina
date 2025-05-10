@@ -5,12 +5,12 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class EmpleadosService {
-  private apiUrl = 'http://localhost:8080/api/v1/trabajador/empleados';
+export class TrabajadoresService{
+  private apiUrl = 'http://localhost:8080/api/v1/trabajador/trabajadores';
 
   constructor(private http: HttpClient) {}
 
-  getEmpleados(): Observable<any[]> {
+  getTrabajadores(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
   }
 }

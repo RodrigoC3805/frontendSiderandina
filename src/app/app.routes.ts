@@ -5,7 +5,7 @@ import { RealizarCompraComponent } from './component/realizar-compra/realizar-co
 import { PortalLayoutComponent } from './layouts/portal-layout/portal-layout.component';
 import { SystemLayoutComponent } from './layouts/system-layout/system-layout.component';
 import { NgModule } from '@angular/core';
-import { EmpleadosListaComponent } from './component/empleados-lista/empleados-lista.component';
+import { TrabajadoresListaComponent } from './component/trabajadores-lista/trabajadores-lista.component';
 
 export const routes: Routes = [
     {
@@ -21,7 +21,7 @@ export const routes: Routes = [
         component: SystemLayoutComponent,
         children: [
             { path: 'realizar-compra', component: RealizarCompraComponent},
-            { path: 'rrhh', component: EmpleadosListaComponent }
+            { path: 'trabajadores', component: TrabajadoresListaComponent }
         ]
     },
     { path: '**', redirectTo: '' }
