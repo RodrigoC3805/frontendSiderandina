@@ -45,6 +45,37 @@
                 <h4><b>Lista de Pedidos de Compra</b></h4>
                 <a href="#" class="btn-primary">Realizar compra</a>
             </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Código</th>
+                        <th scope="col">Proveedor</th>
+                        <th scope="col">Estado Pedido</th>
+                        <th scope="col">Fecha Pedido</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr *ngFor="
+                                                let pedidoCompra of pedidoCompraArray
+                                                | paginate : { itemsPerPage: 10, currentPage: page };
+                                                let i = index
+                                              ">
+                            <td>{{ pedidoCompra.codigoCompra }}</td>
+                            <td>{{ pedidoCompra.proveedor.razonSocial }}</td>
+                            <td>{{ pedidoCompra.estadoPedido.descripcion }}</td>
+                            <td>{{ pedidoCompra.fechaPedido | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+                            <td>
+                                <button style="margin-right: 30px" (click)="showComprobanteCompra(pedidoCompra.idPedidoCompra)">Ver comprobante</button>
+                                <button>Ver detalle</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    
+                    </table>                  
+                    <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente">
+                        </pagination-controls>
+                        
     </div>
 </div>
         

@@ -6,6 +6,6 @@ export interface IPedidoCompraResponse {
     codigoCompra: number;
     fechaPedido: string;
     montoTotal: number;
-    idProveedor: IProveedor;
-    idEstadoPedido: IEstadoPedido;
+    proveedor: IProveedor;
+    estadoPedido: IEstadoPedido;
 }
