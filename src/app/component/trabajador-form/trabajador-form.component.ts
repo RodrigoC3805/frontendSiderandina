@@ -32,7 +32,9 @@ export class TrabajadorFormComponent implements OnInit {
       fechaNacimiento: [''],
       telefono: [''],
       sueldo: [''],
-      moneda: ['']
+      moneda: [''],
+      tipoTrabajador: [''],
+      emailContacto: ['']
     });
   }
 
@@ -40,20 +42,55 @@ export class TrabajadorFormComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEdit = true;
-      // Si tienes un método para obtener un trabajador por ID, descomenta y usa:
-      // this.trabajadoresService.getTrabajadorById(id).subscribe(data => this.trabajadorForm.patchValue(data));
+      this.trabajadoresService.getTrabajadorById(+id).subscribe({
+        next: (data) => {
+          this.trabajadorForm.patchValue({
+            nombres: data.nombres,
+            apellidos: `${data.apellidoPaterno} ${data.apellidoMaterno}`,
+            tipoDocumento: data.idTipoDocumento || (data.tipoDocumento?.idTipoDocumento),
+            numeroDocumento: data.numeroDocumento,
+            emailContacto: data.emailContacto,
+            tipoTrabajador: data.idTipoTrabajador || (data.tipoTrabajador?.idTipoTrabajador),
+            fechaNacimiento: data.fechaNacimiento || '',
+            telefono: data.telefono || '',
+            sueldo: data.sueldo || '',
+            moneda: data.moneda || ''
+          });
+        },
+        error: (err) => {
+          alert('Error al cargar trabajador');
+          console.error(err);
+        }
+      });
     }
   }
 
   onSubmit() {
     if (this.isEdit) {
-      // Lógica para actualizar trabajador
+      // ...
     } else {
-      // Lógica para registrar nuevo trabajador
+      const formValue = this.trabajadorForm.value;
+      const [apellidoPaterno, apellidoMaterno] = formValue.apellidos.split(' ', 2);
+      const trabajadorRequest = {
+        idTipoDocumento: formValue.tipoDocumento,
+        idTipoTrabajador: formValue.tipoTrabajador, 
+        numeroDocumento: formValue.numeroDocumento,
+        apellidoPaterno: apellidoPaterno || '',
+        apellidoMaterno: apellidoMaterno || '',
+        nombres: formValue.nombres,
+        emailContacto: formValue.emailContacto|| '',
+      };
+      this.trabajadoresService.crearTrabajador(trabajadorRequest).subscribe({
+        next: () => this.router.navigate(['/sistema/trabajadores']),
+        error: (err) => {
+          alert('Error al registrar trabajador');
+          console.error(err);
+        }
+      });
     }
   }
 
   cancelar() {
-    this.router.navigate(['/trabajadores/lista']); // Cambia la ruta si tu lista tiene otra ruta
+    this.router.navigate(['/sistema/trabajadores']);
   }
 }

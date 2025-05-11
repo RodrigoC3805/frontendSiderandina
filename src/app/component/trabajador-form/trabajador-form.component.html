@@ -10,11 +10,21 @@
     <div class="row">
       <label>Tipo de Doc.</label>
       <select formControlName="tipoDocumento">
-        <option value="DNI">DNI</option>
-        <option value="CE">CE</option>
+        <option [value]="1">DNI</option>
+        <option [value]="2">CE</option>
       </select>
       <label>Num. de Doc.</label>
       <input formControlName="numeroDocumento" />
+    </div>
+    <div class="row">
+      <label>Correo electrónico</label>
+      <input formControlName="emailContacto" type="email" />
+      <label>Tipo de Trabajador</label>
+      <select formControlName="tipoTrabajador">
+        <option [value]="1">Administrativo</option>
+        <option [value]="2">Transportista</option>
+        <option [value]="3">Almacén</option>
+      </select>
     </div>
     <div class="row">
       <label>Fecha de Nac.</label>
