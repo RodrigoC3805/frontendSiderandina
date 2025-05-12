@@ -19,4 +19,7 @@ export class TrabajadoresService{
   crearTrabajador(trabajador: any): Observable<any> {
     return this.http.post<any>(this.baseUrl, trabajador);
   }
+  updateTrabajador(id: number, trabajadorRequest: any) {
+    return this.http.put(`${this.baseUrl}/${id}`, trabajadorRequest);
+  }
 }

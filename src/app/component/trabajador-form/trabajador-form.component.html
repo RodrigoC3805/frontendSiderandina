@@ -21,25 +21,25 @@
       <input formControlName="emailContacto" type="email" />
       <label>Tipo de Trabajador</label>
       <select formControlName="tipoTrabajador">
-        <option [value]="1">Administrativo</option>
-        <option [value]="2">Transportista</option>
-        <option [value]="3">Almacén</option>
+        <option [value]="1">Almacén</option>
+        <option [value]="2">Administrativo</option>
+        <option [value]="3">Transportista</option>
+        <option [value]="4">Ventas</option>
       </select>
     </div>
     <div class="row">
-      <label>Fecha de Nac.</label>
-      <input type="date" formControlName="fechaNacimiento" />
-      <label>Teléfono</label>
-      <input formControlName="telefono" />
+      <label>Fecha de Inicio</label>
+      <input type="date" formControlName="fechaInicioContrato" />
+      <label>Fecha de Fin</label>
+      <input type="date" formControlName="fechaFinContrato" />
     </div>
     <div class="row">
       <label>Monto de sueldo</label>
       <input formControlName="sueldo" />
+    </div>
+    <div class="row">
       <label>Tipo de Moneda</label>
-      <select formControlName="moneda">
-        <option value="Soles">Soles</option>
-        <option value="Dólares">Dólares</option>
-      </select>
+      <input formControlName="moneda" value="Soles" readonly />
     </div>
     <div class="acciones">
       <button type="button" (click)="cancelar()" class="btn-cancelar">Cancelar</button>

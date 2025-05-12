@@ -29,10 +29,11 @@ export class TrabajadorFormComponent implements OnInit {
       apellidos: [''],
       tipoDocumento: [''],
       numeroDocumento: [''],
-      fechaNacimiento: [''],
+      fechaInicioContrato: [''],
+      fechaFinContrato: [''],
       telefono: [''],
       sueldo: [''],
-      moneda: [''],
+      moneda: ['Soles'],
       tipoTrabajador: [''],
       emailContacto: ['']
     });
@@ -47,14 +48,15 @@ export class TrabajadorFormComponent implements OnInit {
           this.trabajadorForm.patchValue({
             nombres: data.nombres,
             apellidos: `${data.apellidoPaterno} ${data.apellidoMaterno}`,
-            tipoDocumento: data.idTipoDocumento || (data.tipoDocumento?.idTipoDocumento),
+            tipoDocumento: data.tipoDocumento?.idTipoDocumento,
             numeroDocumento: data.numeroDocumento,
             emailContacto: data.emailContacto,
-            tipoTrabajador: data.idTipoTrabajador || (data.tipoTrabajador?.idTipoTrabajador),
-            fechaNacimiento: data.fechaNacimiento || '',
-            telefono: data.telefono || '',
-            sueldo: data.sueldo || '',
-            moneda: data.moneda || ''
+            tipoTrabajador: data.tipoTrabajador?.idTipoTrabajador,
+            // Datos del contrato:
+            fechaInicioContrato: data.contrato?.fechaInicio || '',
+            fechaFinContrato: data.contrato?.fechaFin || '',
+            sueldo: data.contrato?.remuneracion || '',
+            moneda: 'Soles'
           });
         },
         error: (err) => {
@@ -66,20 +68,36 @@ export class TrabajadorFormComponent implements OnInit {
   }
 
   onSubmit() {
+    const formValue = this.trabajadorForm.value;
+    const [apellidoPaterno, apellidoMaterno] = formValue.apellidos.split(' ', 2);
+    const trabajadorRequest = {
+      idTipoDocumento: formValue.tipoDocumento,
+      idTipoTrabajador: formValue.tipoTrabajador,
+      numeroDocumento: formValue.numeroDocumento,
+      apellidoPaterno: apellidoPaterno || '',
+      apellidoMaterno: apellidoMaterno || '',
+      nombres: formValue.nombres,
+      emailContacto: formValue.emailContacto || '',
+      fechaInicioContrato: formValue.fechaInicioContrato,
+      fechaFinContrato: formValue.fechaFinContrato,
+      sueldo: formValue.sueldo,
+      idEstadoContrato: 1 // O el valor que corresponda
+    };
+
     if (this.isEdit) {
-      // ...
+      const id = this.route.snapshot.paramMap.get('id');
+      if (id !== null) {
+        this.trabajadoresService.updateTrabajador(+id, trabajadorRequest).subscribe({
+          next: () => this.router.navigate(['/sistema/trabajadores']),
+          error: (err) => {
+            alert('Error al actualizar trabajador');
+            console.error(err);
+          }
+        });
+      } else {
+        alert('ID de trabajador no encontrado');
+      }
     } else {
-      const formValue = this.trabajadorForm.value;
-      const [apellidoPaterno, apellidoMaterno] = formValue.apellidos.split(' ', 2);
-      const trabajadorRequest = {
-        idTipoDocumento: formValue.tipoDocumento,
-        idTipoTrabajador: formValue.tipoTrabajador, 
-        numeroDocumento: formValue.numeroDocumento,
-        apellidoPaterno: apellidoPaterno || '',
-        apellidoMaterno: apellidoMaterno || '',
-        nombres: formValue.nombres,
-        emailContacto: formValue.emailContacto|| '',
-      };
       this.trabajadoresService.crearTrabajador(trabajadorRequest).subscribe({
         next: () => this.router.navigate(['/sistema/trabajadores']),
         error: (err) => {
