@@ -1,9 +1,10 @@
 <div class="productos-lista">
-  <div class="producto-card" *ngFor="let prod of productos">
+  <div class="producto-card" *ngFor="let prod of productos | paginate: { itemsPerPage: pageSize, currentPage: page }">
     <img [src]="prod.urlImagen" alt="{{prod.nombre}}" class="producto-img"/>
     <div class="producto-info">
       <h5>{{ prod.nombre }}</h5>
-      <button class="btn-detalles">+ Detalles</button>
+      <button class="btn-detalles" [routerLink]="['/productos', prod.idProducto]">+ Detalles</button>
     </div>
   </div>
 </div>
+<pagination-controls class= "paginacion-fija"(pageChange)="page = $event"></pagination-controls>

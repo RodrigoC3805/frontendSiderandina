@@ -1,7 +1,8 @@
 .productos-lista {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+  justify-items: center;
 }
 .producto-card {
   background: #fff;
@@ -34,4 +35,30 @@
 }
 .btn-detalles:hover {
   background: #1256a8;
+}
+.paginacion-fija {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 32px auto 0 auto;
+  background: #e3f0ff;         /* Fondo azul claro */
+  color: #1976d2;              /* Texto azul */
+  padding: 12px 32px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #0003;
+  border: 2px solid #90caf9;   /* Borde azul claro */
+  width: fit-content;
+}
+.paginacion-fija ::ng-deep .ngx-pagination {
+  color: #1976d2;
+}
+.paginacion-fija ::ng-deep .ngx-pagination a,
+.paginacion-fija ::ng-deep .ngx-pagination button {
+  color: #1976d2 !important;
+  background: transparent !important;
+}
+.paginacion-fija ::ng-deep .ngx-pagination .current {
+  background: #1976d2 !important;
+  color: #fff !important;
+  border-radius: 8px;
 }

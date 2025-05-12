@@ -1,0 +1,21 @@
+<!-- Banner superior -->
+<div class="catalogo-banner">
+  <img src="/images/home-productos.jpg" alt="Banner Nuestros Productos" class="banner-img">
+</div>
+<div class="detalle-container" *ngIf="producto">
+  <div class="detalle-izq">
+    <a class="volver-link" (click)="volver()">&lt; VOLVER A PRODUCTOS</a>
+    <img [src]="producto.urlImagen" [alt]="producto.nombre" class="detalle-img"/>
+  </div>
+  <div class="detalle-der">
+    <div class="detalle-categoria">
+      {{ producto.categorioProducto?.nombre}}
+    </div>
+    <h1 class="detalle-nombre">{{ producto.nombre }}</h1>
+    <div class="detalle-info">
+      <div><b>Código (SKU):</b> {{ producto.sku }}</div>
+      <div><b>Stock:</b> {{ producto.stock }}</div>
+      <div><b>Unidad de medida:</b> {{ producto.unidadesMedida?.descripcion }}</div>
+    </div>
+  </div>
+</div>

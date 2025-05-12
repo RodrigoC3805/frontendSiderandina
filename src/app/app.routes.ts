@@ -9,6 +9,7 @@ import { TrabajadorFormComponent } from './component/trabajador-form/trabajador-
 import { CategoriasSidebarComponent } from './component/categorias-sidebar/categorias-sidebar.component';
 import { ProductosListaComponent } from './component/productos-lista/productos-lista.component';
 import { CatalogoComponent } from './component/catalogo/catalogo.component';
+import { ProductoDetalleComponent } from './component/producto-detalle/producto-detalle.component';
 
 export const routes: Routes = [
     {
@@ -16,7 +17,8 @@ export const routes: Routes = [
         component: PortalLayoutComponent,
         children: [
             { path: '', component: HomeComponent },
-            { path: 'productos', component: CatalogoComponent, },
+            { path: 'productos', component: CatalogoComponent},
+            { path: 'productos/:id', component: ProductoDetalleComponent },
         ]
     },
     {

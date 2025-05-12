@@ -1,6 +1,9 @@
+<div class="catalogo-banner">
+  <img src="/images/home-productos.jpg" alt="Banner Nuestros Productos" class="banner-img">
+</div>
 <div class="catalogo-container" style="display: flex; gap: 24px;">
   <app-categorias-sidebar (categoriaSeleccionada)="categoriaSeleccionada = $event"></app-categorias-sidebar>
   <div style="flex: 1;">
-    <app-productos-lista [categoriaId]="categoriaSeleccionada"></app-productos-lista>
+    <app-productos-lista #productosLista [categoriaId]="categoriaSeleccionada"></app-productos-lista>
   </div>
 </div>
