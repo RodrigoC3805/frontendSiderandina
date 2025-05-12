@@ -13,3 +13,4 @@ export class CategoriaProductoService {
     return this.http.get<ICategoriaProducto[]>(`${BASE_URL}/categoriaproducto`);
   }
 }
+

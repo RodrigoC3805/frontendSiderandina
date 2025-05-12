@@ -1,0 +1,9 @@
+<div class="sidebar-categorias">
+  <h4>CATEGORÍAS</h4>
+  <ul>
+    <li (click)="seleccionarCategoria(null)" style="cursor:pointer;">Todas</li>
+    <li *ngFor="let cat of categorias" (click)="seleccionarCategoria(cat.idCatProd)" style="cursor:pointer;">
+      {{ cat.nombre }}
+    </li>
+  </ul>
+</div>

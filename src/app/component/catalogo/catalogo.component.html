@@ -1,0 +1,6 @@
+<div class="catalogo-container" style="display: flex; gap: 24px;">
+  <app-categorias-sidebar (categoriaSeleccionada)="categoriaSeleccionada = $event"></app-categorias-sidebar>
+  <div style="flex: 1;">
+    <app-productos-lista [categoriaId]="categoriaSeleccionada"></app-productos-lista>
+  </div>
+</div>
