@@ -10,6 +10,7 @@ import { CategoriasSidebarComponent } from './component/categorias-sidebar/categ
 import { ProductosListaComponent } from './component/productos-lista/productos-lista.component';
 import { CatalogoComponent } from './component/catalogo/catalogo.component';
 import { ProductoDetalleComponent } from './component/producto-detalle/producto-detalle.component';
+import { StockProductosComponent } from './component/stock-productos/stock-productos.component';
 
 export const routes: Routes = [
     {
@@ -29,6 +30,7 @@ export const routes: Routes = [
             { path: 'trabajadores', component: TrabajadoresListaComponent },
             { path: 'trabajadores/nuevo', component: TrabajadorFormComponent },
             { path: 'trabajadores/:id', component: TrabajadorFormComponent },
+            { path: 'stock-productos', component: StockProductosComponent}
         ]
     },
     { path: '**', redirectTo: '' }

@@ -1,0 +1,103 @@
+.stock-container {
+  background: #e3f0ff;
+  padding: 32px;
+  border-radius: 16px;
+  margin: 32px auto;
+  max-width: 80vw; /* Cambiado para ocupar todo el ancho */
+  min-width: 0;      /* Permite reducir el ancho en pantallas pequeñas */
+  box-sizing: border-box;
+  overflow-x: hidden; /
+}
+h1 {
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+.busqueda-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.busqueda-bar input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 250px;
+}
+.btn-buscar {
+  background: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-weight: bold;
+  cursor: not-allowed;
+  box-shadow: 0 2px 8px #0001;
+}
+.tabla-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 18px;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 12px;
+  text-align: left;
+}
+th {
+  background: #f5faff;
+  font-weight: bold;
+}
+tr:nth-child(even) {
+  background: #f9f9f9;
+}
+.estado-disponible {
+  background: #1bbd1b;
+  color: white;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+.estado-atencion {
+  background: #e53935;
+  color: white;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+tr:hover {
+  background: #e3f0ff;
+  transition: background 0.2s;
+}
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+}
+.paginacion button {
+  background: #f5faff;
+  border: 1px solid #b0c4de;
+  border-radius: 6px;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #2e7d32;
+  transition: background 0.2s, color 0.2s;
+}
+.paginacion button.activa,
+.paginacion button:hover:not(:disabled) {
+  background: #2e7d32;
+  color: #fff;
+}
+.paginacion button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
