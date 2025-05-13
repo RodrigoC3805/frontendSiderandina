@@ -2,8 +2,9 @@
   <h1>Stock de Productos</h1>
   <div class="busqueda-bar">
     <label for="busqueda">Buscar:</label>
-    <input id="busqueda" type="text" placeholder="Buscar productos ..." disabled />
-    <button class="btn-buscar" disabled>Buscar</button>
+    <input id="busqueda" type="text" placeholder="Buscar productos ..." [(ngModel)]="textoBusqueda" (keyup.enter)="buscar()" />
+    <button class="btn-buscar" (click)="buscar()">Buscar</button>
+    <button class="btn-buscar" (click)="limpiarBusqueda()" *ngIf="textoBusqueda">Limpiar</button>
   </div>
   <div class="tabla-container">
     <table>

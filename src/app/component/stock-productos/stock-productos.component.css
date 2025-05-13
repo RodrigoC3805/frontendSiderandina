@@ -6,7 +6,7 @@
   max-width: 80vw; /* Cambiado para ocupar todo el ancho */
   min-width: 0;      /* Permite reducir el ancho en pantallas pequeñas */
   box-sizing: border-box;
-  overflow-x: hidden; /
+  overflow-x: hidden; 
 }
 h1 {
   font-weight: bold;
@@ -31,7 +31,7 @@ h1 {
   border-radius: 6px;
   padding: 8px 18px;
   font-weight: bold;
-  cursor: not-allowed;
+  cursor: pointer;
   box-shadow: 0 2px 8px #0001;
 }
 .tabla-container {

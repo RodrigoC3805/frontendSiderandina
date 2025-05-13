@@ -13,4 +13,8 @@ export class ProductoService {
   getProductos():Observable<IProductoResponse[]>{
     return this.http.get<IProductoResponse[]>(`${BASE_URL}/producto`);
   }
+
+  buscarProductosPorNombre(nombre: string): Observable<IProductoResponse[]> {
+    return this.http.get<IProductoResponse[]>(`${BASE_URL}/producto/buscar?nombre=${encodeURIComponent(nombre)}`);
+  }
 }
