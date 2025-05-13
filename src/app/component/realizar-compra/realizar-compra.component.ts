@@ -12,6 +12,9 @@ import { IComprobanteCompraResponse } from '../../model/comprobante-compra-respo
 import { EstadoDetalleCompraService } from '../../service/estado-detalle-compra.service';
 import { IDetalleCompraResponse } from '../../model/detalle-compra-response';
 import { DetalleCompraService } from '../../service/detalle-compra.service';
+import { ProductoService } from '../../service/producto.service';
+import { IProductoResponse } from '../../model/producto-response';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-realizar-compra',
@@ -22,23 +25,32 @@ import { DetalleCompraService } from '../../service/detalle-compra.service';
   providers: [PedidoCompraService, ProveedorService, ComprobanteCompraService, DetalleCompraService, EstadoDetalleCompraService]
 })
 export class RealizarCompraComponent {
-  vistaActual: 'lista-pedidos' | 'realizar-compra' = 'lista-pedidos';
+  vistaActual: 'lista-pedidos' | 'realizar-compra' | 'registrar-pago' = 'lista-pedidos';
   pedidoCompraArray: IPedidoCompraResponse[] = [];
   proveedorArray: IProveedor[] = [];
+  productoArray: IProductoResponse[] = [];
+  productosSeleccionadosArray: IProductoResponse[] = [];
   comprobanteCompraAlert: IComprobanteCompraResponse = {} as IComprobanteCompraResponse;
   detalleCompraAlert: IDetalleCompraResponse[] = [];
   page: number = 1;
-  
+  proveedorSeleccionado: IProveedor = {} as IProveedor;
+  proveedorForm: FormGroup;
   constructor(
     private pedidoCompraService: PedidoCompraService,
     private proveedorService: ProveedorService,
     private comprobanteCompraService: ComprobanteCompraService,
-    private detalleCompraService: DetalleCompraService
-  ) { }
+    private detalleCompraService: DetalleCompraService,
+    private productoService: ProductoService
+  ) {
+    this.proveedorForm = new FormGroup({
+      proveedor: new FormControl('', [Validators.required])
+    })
+   }
   
   ngOnInit(): void{
     this.getPedidosCompra();
     this.getProveedores();
+    this.getProductos();
   }
   
   getPedidosCompra(): void {
@@ -54,7 +66,12 @@ export class RealizarCompraComponent {
       console.log(this.proveedorArray);
     });
   }
-
+  getProductos(): void {
+    this.productoService.getProductos().subscribe((result: any) => {
+      this.productoArray = result;
+      console.log(this.pedidoCompraArray);
+    });
+  }
   // Función auxiliar para formatear fechas
   formatDateTime(dateString: string | undefined): string {
     if (!dateString) return '-';
@@ -91,13 +108,7 @@ export class RealizarCompraComponent {
         this.displayComprobanteAlert(idPedido);
       },
       error: (error) => {
-        Swal.close();
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'No se pudo cargar el comprobante. Intente nuevamente.'
-        });
-        console.error('Error al cargar el comprobante:', error);
+        this.mostrarError('No se pudo cargar el comprobante. Intente nuevamente.');
       }
     });
   }
@@ -217,12 +228,7 @@ export class RealizarCompraComponent {
         this.displayDetalleAlert(idPedido);
       },
       error: (error) => {
-        Swal.close();
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'No se pudo cargar el detalle. Intente nuevamente.'
-        });
+        this.mostrarError('No se pudo cargar el detalle.Intente nuevamente.');
         console.error('Error al cargar el detalle:', error);
       }
     });
@@ -362,6 +368,56 @@ export class RealizarCompraComponent {
       `,
       showCloseButton: true,
       confirmButtonText: 'Cerrar'
+    });
+  }
+  irARealizarCompra(): void{
+    this.proveedorForm.reset();
+    this.vistaActual = 'realizar-compra';
+  }
+  irARegistrarPago(): void{
+    if (this.validarPedido())
+      this.vistaActual = 'registrar-pago';
+  }
+  volverAListaPedidos() {
+    this.vistaActual = 'lista-pedidos';
+  }
+  addSeleccionado(producto: IProductoResponse): void{
+    this.productosSeleccionadosArray.push(producto);
+    const index = this.productoArray.findIndex(p => p.idProducto === producto.idProducto);
+    if (index !== -1) {
+      this.productoArray.splice(index, 1);
+    }
+    console.log(this.productosSeleccionadosArray);
+  }
+  removeSeleccionado(producto: IProductoResponse): void {
+    this.productoArray.push(producto);
+    const index = this.productosSeleccionadosArray.findIndex(p => p.idProducto === producto.idProducto);
+    if (index !== -1) {
+      this.productosSeleccionadosArray.splice(index, 1);
+    }
+    console.log(this.productoArray);
+  }
+  setProveedor(event: Event): void {
+    const inputChangeValue = (event.target as HTMLInputElement).value;
+    this.proveedorForm.controls['proveedor'].setValue(inputChangeValue);
+  }
+  validarPedido(): boolean {
+    if (this.proveedorForm.get('proveedor')?.hasError('required')) {
+      this.mostrarError('Seleccione un proveedor');
+      return false;
+    }
+    if (this.productosSeleccionadosArray.length == 0) {
+      this.mostrarError('Seleccione al menos un producto para comprar');
+      return false;
+    }
+    return true;
+  }
+  mostrarError(tipo: string): void{
+    Swal.close();
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: tipo
     });
   }
 }
