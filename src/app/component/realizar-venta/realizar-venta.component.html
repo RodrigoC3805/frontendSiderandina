@@ -1,0 +1,79 @@
+<div *ngIf="notificacionVisible" class="toast-notificacion">
+  {{ notificacionMensaje }}
+</div>
+
+<div class="venta-lista-container">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Lista de Productos para Venta</h2>
+    <button class="btn btn-primary" [disabled]="carrito.length === 0" (click)="solicitarCotizacion()">
+      Realizar cotización
+    </button>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Producto</th>
+            <th>Descripción</th>
+            <th>Precio (S/)</th>
+            <th>Cantidad</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producto of productos">
+            <td>{{ producto.id }}</td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.descripcion }}</td>
+            <td>{{ producto.precio | number:'1.2-2' }}</td>
+            <td style="width: 110px;">
+              <input type="number"
+                     min="1"
+                     class="form-control form-control-sm"
+                     [(ngModel)]="cantidades[producto.id]"
+                     [value]="cantidades[producto.id] || 1"
+                     (ngModelChange)="cantidades[producto.id] = cantidades[producto.id] || 1">
+            </td>
+            <td>
+              <button class="btn btn-success btn-sm"
+                      (click)="agregarAlCarrito(producto)">
+                Añadir al carrito
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="carrito-container mt-4" *ngIf="carrito.length > 0">
+    <h4>Carrito de compras</h4>
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Precio unitario (S/)</th>
+          <th>Subtotal (S/)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of carrito">
+          <td>{{ item.producto.nombre }}</td>
+          <td>{{ item.cantidad }}</td>
+          <td>{{ item.producto.precio | number:'1.2-2' }}</td>
+          <td>{{ (item.producto.precio * item.cantidad) | number:'1.2-2' }}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="quitarDelCarrito(item.producto)">Quitar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="carrito-total">
+      <strong>Total: S/ {{ getTotalCarrito() | number:'1.2-2' }}</strong>
+    </div>
+  </div>
+</div>
