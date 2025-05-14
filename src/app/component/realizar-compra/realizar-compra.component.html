@@ -184,7 +184,7 @@
                         <td>{{ producto.nombre }}</td>
                         <td>{{ producto.unidadesMedida?.descripcion }}</td>
                         <td>{{ producto.costoUnitarioBase?.toFixed(2) }}</td>
-                        <td><input type="number" value="0"></td>
+                        <td><input type="number" value="0" (change)="setCantidad($event, producto.idProducto)"></td>
                         <td>
                             <button class="btn-remove" (click)="removeSeleccionado(producto)">
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -244,5 +244,38 @@
             <path
                 d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
         </svg></button>Registrar pago</h1>
-    
+        <div class="card">
+            <div class="header">
+                <h4><b>Proveedor:</b></h4>
+                <h3>{{ proveedorSeleccionado.razonSocial }}</h3>
+            </div>
+        </div>
+        <div class="card">
+            <h5><b>Pedido</b></h5>
+            <div class="table-container">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Código</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Unidades Medida</th>
+                            <th scope="col">Costo Und (S/.)</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Subtotal (S/.)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="
+                                               let producto of productosSeleccionadosArray
+                                               let i = index
+                                                                                  ">
+                            <td>{{ producto.sku }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.unidadesMedida?.descripcion }}</td>
+                            <td>{{ producto.costoUnitarioBase?.toFixed(2) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 </div>

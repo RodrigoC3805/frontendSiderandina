@@ -14,7 +14,8 @@ import { IDetalleCompraResponse } from '../../model/detalle-compra-response';
 import { DetalleCompraService } from '../../service/detalle-compra.service';
 import { ProductoService } from '../../service/producto.service';
 import { IProductoResponse } from '../../model/producto-response';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { IDetalleCompraRequest } from '../../model/detalle-compra-request';
 
 @Component({
   selector: 'app-realizar-compra',
@@ -22,7 +23,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   imports: [CommonModule, HttpClientModule, NgxPaginationModule],
   templateUrl: './realizar-compra.component.html',
   styleUrl: './realizar-compra.component.css',
-  providers: [PedidoCompraService, ProveedorService, ComprobanteCompraService, DetalleCompraService, EstadoDetalleCompraService]
+  providers: [PedidoCompraService, ProveedorService, ComprobanteCompraService, DetalleCompraService, EstadoDetalleCompraService, ProductoService]
 })
 export class RealizarCompraComponent {
   vistaActual: 'lista-pedidos' | 'realizar-compra' | 'registrar-pago' = 'lista-pedidos';
@@ -30,21 +31,24 @@ export class RealizarCompraComponent {
   proveedorArray: IProveedor[] = [];
   productoArray: IProductoResponse[] = [];
   productosSeleccionadosArray: IProductoResponse[] = [];
+  detalleSeleccionadoArray: IDetalleCompraRequest[] = [];
   comprobanteCompraAlert: IComprobanteCompraResponse = {} as IComprobanteCompraResponse;
   detalleCompraAlert: IDetalleCompraResponse[] = [];
   page: number = 1;
   proveedorSeleccionado: IProveedor = {} as IProveedor;
-  proveedorForm: FormGroup;
+  compraForm: FormGroup;
+  cantidadesArray: { idProducto: number, cantidad: number }[] = [];
   constructor(
     private pedidoCompraService: PedidoCompraService,
     private proveedorService: ProveedorService,
     private comprobanteCompraService: ComprobanteCompraService,
     private detalleCompraService: DetalleCompraService,
-    private productoService: ProductoService
+    private productoService: ProductoService,
+    private fb: FormBuilder
   ) {
-    this.proveedorForm = new FormGroup({
+    this.compraForm = new FormGroup({
       proveedor: new FormControl('', [Validators.required])
-    })
+    });
    }
   
   ngOnInit(): void{
@@ -371,7 +375,8 @@ export class RealizarCompraComponent {
     });
   }
   irARealizarCompra(): void{
-    this.proveedorForm.reset();
+    this.compraForm.reset();
+    this.clearCantidad();
     this.vistaActual = 'realizar-compra';
   }
   irARegistrarPago(): void{
@@ -387,27 +392,62 @@ export class RealizarCompraComponent {
     if (index !== -1) {
       this.productoArray.splice(index, 1);
     }
-    console.log(this.productosSeleccionadosArray);
+    let detalleCompra: IDetalleCompraRequest = {} as IDetalleCompraRequest;
+    detalleCompra.idProducto = producto.idProducto;
+    detalleCompra.idEstadoDetalleCompra = 1;
+    detalleCompra.cantidad = 0;
+    detalleCompra.cantidadRecibida = null;
+    detalleCompra.montoSubtotalLinea = 0;
+    this.detalleSeleccionadoArray.push(detalleCompra);
+
+    //console.log(this.productosSeleccionadosArray);
+    //console.log(this.detalleSeleccionadoArray);
   }
-  removeSeleccionado(producto: IProductoResponse): void {
+  removeSeleccionado(producto: IProductoResponse): void {   
     this.productoArray.push(producto);
-    const index = this.productosSeleccionadosArray.findIndex(p => p.idProducto === producto.idProducto);
-    if (index !== -1) {
-      this.productosSeleccionadosArray.splice(index, 1);
+    
+    const indexProd = this.productosSeleccionadosArray.findIndex(p => p.idProducto === producto.idProducto);
+    if (indexProd !== -1) {
+      this.productosSeleccionadosArray.splice(indexProd, 1);
+    }
+    console.log(this.productoArray);
+    const indexDetalle = this.detalleSeleccionadoArray.findIndex(p => p.idProducto === producto.idProducto);
+    if (indexDetalle !== -1) {
+      this.detalleSeleccionadoArray.splice(indexDetalle, 1);
     }
     console.log(this.productoArray);
   }
+  setCantidad(event: Event, productoId: number): void {
+    const inputChangeValue = (event.target as HTMLInputElement).value;
+    const index = this.detalleSeleccionadoArray.findIndex(d => d.idProducto === productoId);
+    if (index !== -1) {
+      this.detalleSeleccionadoArray[index].cantidad = Number(inputChangeValue);
+      console.log(this.detalleSeleccionadoArray);
+    }
+  }
+  clearCantidad(): void{
+    this.detalleSeleccionadoArray.forEach(d => d.cantidad = 0);
+  }
   setProveedor(event: Event): void {
     const inputChangeValue = (event.target as HTMLInputElement).value;
-    this.proveedorForm.controls['proveedor'].setValue(inputChangeValue);
+    const index = this.proveedorArray.findIndex(p => p.idProveedor === Number(inputChangeValue));
+    if (index !== -1) {
+      this.proveedorSeleccionado = this.proveedorArray.at(index);
+    }
+    this.compraForm.controls['proveedor'].setValue(inputChangeValue);
   }
   validarPedido(): boolean {
-    if (this.proveedorForm.get('proveedor')?.hasError('required')) {
+    if (this.compraForm.get('proveedor')?.hasError('required')) {
       this.mostrarError('Seleccione un proveedor');
       return false;
     }
     if (this.productosSeleccionadosArray.length == 0) {
       this.mostrarError('Seleccione al menos un producto para comprar');
+      return false;
+    } 
+    const index = this.detalleSeleccionadoArray.findIndex(d => d.cantidad <= 0);
+    if (index !== -1) {
+      this.mostrarError('No se puede solicitar productos con cantidad 0');
       return false;
     }
     return true;
