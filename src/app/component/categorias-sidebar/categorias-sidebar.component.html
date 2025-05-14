@@ -1,7 +1,11 @@
+<!-- Sidebar de categorías para filtrar productos.
+     Al hacer clic en una categoría, se emite el ID al componente padre.
+     La opción "Todas" muestra todos los productos sin filtrar. -->
 <div class="sidebar-categorias">
   <h4>CATEGORÍAS</h4>
   <ul>
     <li (click)="seleccionarCategoria(null)" style="cursor:pointer;">Todas</li>
+    <!-- Lista dinámica de categorías obtenidas del backend -->
     <li *ngFor="let cat of categorias" (click)="seleccionarCategoria(cat.idCatProd)" style="cursor:pointer;">
       {{ cat.nombre }}
     </li>

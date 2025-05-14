@@ -21,12 +21,15 @@ export class ProductoDetalleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Obtiene el ID del producto desde la URL
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    // Busca el producto por ID en la lista obtenida del backend
     this.productoService.getProductos().subscribe(productos => {
       this.producto = productos.find(p => p.idProducto === id);
     });
   }
 
+   // vuelveee a la lista de productos
   volver(): void {
     this.router.navigate(['/productos']);
   }

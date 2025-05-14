@@ -22,12 +22,14 @@ export class StockProductosComponent implements OnInit {
 
   constructor(private productoService: ProductoService) {}
 
+  // Al iniciar el componente, carga todos los productos
   ngOnInit(): void {
     this.productoService.getProductos().subscribe(data => {
       this.productos = data;
     });
   }
 
+  // Carga todos los productos y reinicia la paginación
   cargarProductos(): void {
     this.productoService.getProductos().subscribe(data => {
       this.productos = data;
@@ -35,6 +37,7 @@ export class StockProductosComponent implements OnInit {
     });
   }
 
+  // Filtra productos por nombre usando el servicio
   buscar(): void {
     if (!this.textoBusqueda.trim()) {
       this.cargarProductos();
@@ -57,21 +60,22 @@ export class StockProductosComponent implements OnInit {
     this.cargarProductos();
   }
 
+  // Devuelve los productos de la página actual
   get productosPaginados(): IProductoResponse[] {
     const inicio = (this.paginaActual - 1) * this.productosPorPagina;
     return this.productos.slice(inicio, inicio + this.productosPorPagina);
   }
 
+  // Calcular el total de páginas para la paginación
   get totalPaginas(): number {
     return Math.ceil(this.productos.length / this.productosPorPagina);
   }
 
+  // Cambia la página actual si está en el rango válido
   cambiarPagina(pagina: number) {
     if (pagina >= 1 && pagina <= this.totalPaginas) {
       this.paginaActual = pagina;
     }
   }
-
-  
 
 }

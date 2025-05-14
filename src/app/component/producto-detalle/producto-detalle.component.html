@@ -4,6 +4,7 @@
 </div>
 <div class="detalle-container" *ngIf="producto">
   <div class="detalle-izq">
+    <!-- Enlace para volver a la lista de productos -->
     <a class="volver-link" (click)="volver()">&lt; VOLVER A PRODUCTOS</a>
     <img [src]="producto.urlImagen" [alt]="producto.nombre" class="detalle-img"/>
   </div>

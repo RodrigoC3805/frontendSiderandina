@@ -1,3 +1,6 @@
+<!-- Lista de productos con paginación.
+     Cada producto muestra la imagen, nombre y un botón para ver detalles del producto.
+     Con "paginate" se controla la paginación en el *ngFor.-->
 <div class="productos-lista">
   <div class="producto-card" *ngFor="let prod of productos | paginate: { itemsPerPage: pageSize, currentPage: page }">
     <img [src]="prod.urlImagen" alt="{{prod.nombre}}" class="producto-img"/>

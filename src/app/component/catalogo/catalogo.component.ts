@@ -11,9 +11,11 @@ import { ProductosListaComponent } from '../productos-lista/productos-lista.comp
   styleUrls: ['./catalogo.component.css']
 })
 export class CatalogoComponent {
+    // ID de la categoría seleccionada, o null si no hay selección
   categoriaSeleccionada: number | null = null;
   @ViewChild('productosLista') productosLista?: ProductosListaComponent;
 
+    // Retorna true si la lista de productos está en la primera página
   esPrimeraPagina(): boolean {
     return !this.productosLista || this.productosLista.page === 1;
   }
