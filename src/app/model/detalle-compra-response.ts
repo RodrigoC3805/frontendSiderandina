@@ -6,7 +6,7 @@ export interface IDetalleCompraResponse {
     idDetalleCompra: number;
     pedidoCompra: IPedidoCompraResponse;
     producto: IProductoResponse;
-    idEstadoDetalleCompra: IEstadoDetalleCompra;
+    estadoDetalleCompra: IEstadoDetalleCompra;
     cantidad: number;
     cantidadRecibida: number;
     montoSubtotalLinea: number;

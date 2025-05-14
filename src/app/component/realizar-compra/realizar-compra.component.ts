@@ -16,6 +16,8 @@ import { ProductoService } from '../../service/producto.service';
 import { IProductoResponse } from '../../model/producto-response';
 import { FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { IDetalleCompraRequest } from '../../model/detalle-compra-request';
+import { IMetodoPago } from '../../model/metodo-pago';
+import { MetodoPagoService } from '../../service/metodo-pago.service';
 
 @Component({
   selector: 'app-realizar-compra',
@@ -30,24 +32,26 @@ export class RealizarCompraComponent {
   pedidoCompraArray: IPedidoCompraResponse[] = [];
   proveedorArray: IProveedor[] = [];
   productoArray: IProductoResponse[] = [];
+  metodoPagoArray: IMetodoPago[] = [];
   productosSeleccionadosArray: IProductoResponse[] = [];
-  detalleSeleccionadoArray: IDetalleCompraRequest[] = [];
+  detalleSeleccionadoArray: IDetalleCompraResponse[] = [];
   comprobanteCompraAlert: IComprobanteCompraResponse = {} as IComprobanteCompraResponse;
   detalleCompraAlert: IDetalleCompraResponse[] = [];
   page: number = 1;
   proveedorSeleccionado: IProveedor = {} as IProveedor;
   compraForm: FormGroup;
-  cantidadesArray: { idProducto: number, cantidad: number }[] = [];
+  totalCompra: number;
   constructor(
     private pedidoCompraService: PedidoCompraService,
     private proveedorService: ProveedorService,
     private comprobanteCompraService: ComprobanteCompraService,
     private detalleCompraService: DetalleCompraService,
     private productoService: ProductoService,
-    private fb: FormBuilder
+    private metodoPagoService: MetodoPagoService
   ) {
     this.compraForm = new FormGroup({
-      proveedor: new FormControl('', [Validators.required])
+      proveedor: new FormControl('', [Validators.required]),
+      metodoPago: new FormControl('', [Validators.required])
     });
    }
   
@@ -55,6 +59,7 @@ export class RealizarCompraComponent {
     this.getPedidosCompra();
     this.getProveedores();
     this.getProductos();
+    this.getMetodoPago();
   }
   
   getPedidosCompra(): void {
@@ -75,6 +80,12 @@ export class RealizarCompraComponent {
       this.productoArray = result;
       console.log(this.pedidoCompraArray);
     });
+  }
+  getMetodoPago(): void {
+    this.metodoPagoService.getMetodosPago().subscribe((result: any) => {
+      this.metodoPagoArray = result;
+      console.log(this.metodoPagoArray);
+    })
   }
   // Función auxiliar para formatear fechas
   formatDateTime(dateString: string | undefined): string {
@@ -380,8 +391,10 @@ export class RealizarCompraComponent {
     this.vistaActual = 'realizar-compra';
   }
   irARegistrarPago(): void{
-    if (this.validarPedido())
+    if (this.validarPedido()) {
       this.vistaActual = 'registrar-pago';
+      this.calcularTotal();
+    }
   }
   volverAListaPedidos() {
     this.vistaActual = 'lista-pedidos';
@@ -392,16 +405,12 @@ export class RealizarCompraComponent {
     if (index !== -1) {
       this.productoArray.splice(index, 1);
     }
-    let detalleCompra: IDetalleCompraRequest = {} as IDetalleCompraRequest;
-    detalleCompra.idProducto = producto.idProducto;
-    detalleCompra.idEstadoDetalleCompra = 1;
+    let detalleCompra: IDetalleCompraResponse = {} as IDetalleCompraResponse;
+    detalleCompra.producto = producto;
     detalleCompra.cantidad = 0;
     detalleCompra.cantidadRecibida = null;
     detalleCompra.montoSubtotalLinea = 0;
     this.detalleSeleccionadoArray.push(detalleCompra);
-
-    //console.log(this.productosSeleccionadosArray);
-    //console.log(this.detalleSeleccionadoArray);
   }
   removeSeleccionado(producto: IProductoResponse): void {   
     this.productoArray.push(producto);
@@ -411,7 +420,7 @@ export class RealizarCompraComponent {
       this.productosSeleccionadosArray.splice(indexProd, 1);
     }
     console.log(this.productoArray);
-    const indexDetalle = this.detalleSeleccionadoArray.findIndex(p => p.idProducto === producto.idProducto);
+    const indexDetalle = this.detalleSeleccionadoArray.findIndex(p => p.producto.idProducto === producto.idProducto);
     if (indexDetalle !== -1) {
       this.detalleSeleccionadoArray.splice(indexDetalle, 1);
     }
@@ -419,14 +428,22 @@ export class RealizarCompraComponent {
   }
   setCantidad(event: Event, productoId: number): void {
     const inputChangeValue = (event.target as HTMLInputElement).value;
-    const index = this.detalleSeleccionadoArray.findIndex(d => d.idProducto === productoId);
+    const index = this.detalleSeleccionadoArray.findIndex(d => d.producto.idProducto === productoId);
     if (index !== -1) {
       this.detalleSeleccionadoArray[index].cantidad = Number(inputChangeValue);
+      this.detalleSeleccionadoArray[index].montoSubtotalLinea = Number(inputChangeValue)*this.detalleSeleccionadoArray[index].producto.costoUnitarioBase;
       console.log(this.detalleSeleccionadoArray);
     }
   }
   clearCantidad(): void{
     this.detalleSeleccionadoArray.forEach(d => d.cantidad = 0);
+    this.calcularTotal();
+  }
+  calcularTotal(): void{
+    this.totalCompra = 0;
+    for (const d of this.detalleSeleccionadoArray) {
+      this.totalCompra += d.montoSubtotalLinea;
+    }
   }
   setProveedor(event: Event): void {
     const inputChangeValue = (event.target as HTMLInputElement).value;
@@ -435,6 +452,10 @@ export class RealizarCompraComponent {
       this.proveedorSeleccionado = this.proveedorArray.at(index);
     }
     this.compraForm.controls['proveedor'].setValue(inputChangeValue);
+  }
+  setMetodoPago(event: Event): void {
+    const inputChangeValue = (event.target as HTMLInputElement).value;
+    this.compraForm.controls['metodoPago'].setValue(inputChangeValue);
   }
   validarPedido(): boolean {
     if (this.compraForm.get('proveedor')?.hasError('required')) {
