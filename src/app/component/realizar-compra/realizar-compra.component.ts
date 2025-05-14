@@ -18,6 +18,7 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@a
 import { IDetalleCompraRequest } from '../../model/detalle-compra-request';
 import { IMetodoPago } from '../../model/metodo-pago';
 import { MetodoPagoService } from '../../service/metodo-pago.service';
+import { ICompra } from '../../model/compra';
 
 @Component({
   selector: 'app-realizar-compra',
@@ -39,6 +40,7 @@ export class RealizarCompraComponent {
   detalleCompraAlert: IDetalleCompraResponse[] = [];
   page: number = 1;
   proveedorSeleccionado: IProveedor = {} as IProveedor;
+  metodoPagoSeleccionado: IMetodoPago = {} as IMetodoPago;
   compraForm: FormGroup;
   totalCompra: number;
   constructor(
@@ -388,6 +390,7 @@ export class RealizarCompraComponent {
   irARealizarCompra(): void{
     this.compraForm.reset();
     this.clearCantidad();
+    this.productosSeleccionadosArray.forEach(p => this.removeSeleccionado(p));
     this.vistaActual = 'realizar-compra';
   }
   irARegistrarPago(): void{
@@ -445,6 +448,64 @@ export class RealizarCompraComponent {
       this.totalCompra += d.montoSubtotalLinea;
     }
   }
+  pagar(): void{
+    if (this.validarPago()) {
+      const pedidoCompra = {
+        montoTotal: this.totalCompra,
+        fechaPedido: new Date().toISOString(), // Fecha actual en formato ISO
+        estadoPedido: {
+          idEstadoPedido: 1 // ID del estado inicial
+        },
+        proveedor: {
+          idProveedor: this.proveedorSeleccionado.idProveedor // ID del proveedor
+        }
+      };   
+      // Crear la lista de detallesCompra con la estructura correcta
+      const detallesCompra = this.detalleSeleccionadoArray;
+      // Crear el objeto comprobanteCompra con solo las propiedades necesarias
+      const comprobanteCompra = {
+        fechaEmision: new Date().toISOString(), // Fecha actual en formato ISO
+        idTipoComprobante: 1 // ID del tipo de comprobante seleccionado
+      };
+    
+      // Crear el objeto pago con solo las propiedades necesarias
+      const pago = {
+        montoPagado: this.totalCompra,
+        metodoPago: {
+          idMetodoPago: this.metodoPagoSeleccionado.idMetodoPago// ID del método de pago seleccionado
+        }
+      };
+    
+      // Construir el objeto final con la estructura requerida
+      const compra = {
+        pedidoCompra,
+        detallesCompra,
+        comprobanteCompra,
+        pago
+      };  
+      console.log(compra);
+      this.pedidoCompraService.realizarCompra(compra).subscribe(
+        (result: any) => {
+          this.ngOnInit();
+          Swal.close();
+          Swal.fire({
+            icon: 'success',
+            title: 'Pago registrado',
+            text: 'Se registró exitosamente la compra',
+          });
+          this.volverAListaPedidos();
+        },
+        (err: any) => {
+          Swal.close();
+          Swal.fire({
+            icon: 'error',
+            title: 'Advertencia...',
+            text: 'Ocurrió un error al registrar la compra',
+          });
+        }
+      )
+    }
+  }
   setProveedor(event: Event): void {
     const inputChangeValue = (event.target as HTMLInputElement).value;
     const index = this.proveedorArray.findIndex(p => p.idProveedor === Number(inputChangeValue));
@@ -455,6 +516,10 @@ export class RealizarCompraComponent {
   }
   setMetodoPago(event: Event): void {
     const inputChangeValue = (event.target as HTMLInputElement).value;
+    const index = this.metodoPagoArray.findIndex(m => m.idMetodoPago === Number(inputChangeValue));
+    if (index !== -1) {
+      this.metodoPagoSeleccionado = this.metodoPagoArray.at(index);
+    }
     this.compraForm.controls['metodoPago'].setValue(inputChangeValue);
   }
   validarPedido(): boolean {
@@ -469,6 +534,13 @@ export class RealizarCompraComponent {
     const index = this.detalleSeleccionadoArray.findIndex(d => d.cantidad <= 0);
     if (index !== -1) {
       this.mostrarError('No se puede solicitar productos con cantidad 0');
+      return false;
+    }
+    return true;
+  }
+  validarPago(): boolean {
+    if (this.compraForm.get('metodoPago')?.hasError('required')) {
+      this.mostrarError('Seleccione un método de pago');
       return false;
     }
     return true;

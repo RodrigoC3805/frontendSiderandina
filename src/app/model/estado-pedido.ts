@@ -1,4 +1,4 @@
 export interface IEstadoPedido {
     idEstadoPedido: number;
-    descripcion: string;
+    descripcion?: string;
 }

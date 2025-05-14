@@ -1,7 +1,7 @@
 import { IMetodoPago } from "./metodo-pago";
 
 export interface IPagoResponse {
-    idPago: number;
+    idPago?: number;
     metodoPago: IMetodoPago;
     montoPagado: number;
 }
