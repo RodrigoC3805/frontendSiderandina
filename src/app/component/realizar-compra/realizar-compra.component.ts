@@ -14,11 +14,9 @@ import { IDetalleCompraResponse } from '../../model/detalle-compra-response';
 import { DetalleCompraService } from '../../service/detalle-compra.service';
 import { ProductoService } from '../../service/producto.service';
 import { IProductoResponse } from '../../model/producto-response';
-import { FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { IDetalleCompraRequest } from '../../model/detalle-compra-request';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IMetodoPago } from '../../model/metodo-pago';
 import { MetodoPagoService } from '../../service/metodo-pago.service';
-import { ICompra } from '../../model/compra';
 
 @Component({
   selector: 'app-realizar-compra',
@@ -26,23 +24,40 @@ import { ICompra } from '../../model/compra';
   imports: [CommonModule, HttpClientModule, NgxPaginationModule],
   templateUrl: './realizar-compra.component.html',
   styleUrl: './realizar-compra.component.css',
-  providers: [PedidoCompraService, ProveedorService, ComprobanteCompraService, DetalleCompraService, EstadoDetalleCompraService, ProductoService]
+  providers: [
+    PedidoCompraService,
+    ProveedorService,
+    ComprobanteCompraService,
+    DetalleCompraService,
+    EstadoDetalleCompraService,
+    ProductoService,
+  ],
 })
 export class RealizarCompraComponent {
-  vistaActual: 'lista-pedidos' | 'realizar-compra' | 'registrar-pago' = 'lista-pedidos';
+  vistaActual: 'lista-pedidos' | 'realizar-compra' | 'registrar-pago' =
+    'lista-pedidos';
+  page: number = 1;
+
+  //Arreglos empleados
   pedidoCompraArray: IPedidoCompraResponse[] = [];
   proveedorArray: IProveedor[] = [];
   productoArray: IProductoResponse[] = [];
   metodoPagoArray: IMetodoPago[] = [];
   productosSeleccionadosArray: IProductoResponse[] = [];
   detalleSeleccionadoArray: IDetalleCompraResponse[] = [];
-  comprobanteCompraAlert: IComprobanteCompraResponse = {} as IComprobanteCompraResponse;
+
+  //Elementos a cargar con Swal
+  comprobanteCompraAlert: IComprobanteCompraResponse =
+    {} as IComprobanteCompraResponse;
   detalleCompraAlert: IDetalleCompraResponse[] = [];
-  page: number = 1;
+
+  //Form Selects
   proveedorSeleccionado: IProveedor = {} as IProveedor;
   metodoPagoSeleccionado: IMetodoPago = {} as IMetodoPago;
+
   compraForm: FormGroup;
   totalCompra: number;
+
   constructor(
     private pedidoCompraService: PedidoCompraService,
     private proveedorService: ProveedorService,
@@ -53,25 +68,25 @@ export class RealizarCompraComponent {
   ) {
     this.compraForm = new FormGroup({
       proveedor: new FormControl('', [Validators.required]),
-      metodoPago: new FormControl('', [Validators.required])
+      metodoPago: new FormControl('', [Validators.required]),
     });
-   }
-  
-  ngOnInit(): void{
+  }
+
+  ngOnInit(): void {
     this.getPedidosCompra();
     this.getProveedores();
     this.getProductos();
     this.getMetodoPago();
   }
-  
+
+  //Getters
   getPedidosCompra(): void {
     this.pedidoCompraService.getPedidosCompra().subscribe((result: any) => {
       this.pedidoCompraArray = result;
       console.log(this.pedidoCompraArray);
     });
   }
-  
-  getProveedores(): void{
+  getProveedores(): void {
     this.proveedorService.getProveedor().subscribe((result: any) => {
       this.proveedorArray = result;
       console.log(this.proveedorArray);
@@ -87,56 +102,123 @@ export class RealizarCompraComponent {
     this.metodoPagoService.getMetodosPago().subscribe((result: any) => {
       this.metodoPagoArray = result;
       console.log(this.metodoPagoArray);
-    })
+    });
   }
-  // Función auxiliar para formatear fechas
+  getComprobanteCompra(idPedido: number): void {
+    this.comprobanteCompraService
+      .getComprobanteCompraByPedidoId(idPedido)
+      .subscribe((result: any) => {
+        this.comprobanteCompraAlert = result;
+        console.log(this.comprobanteCompraAlert);
+      });
+  }
+  getDetalleCompra(idPedido: number): void {
+    this.detalleCompraService
+      .getDetalleComprabyCompraId(idPedido)
+      .subscribe((result: any) => {
+        this.detalleCompraAlert = result;
+        console.log(this.detalleCompraAlert);
+      });
+  }
+
+  //Setters
+  setProveedor(event: Event): void {
+    const inputChangeValue = (event.target as HTMLInputElement).value;
+    const index = this.proveedorArray.findIndex(
+      (p) => p.idProveedor === Number(inputChangeValue)
+    );
+    if (index !== -1) {
+      this.proveedorSeleccionado = this.proveedorArray.at(index);
+    }
+    this.compraForm.controls['proveedor'].setValue(inputChangeValue);
+  }
+  setMetodoPago(event: Event): void {
+    const inputChangeValue = (event.target as HTMLInputElement).value;
+    const index = this.metodoPagoArray.findIndex(
+      (m) => m.idMetodoPago === Number(inputChangeValue)
+    );
+    if (index !== -1) {
+      this.metodoPagoSeleccionado = this.metodoPagoArray.at(index);
+    }
+    this.compraForm.controls['metodoPago'].setValue(inputChangeValue);
+  }
+  setCantidad(event: Event, productoId: number): void {
+    const inputChangeValue = (event.target as HTMLInputElement).value;
+    const index = this.detalleSeleccionadoArray.findIndex(
+      (d) => d.producto.idProducto === productoId
+    );
+    if (index !== -1) {
+      this.detalleSeleccionadoArray[index].cantidad = Number(inputChangeValue);
+      this.detalleSeleccionadoArray[index].montoSubtotalLinea =
+        Number(inputChangeValue) *
+        this.detalleSeleccionadoArray[index].producto.costoUnitarioBase;
+      console.log(this.detalleSeleccionadoArray);
+    }
+  }
+
   formatDateTime(dateString: string | undefined): string {
     if (!dateString) return '-';
-    
+
     try {
       const date = new Date(dateString);
-      return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+      return `${date.getDate().toString().padStart(2, '0')}/${(
+        date.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, '0')}/${date.getFullYear()} ${date
+        .getHours()
+        .toString()
+        .padStart(2, '0')}:${date
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
     } catch (error) {
       console.error('Error al formatear fecha:', error);
       return dateString;
     }
   }
-  
-  showComprobanteCompra(idPedido: number): void{
+
+  showComprobanteCompra(idPedido: number): void {
     // Mostrar SweetAlert de carga
     Swal.fire({
       title: 'Cargando comprobante...',
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
 
     // Limpiar el comprobante anterior
     this.comprobanteCompraAlert = {} as IComprobanteCompraResponse;
-    
+
     // Obtener datos del comprobante y esperar a que se completen
-    this.comprobanteCompraService.getComprobanteCompraByPedidoId(idPedido).subscribe({
-      next: (result: any) => {
-        this.comprobanteCompraAlert = result;
-        console.log(this.comprobanteCompraAlert);
-        
-        // Una vez que los datos estén disponibles, mostrar el comprobante
-        this.displayComprobanteAlert(idPedido);
-      },
-      error: (error) => {
-        this.mostrarError('No se pudo cargar el comprobante. Intente nuevamente.');
-      }
-    });
+    this.comprobanteCompraService
+      .getComprobanteCompraByPedidoId(idPedido)
+      .subscribe({
+        next: (result: any) => {
+          this.comprobanteCompraAlert = result;
+          console.log(this.comprobanteCompraAlert);
+
+          // Una vez que los datos estén disponibles, mostrar el comprobante
+          this.displayComprobanteAlert(idPedido);
+        },
+        error: (error) => {
+          this.mostrarError(
+            'No se pudo cargar el comprobante. Intente nuevamente.'
+          );
+        },
+      });
   }
-  
+  //HTML de la Alerta del Comprobante
   displayComprobanteAlert(idPedido: number): void {
     let nombreProveedor = '';
-    const pedido = this.pedidoCompraArray.find(p => p.idPedidoCompra === idPedido);
+    const pedido = this.pedidoCompraArray.find(
+      (p) => p.idPedidoCompra === idPedido
+    );
     if (pedido && pedido.proveedor) {
       nombreProveedor = `${pedido.proveedor.razonSocial || ''}`;
     }
-    
+
     Swal.fire({
       html: `
       <style>
@@ -171,17 +253,23 @@ export class RealizarCompraComponent {
       <div class="comprobante-content">
           <div class="comprobante-row">
               <div class="comprobante-label">N° Comprobante:</div>
-              <div class="comprobante-value">${this.comprobanteCompraAlert.numeroComprobante || '-'}</div>
+              <div class="comprobante-value">${
+                this.comprobanteCompraAlert.numeroComprobante || '-'
+              }</div>
           </div>
           
           <div class="comprobante-row">
               <div class="comprobante-label">Tipo:</div>
-              <div class="comprobante-value">${this.comprobanteCompraAlert.tipoComprobante?.descripcion || '-'}</div>
+              <div class="comprobante-value">${
+                this.comprobanteCompraAlert.tipoComprobante?.descripcion || '-'
+              }</div>
           </div>
           
           <div class="comprobante-row">
               <div class="comprobante-label">Fecha emisión:</div>
-              <div class="comprobante-value">${this.formatDateTime(this.comprobanteCompraAlert.fechaEmision)}</div>
+              <div class="comprobante-value">${this.formatDateTime(
+                this.comprobanteCompraAlert.fechaEmision
+              )}</div>
           </div>
           
           <div class="comprobante-row">
@@ -196,85 +284,77 @@ export class RealizarCompraComponent {
           
           <div class="comprobante-row">
               <div class="comprobante-label">Método de pago:</div>
-              <div class="comprobante-value">${this.comprobanteCompraAlert.pago?.metodoPago?.descripcion || '-'}</div>
+              <div class="comprobante-value">${
+                this.comprobanteCompraAlert.pago?.metodoPago?.descripcion || '-'
+              }</div>
           </div>
           
           <div class="comprobante-row">
               <div class="comprobante-label">Monto pagado (S/.):</div>
-              <div class="comprobante-value">${this.comprobanteCompraAlert.pago?.montoPagado || '-'}</div>
+              <div class="comprobante-value">${
+                this.comprobanteCompraAlert.pago?.montoPagado || '-'
+              }</div>
           </div>
       </div>
       `,
     });
   }
-  
-  getComprobanteCompra(idPedido: number): void {
-    this.comprobanteCompraService.getComprobanteCompraByPedidoId(idPedido).subscribe((result: any) => {
-      this.comprobanteCompraAlert = result;
-      console.log(this.comprobanteCompraAlert);
-    });
-  }
-  
-  getDetalleCompra(idPedido: number): void{
-    this.detalleCompraService.getDetalleComprabyCompraId(idPedido).subscribe((result: any) => {
-      this.detalleCompraAlert = result;
-      console.log(this.detalleCompraAlert);
-    });
-  }
-  
-  showDetallePedido(idPedido: number): void{
+
+  showDetallePedido(idPedido: number): void {
     // Mostrar SweetAlert de carga
     Swal.fire({
       title: 'Cargando detalle del pedido...',
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
 
     // Limpiar el detalle anterior
     this.detalleCompraAlert = [];
-    
+
     // Obtener datos del detalle y esperar a que se completen
     this.detalleCompraService.getDetalleComprabyCompraId(idPedido).subscribe({
       next: (result: any) => {
         this.detalleCompraAlert = result;
         console.log(this.detalleCompraAlert);
-        
+
         // Una vez que los datos estén disponibles, mostrar el detalle
         this.displayDetalleAlert(idPedido);
       },
       error: (error) => {
         this.mostrarError('No se pudo cargar el detalle.Intente nuevamente.');
         console.error('Error al cargar el detalle:', error);
-      }
+      },
     });
   }
-  
+  //HTML de la alerta del Detalle del pedido
   displayDetalleAlert(idPedido: number): void {
     // Calcular el total del pedido
     let totalPedido = 0;
-    this.detalleCompraAlert.forEach(detalle => {
+    this.detalleCompraAlert.forEach((detalle) => {
       if (detalle.cantidad && detalle.montoSubtotalLinea) {
         totalPedido += detalle.cantidad * detalle.producto?.costoUnitarioBase;
       }
     });
-    
+
     // Buscar información del pedido y proveedor
     let fechaPedido = '';
     let nombreProveedor = '';
     let rucProveedor = '';
-    
-    const pedido = this.pedidoCompraArray.find(p => p.idPedidoCompra === idPedido);
+
+    const pedido = this.pedidoCompraArray.find(
+      (p) => p.idPedidoCompra === idPedido
+    );
     if (pedido) {
       fechaPedido = this.formatDateTime(pedido.fechaPedido);
-      
+
       if (pedido.proveedor) {
         nombreProveedor = pedido.proveedor.razonSocial || '';
         rucProveedor = pedido.proveedor.ruc || '';
       }
     }
-    
+
     // Construir las filas de los detalles
     let detallePedidoRows = '';
     this.detalleCompraAlert.forEach((detalle, index) => {
@@ -284,12 +364,16 @@ export class RealizarCompraComponent {
           <td>${index + 1}</td>
           <td>${detalle.producto?.nombre || '-'}</td>
           <td>${detalle.cantidad || 0}</td>
-          <td>S/. ${detalle.producto?.costoUnitarioBase.toFixed(2) || '0.00'}</td>
-          <td>S/. ${((detalle.cantidad || 0) * (detalle.producto?.costoUnitarioBase || 0)).toFixed(2)}</td>
+          <td>S/. ${
+            detalle.producto?.costoUnitarioBase.toFixed(2) || '0.00'
+          }</td>
+          <td>S/. ${(
+            (detalle.cantidad || 0) * (detalle.producto?.costoUnitarioBase || 0)
+          ).toFixed(2)}</td>
         </tr>
       `;
     });
-    
+
     // Si no hay detalles, mostrar mensaje
     if (this.detalleCompraAlert.length === 0) {
       detallePedidoRows = `
@@ -298,7 +382,7 @@ export class RealizarCompraComponent {
         </tr>
       `;
     }
-    
+
     // Mostrar el SweetAlert con los detalles
     Swal.fire({
       title: `Detalle del Pedido #${idPedido}`,
@@ -384,16 +468,18 @@ export class RealizarCompraComponent {
       </div>
       `,
       showCloseButton: true,
-      confirmButtonText: 'Cerrar'
+      confirmButtonText: 'Cerrar',
     });
   }
-  irARealizarCompra(): void{
+
+  //Navegación entre vistas
+  irARealizarCompra(): void {
     this.compraForm.reset();
     this.clearCantidad();
-    this.productosSeleccionadosArray.forEach(p => this.removeSeleccionado(p));
+    this.productosSeleccionadosArray.forEach((p) => this.removeSeleccionado(p));
     this.vistaActual = 'realizar-compra';
   }
-  irARegistrarPago(): void{
+  irARegistrarPago(): void {
     if (this.validarPedido()) {
       this.vistaActual = 'registrar-pago';
       this.calcularTotal();
@@ -402,9 +488,13 @@ export class RealizarCompraComponent {
   volverAListaPedidos() {
     this.vistaActual = 'lista-pedidos';
   }
-  addSeleccionado(producto: IProductoResponse): void{
+
+  //Lógica de la vista Realizar Compra
+  addSeleccionado(producto: IProductoResponse): void {
     this.productosSeleccionadosArray.push(producto);
-    const index = this.productoArray.findIndex(p => p.idProducto === producto.idProducto);
+    const index = this.productoArray.findIndex(
+      (p) => p.idProducto === producto.idProducto
+    );
     if (index !== -1) {
       this.productoArray.splice(index, 1);
     }
@@ -415,74 +505,67 @@ export class RealizarCompraComponent {
     detalleCompra.montoSubtotalLinea = 0;
     this.detalleSeleccionadoArray.push(detalleCompra);
   }
-  removeSeleccionado(producto: IProductoResponse): void {   
+  removeSeleccionado(producto: IProductoResponse): void {
     this.productoArray.push(producto);
-    
-    const indexProd = this.productosSeleccionadosArray.findIndex(p => p.idProducto === producto.idProducto);
+    const indexProd = this.productosSeleccionadosArray.findIndex(
+      (p) => p.idProducto === producto.idProducto
+    );
     if (indexProd !== -1) {
       this.productosSeleccionadosArray.splice(indexProd, 1);
     }
     console.log(this.productoArray);
-    const indexDetalle = this.detalleSeleccionadoArray.findIndex(p => p.producto.idProducto === producto.idProducto);
+    const indexDetalle = this.detalleSeleccionadoArray.findIndex(
+      (p) => p.producto.idProducto === producto.idProducto
+    );
     if (indexDetalle !== -1) {
       this.detalleSeleccionadoArray.splice(indexDetalle, 1);
     }
     console.log(this.productoArray);
   }
-  setCantidad(event: Event, productoId: number): void {
-    const inputChangeValue = (event.target as HTMLInputElement).value;
-    const index = this.detalleSeleccionadoArray.findIndex(d => d.producto.idProducto === productoId);
-    if (index !== -1) {
-      this.detalleSeleccionadoArray[index].cantidad = Number(inputChangeValue);
-      this.detalleSeleccionadoArray[index].montoSubtotalLinea = Number(inputChangeValue)*this.detalleSeleccionadoArray[index].producto.costoUnitarioBase;
-      console.log(this.detalleSeleccionadoArray);
-    }
-  }
-  clearCantidad(): void{
-    this.detalleSeleccionadoArray.forEach(d => d.cantidad = 0);
+  clearCantidad(): void {
+    this.detalleSeleccionadoArray.forEach((d) => (d.cantidad = 0));
     this.calcularTotal();
   }
-  calcularTotal(): void{
+  calcularTotal(): void {
     this.totalCompra = 0;
     for (const d of this.detalleSeleccionadoArray) {
       this.totalCompra += d.montoSubtotalLinea;
     }
   }
-  pagar(): void{
+  pagar(): void {
     if (this.validarPago()) {
       const pedidoCompra = {
         montoTotal: this.totalCompra,
         fechaPedido: new Date().toISOString(), // Fecha actual en formato ISO
         estadoPedido: {
-          idEstadoPedido: 1 // ID del estado inicial
+          idEstadoPedido: 1, // ID del estado inicial
         },
         proveedor: {
-          idProveedor: this.proveedorSeleccionado.idProveedor // ID del proveedor
-        }
-      };   
+          idProveedor: this.proveedorSeleccionado.idProveedor, // ID del proveedor
+        },
+      };
       // Crear la lista de detallesCompra con la estructura correcta
       const detallesCompra = this.detalleSeleccionadoArray;
-      // Crear el objeto comprobanteCompra con solo las propiedades necesarias
-      const comprobanteCompra = {
-        fechaEmision: new Date().toISOString(), // Fecha actual en formato ISO
-        idTipoComprobante: 1 // ID del tipo de comprobante seleccionado
-      };
-    
       // Crear el objeto pago con solo las propiedades necesarias
       const pago = {
         montoPagado: this.totalCompra,
         metodoPago: {
-          idMetodoPago: this.metodoPagoSeleccionado.idMetodoPago// ID del método de pago seleccionado
-        }
+          idMetodoPago: this.metodoPagoSeleccionado.idMetodoPago, // ID del método de pago seleccionado
+        },
       };
-    
+      // Crear el objeto comprobanteCompra con solo las propiedades necesarias
+      const comprobanteCompraRequest = {
+        fechaEmision: new Date().toISOString(), // Fecha actual en formato ISO
+        idTipoComprobante: 1,
+      };
+
       // Construir el objeto final con la estructura requerida
       const compra = {
         pedidoCompra,
         detallesCompra,
-        comprobanteCompra,
-        pago
-      };  
+        comprobanteCompraRequest,
+        pago,
+      };
       console.log(compra);
       this.pedidoCompraService.realizarCompra(compra).subscribe(
         (result: any) => {
@@ -503,25 +586,11 @@ export class RealizarCompraComponent {
             text: 'Ocurrió un error al registrar la compra',
           });
         }
-      )
+      );
     }
   }
-  setProveedor(event: Event): void {
-    const inputChangeValue = (event.target as HTMLInputElement).value;
-    const index = this.proveedorArray.findIndex(p => p.idProveedor === Number(inputChangeValue));
-    if (index !== -1) {
-      this.proveedorSeleccionado = this.proveedorArray.at(index);
-    }
-    this.compraForm.controls['proveedor'].setValue(inputChangeValue);
-  }
-  setMetodoPago(event: Event): void {
-    const inputChangeValue = (event.target as HTMLInputElement).value;
-    const index = this.metodoPagoArray.findIndex(m => m.idMetodoPago === Number(inputChangeValue));
-    if (index !== -1) {
-      this.metodoPagoSeleccionado = this.metodoPagoArray.at(index);
-    }
-    this.compraForm.controls['metodoPago'].setValue(inputChangeValue);
-  }
+
+  //Validaciones y Swal de error
   validarPedido(): boolean {
     if (this.compraForm.get('proveedor')?.hasError('required')) {
       this.mostrarError('Seleccione un proveedor');
@@ -530,8 +599,10 @@ export class RealizarCompraComponent {
     if (this.productosSeleccionadosArray.length == 0) {
       this.mostrarError('Seleccione al menos un producto para comprar');
       return false;
-    } 
-    const index = this.detalleSeleccionadoArray.findIndex(d => d.cantidad <= 0);
+    }
+    const index = this.detalleSeleccionadoArray.findIndex(
+      (d) => d.cantidad <= 0
+    );
     if (index !== -1) {
       this.mostrarError('No se puede solicitar productos con cantidad 0');
       return false;
@@ -545,12 +616,12 @@ export class RealizarCompraComponent {
     }
     return true;
   }
-  mostrarError(tipo: string): void{
+  mostrarError(tipo: string): void {
     Swal.close();
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: tipo
+      text: tipo,
     });
   }
 }
