@@ -12,6 +12,7 @@ import { CatalogoComponent } from './component/catalogo/catalogo.component';
 import { ProductoDetalleComponent } from './component/producto-detalle/producto-detalle.component';
 import { StockProductosComponent } from './component/stock-productos/stock-productos.component';
 import { RealizarVentaComponent } from './component/realizar-venta/realizar-venta.component';
+import { LoginComponent } from './component/login/login.component';
 
 export const routes: Routes = [
     {
@@ -21,6 +22,7 @@ export const routes: Routes = [
             { path: '', component: HomeComponent },
             { path: 'productos', component: CatalogoComponent},
             { path: 'productos/:id', component: ProductoDetalleComponent },
+            { path: 'login', component: LoginComponent}
         ]
     },
     {
