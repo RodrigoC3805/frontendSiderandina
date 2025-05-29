@@ -19,3 +19,74 @@
   90% { opacity: 0.95; transform: translateY(0);}
   100% { opacity: 0; transform: translateY(-20px);}
 }
+
+.carrito-float-container {
+  position: fixed;
+  top: 80px;
+  right: 32px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.carrito-float-btn {
+  background: #1976d2;
+  color: #fff;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px #0003;
+  cursor: pointer;
+  position: relative;
+  font-size: 32px;
+  margin-bottom: 8px;
+  transition: background 0.2s;
+}
+.carrito-float-btn:hover {
+  background: #1256a8;
+}
+.carrito-count {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #e53935;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 13px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.carrito-float-panel {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px #0002;
+  padding: 18px 18px 12px 18px;
+  min-width: 320px;
+  max-width: 350px;
+  max-height: 70vh;
+  overflow-y: auto;
+  transition: opacity 0.2s;
+  opacity: 1;
+}
+.carrito-float-container:not(.visible) .carrito-float-panel {
+  opacity: 0;
+  pointer-events: none;
+}
+.carrito-vacio {
+  color: #888;
+  text-align: center;
+  margin: 18px 0;
+}
+.btn-xs {
+  padding: 2px 6px;
+  font-size: 12px;
+}

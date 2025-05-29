@@ -16,7 +16,8 @@
           <tr>
             <th>Código</th>
             <th>Producto</th>
-            <th>Descripción</th>
+            <th>Unidad</th>
+            <th>Stock</th>
             <th>Precio (S/)</th>
             <th>Cantidad</th>
             <th></th>
@@ -24,17 +25,18 @@
         </thead>
         <tbody>
           <tr *ngFor="let producto of productos">
-            <td>{{ producto.id }}</td>
+            <td>{{ producto.idProducto }}</td>
             <td>{{ producto.nombre }}</td>
-            <td>{{ producto.descripcion }}</td>
-            <td>{{ producto.precio | number:'1.2-2' }}</td>
+            <td>{{ producto.unidadesMedida?.descripcion || '-' }}</td>
+            <td>{{ producto.stock }}</td>
+            <td>{{ producto.precioVentaBase | number:'1.2-2' }}</td>
             <td style="width: 110px;">
               <input type="number"
                      min="1"
                      class="form-control form-control-sm"
-                     [(ngModel)]="cantidades[producto.id]"
-                     [value]="cantidades[producto.id] || 1"
-                     (ngModelChange)="cantidades[producto.id] = cantidades[producto.id] || 1">
+                     [(ngModel)]="cantidades[producto.idProducto]"
+                     [value]="cantidades[producto.idProducto] || 1"
+                     (ngModelChange)="cantidades[producto.idProducto] = cantidades[producto.idProducto] || 1">
             </td>
             <td>
               <button class="btn btn-success btn-sm"
@@ -48,15 +50,25 @@
     </div>
   </div>
 
-  <div class="carrito-container mt-4" *ngIf="carrito.length > 0">
-    <h4>Carrito de compras</h4>
-    <table class="table table-sm">
+<!-- Carrito flotante -->
+<div class="carrito-float-container"
+     [class.visible]="carritoVisible"
+     (mouseenter)="carritoVisible = true"
+     (mouseleave)="carritoVisible = false">
+  <div class="carrito-float-btn" (mouseenter)="carritoVisible = true" (click)="carritoVisible = !carritoVisible">
+    <span class="material-icons">shopping_cart</span>
+    <span class="carrito-count" *ngIf="carrito.length > 0">{{ carrito.length }}</span>
+  </div>
+  <div class="carrito-float-panel" *ngIf="carritoVisible">
+    <h5>Carrito de compras</h5>
+    <div *ngIf="carrito.length === 0" class="carrito-vacio">No hay productos en el carrito.</div>
+    <table class="table table-sm" *ngIf="carrito.length > 0">
       <thead>
         <tr>
           <th>Producto</th>
-          <th>Cantidad</th>
-          <th>Precio unitario (S/)</th>
-          <th>Subtotal (S/)</th>
+          <th>Cant.</th>
+          <th>Precio</th>
+          <th>Subt.</th>
           <th></th>
         </tr>
       </thead>
@@ -64,16 +76,21 @@
         <tr *ngFor="let item of carrito">
           <td>{{ item.producto.nombre }}</td>
           <td>{{ item.cantidad }}</td>
-          <td>{{ item.producto.precio | number:'1.2-2' }}</td>
-          <td>{{ (item.producto.precio * item.cantidad) | number:'1.2-2' }}</td>
+          <td>{{ item.producto.precioVentaBase | number:'1.2-2' }}</td>
+          <td>{{ (item.producto.precioVentaBase * item.cantidad) | number:'1.2-2' }}</td>
           <td>
-            <button class="btn btn-danger btn-sm" (click)="quitarDelCarrito(item.producto)">Quitar</button>
+            <button class="btn btn-danger btn-sm btn-xs" (click)="quitarDelCarrito(item.producto)">
+              <span class="material-icons" style="font-size:16px;">delete</span>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div class="carrito-total">
+    <div class="carrito-total" *ngIf="carrito.length > 0">
       <strong>Total: S/ {{ getTotalCarrito() | number:'1.2-2' }}</strong>
     </div>
+    <button class="btn btn-primary btn-block mt-2" [disabled]="carrito.length === 0" (click)="solicitarCotizacion()">
+      Realizar cotización
+    </button>
   </div>
 </div>

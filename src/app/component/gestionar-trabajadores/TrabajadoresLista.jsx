@@ -55,7 +55,7 @@ const EmpleadosLista = () => {
               </td>
             </tr>
           ))}
-          {/* Rellenar filas vacías para igualar el diseño */}
+          {}
           {[...Array(5 - trabajadoresFiltrados.length)].map((_, i) => (
             <tr key={`empty-${i}`}>
               <td colSpan={8} style={{ background: "#f6fafd" }}>&nbsp;</td>

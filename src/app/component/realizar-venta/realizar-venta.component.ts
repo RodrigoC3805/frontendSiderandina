@@ -1,16 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface Producto {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-}
+import { ProductoService } from '../../service/producto.service';
+import { IProductoResponse } from '../../model/producto-response';
+import { CotizacionService } from '../../service/cotizacion.service';
+import { ICotizacionRequest } from '../../model/cotizacion-request';
 
 interface ItemCarrito {
-  producto: Producto;
+  producto: IProductoResponse;
   cantidad: number;
 }
 
@@ -21,14 +18,8 @@ interface ItemCarrito {
   templateUrl: './realizar-venta.component.html',
   styleUrls: ['./realizar-venta.component.css']
 })
-export class RealizarVentaComponent {
-  productos: Producto[] = [
-    { id: 1, nombre: 'Cinta métrica x 3m 13mm', descripcion: 'Herramienta de medición precisa.', precio: 5.00 },
-    { id: 2, nombre: 'Hoja de sierra', descripcion: 'Hoja de sierra para corte de madera.', precio: 15.00 },
-    { id: 3, nombre: 'Martillo', descripcion: 'Martillo de acero forjado.', precio: 18.00 },
-    { id: 4, nombre: 'Destornillador', descripcion: 'Destornillador de punta plana.', precio: 7.50 }
-  ];
-
+export class RealizarVentaComponent implements OnInit {
+  productos: IProductoResponse[] = [];
   cantidades: { [id: number]: number } = {};
   carrito: ItemCarrito[] = [];
 
@@ -36,36 +27,83 @@ export class RealizarVentaComponent {
   notificacionVisible = false;
   notificacionMensaje = '';
 
-  agregarAlCarrito(producto: Producto) {
-    const cantidad = this.cantidades[producto.id] ?? 1;
+  carritoVisible = false;
+
+  constructor(
+    private productoService: ProductoService,
+    private cotizacionService: CotizacionService
+  ) {}
+
+  ngOnInit(): void {
+    this.productoService.getProductos().subscribe({
+      next: (data) => this.productos = data,
+      error: () => {
+        this.notificacionMensaje = 'No se pudo cargar la lista de productos';
+        this.notificacionVisible = true;
+        setTimeout(() => this.notificacionVisible = false, 2000);
+      }
+    });
+  }
+
+  agregarAlCarrito(producto: IProductoResponse) {
+    const cantidad = this.cantidades[producto.idProducto] ?? 1;
     if (cantidad < 1) return;
 
-    const item = this.carrito.find(i => i.producto.id === producto.id);
+    const item = this.carrito.find(i => i.producto.idProducto === producto.idProducto);
     if (item) {
       item.cantidad += cantidad;
     } else {
       this.carrito.push({ producto, cantidad });
     }
-    this.cantidades[producto.id] = 1;
+    this.cantidades[producto.idProducto] = 1;
   }
 
-  quitarDelCarrito(producto: Producto) {
-    this.carrito = this.carrito.filter(i => i.producto.id !== producto.id);
+  quitarDelCarrito(producto: IProductoResponse) {
+    this.carrito = this.carrito.filter(i => i.producto.idProducto !== producto.idProducto);
   }
 
-  estaEnCarrito(producto: Producto): boolean {
-    return this.carrito.some(i => i.producto.id === producto.id);
+  estaEnCarrito(producto: IProductoResponse): boolean {
+    return this.carrito.some(i => i.producto.idProducto === producto.idProducto);
   }
 
   getTotalCarrito(): number {
-    return this.carrito.reduce((acc, i) => acc + i.producto.precio * i.cantidad, 0);
+    return this.carrito.reduce((acc, i) => acc + (i.producto.precioVentaBase || 0) * i.cantidad, 0);
   }
 
   solicitarCotizacion() {
-    this.notificacionMensaje = 'Solicitando cotización...';
-    this.notificacionVisible = true;
-    setTimeout(() => {
-      this.notificacionVisible = false;
-    }, 2000);
+    const idCliente = 1; // O el id real del cliente logueado
+
+    const detalles = this.carrito
+      .filter(item => item.cantidad > 0 && item.producto.stock >= item.cantidad)
+      .map(item => ({
+        idProducto: item.producto.idProducto,
+        cantidad: item.cantidad
+      }));
+
+    if (detalles.length === 0) {
+      this.notificacionMensaje = 'No hay productos válidos para cotizar';
+      this.notificacionVisible = true;
+      setTimeout(() => this.notificacionVisible = false, 2000);
+      return;
+    }
+
+    const cotizacion: ICotizacionRequest = {
+      idCliente,
+      detalles
+    };
+
+    this.cotizacionService.crearCotizacion(cotizacion).subscribe({
+      next: (resp) => {
+        this.notificacionMensaje = 'Cotización enviada correctamente';
+        this.notificacionVisible = true;
+        setTimeout(() => this.notificacionVisible = false, 2000);
+        this.carrito = [];
+      },
+      error: () => {
+        this.notificacionMensaje = 'Error al enviar la cotización';
+        this.notificacionVisible = true;
+        setTimeout(() => this.notificacionVisible = false, 2000);
+      }
+    });
   }
 }
