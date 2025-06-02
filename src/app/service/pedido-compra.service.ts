@@ -11,9 +11,9 @@ import { ICompra } from '../model/compra';
 export class PedidoCompraService {
   constructor(private http: HttpClient) { }
   getPedidosCompra(): Observable<IPedidoCompraResponse[]>{
-    return this.http.get<IPedidoCompraResponse[]>(`${BASE_URL}/pedidocompra`);
+    return this.http.get<IPedidoCompraResponse[]>(`${BASE_URL}/almacen/pedidocompra`);
   }
   realizarCompra(compra: ICompra): Observable<ICompra>{
-    return this.http.post<ICompra>(`${BASE_URL}/pedidocompra/comprar`, compra);
+    return this.http.post<ICompra>(`${BASE_URL}/almacen/pedidocompra/comprar`, compra);
   }
 }

@@ -10,7 +10,7 @@ import { BASE_URL } from '../utils/constants';
 export class CategoriaProductoService {
   constructor(private http: HttpClient) {}
   getCategoriasProducto(): Observable<ICategoriaProducto[]>{
-    return this.http.get<ICategoriaProducto[]>(`${BASE_URL}/categoriaproducto`);
+    return this.http.get<ICategoriaProducto[]>(`${BASE_URL}/v1/categoriaproducto`);
   }
 }
 

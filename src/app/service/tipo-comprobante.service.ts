@@ -11,6 +11,6 @@ export class TipoComprobanteService {
 
   constructor(private http: HttpClient) { }
   getTipoComprobante(): Observable<ITipoComprobante[]>{
-    return this.http.get<ITipoComprobante[]>(`${BASE_URL}/tipocomprobante`);
+    return this.http.get<ITipoComprobante[]>(`${BASE_URL}/v1/tipocomprobante`);
   }
 }

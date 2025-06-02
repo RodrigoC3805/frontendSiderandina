@@ -11,6 +11,6 @@ export class MetodoPagoService {
 
   constructor(private http: HttpClient) { }
   getMetodosPago(): Observable<IMetodoPago[]>{
-    return this.http.get<IMetodoPago[]>(`${BASE_URL}/metodopago`);
+    return this.http.get<IMetodoPago[]>(`${BASE_URL}/v1/metodopago`);
   }
 }

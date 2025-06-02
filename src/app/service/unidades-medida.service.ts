@@ -11,6 +11,6 @@ export class UnidadesMedidaService {
 
   constructor(private http:HttpClient) { }
   getUnidadesMedida() : Observable<IUnidadesMedida[]>{
-    return this.http.get<IUnidadesMedida[]>(`${BASE_URL}/unidadesmedida`);
+    return this.http.get<IUnidadesMedida[]>(`${BASE_URL}/v1/unidadesmedida`);
   }
 }

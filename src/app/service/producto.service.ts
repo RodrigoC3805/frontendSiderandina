@@ -12,11 +12,11 @@ export class ProductoService {
   constructor(private http:HttpClient) { }
   getProductos():Observable<IProductoResponse[]>{
     // Realiza una petición GET al backend para obtener la lista completa de productos
-    return this.http.get<IProductoResponse[]>(`${BASE_URL}/producto`);
+    return this.http.get<IProductoResponse[]>(`${BASE_URL}/v1/producto`);
   }
 
   // Llama al backend para buscar productos por nombre
   buscarProductosPorNombre(nombre: string): Observable<IProductoResponse[]> {
-    return this.http.get<IProductoResponse[]>(`${BASE_URL}/producto/buscar?nombre=${encodeURIComponent(nombre)}`);
+    return this.http.get<IProductoResponse[]>(`${BASE_URL}/v1/producto/buscar?nombre=${encodeURIComponent(nombre)}`);
   }
 }

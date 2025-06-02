@@ -13,6 +13,7 @@ import { ProductoDetalleComponent } from './component/producto-detalle/producto-
 import { StockProductosComponent } from './component/stock-productos/stock-productos.component';
 import { RealizarVentaComponent } from './component/realizar-venta/realizar-venta.component';
 import { LoginComponent } from './component/login/login.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -26,6 +27,7 @@ export const routes: Routes = [
         ]
     },
     {
+        canActivate:[authGuard],
         path: 'sistema',
         component: SystemLayoutComponent,
         children: [
