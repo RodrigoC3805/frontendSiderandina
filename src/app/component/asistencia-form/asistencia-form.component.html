@@ -1,0 +1,24 @@
+<div class="form-container">
+  <h2>Registro de Asistencia</h2>
+  <form [formGroup]="asistenciaForm">
+    <div class="row">
+      <label>Número de Documento</label>
+      <input formControlName="numeroDocumento" />
+      <button type="button" (click)="buscarTrabajador()">Buscar</button>
+    </div>
+    <div class="row">
+      <label>Nombre y Apellidos</label>
+      <input [value]="nombreCompleto" readonly />
+    </div>
+    <div class="row">
+      <label>Fecha</label>
+      <input type="date" formControlName="fecha" />
+      <label>Hora</label>
+      <input type="time" formControlName="hora" />
+    </div>
+    <div class="acciones">
+      <button type="button" (click)="registrarIngreso()">Registrar Ingreso</button>
+      <button type="button" (click)="registrarSalida()">Registrar Salida</button>
+    </div>
+  </form>
+</div>

@@ -13,6 +13,7 @@ import { ProductoDetalleComponent } from './component/producto-detalle/producto-
 import { StockProductosComponent } from './component/stock-productos/stock-productos.component';
 import { RealizarVentaComponent } from './component/realizar-venta/realizar-venta.component';
 import { LoginComponent } from './component/login/login.component';
+import { AsistenciaFormComponent } from './component/asistencia-form/asistencia-form.component';
 
 export const routes: Routes = [
     {
@@ -34,7 +35,8 @@ export const routes: Routes = [
             { path: 'trabajadores/nuevo', component: TrabajadorFormComponent },
             { path: 'trabajadores/:id', component: TrabajadorFormComponent },
             { path: 'stock-productos', component: StockProductosComponent},
-            { path: 'realizar-venta', component: RealizarVentaComponent }
+            { path: 'realizar-venta', component: RealizarVentaComponent },
+            { path: 'registrar-asistencia', component: AsistenciaFormComponent }
         ]
     },
     { path: '**', redirectTo: '' }
