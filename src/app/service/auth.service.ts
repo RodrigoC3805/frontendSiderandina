@@ -18,7 +18,7 @@ export class AuthService {
   login(request: ILoginRequest){
     console.log('login service');
     return this.http
-    .post<ITokenResponse>(`${BASE_URL}/api/auth/login`, request)
+    .post<ITokenResponse>(`${BASE_URL}/auth/login`, request)
     .pipe(
       tap((res) => {
         localStorage.setItem('token', res?.token);
@@ -37,7 +37,7 @@ export class AuthService {
   register(request: IRegisterRequest){
     console.log('Register data: ', request);
     return this.http
-    .post<ITokenResponse>(`${BASE_URL}/api/auth/register`, request)
+    .post<ITokenResponse>(`${BASE_URL}/auth/register`, request)
     .pipe(
       tap((res)=> {
         console.log('Register response', res);

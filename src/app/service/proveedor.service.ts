@@ -11,6 +11,6 @@ export class ProveedorService {
 
   constructor(private http: HttpClient) { }
   getProveedor(): Observable<IProveedor[]>{
-    return this.http.get<IProveedor[]>(`${BASE_URL}/proveedor`);
+    return this.http.get<IProveedor[]>(`${BASE_URL}/v1/proveedor`);
   }
 }

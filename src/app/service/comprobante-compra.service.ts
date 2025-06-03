@@ -21,6 +21,6 @@ export class ComprobanteCompraService {
       idEstadoPedido: 0
     };
     
-    return this.http.post<IComprobanteCompraResponse>(`${BASE_URL}/comprobantecompra/find`, pedidoRequest);
+    return this.http.post<IComprobanteCompraResponse>(`${BASE_URL}/almacen/comprobantecompra/find`, pedidoRequest);
   }
 }

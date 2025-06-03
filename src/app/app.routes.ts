@@ -14,6 +14,7 @@ import { StockProductosComponent } from './component/stock-productos/stock-produ
 import { RealizarVentaComponent } from './component/realizar-venta/realizar-venta.component';
 import { LoginComponent } from './component/login/login.component';
 import { AsistenciaFormComponent } from './component/asistencia-form/asistencia-form.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -27,6 +28,7 @@ export const routes: Routes = [
         ]
     },
     {
+        canActivate:[authGuard],
         path: 'sistema',
         component: SystemLayoutComponent,
         children: [

@@ -11,6 +11,6 @@ export class EstadoPedidoService {
 
   constructor(private http: HttpClient) { }
   getEstadoPedido(): Observable<IEstadoPedido[]>{
-    return this.http.get<IEstadoPedido[]>(`${BASE_URL}/estadopedido`);
+    return this.http.get<IEstadoPedido[]>(`${BASE_URL}/v1/estadopedido`);
   }
 }

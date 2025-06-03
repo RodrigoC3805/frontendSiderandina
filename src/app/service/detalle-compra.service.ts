@@ -20,6 +20,6 @@ export class DetalleCompraService {
           idProveedor: 0,
           idEstadoPedido: 0
         };
-        return this.http.post<IDetalleCompraResponse[]>(`${BASE_URL}/detallecompra/find`, pedidoRequest);
+        return this.http.post<IDetalleCompraResponse[]>(`${BASE_URL}/almacen/detallecompra/find`, pedidoRequest);
   }
 }

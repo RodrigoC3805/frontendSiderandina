@@ -12,6 +12,6 @@ export class PagoService {
 
   constructor(private http: HttpClient) { }
   getPago(): Observable<IPagoResponse[]> {
-    return this.http.get<IPagoResponse[]>(`${BASE_URL}/pago`);
+    return this.http.get<IPagoResponse[]>(`${BASE_URL}/v1/pago`);
    }
 }
