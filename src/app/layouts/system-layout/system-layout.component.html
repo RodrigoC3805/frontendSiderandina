@@ -114,13 +114,13 @@
                     </svg>
                 </div>
                 <div class="profile-info">
-                    <h3 class="profile-name">Nombre Usuario</h3>
+                    <h3 class="profile-name">{{ username$ | async }}</h3>
                     <p class="profile-position">Rol en el Sistema</p>
                 </div>  </div>
             <!-- Links del sidebar -->
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a href="/sistema/realizar-compra" class="sidebar-link text-white">
+                    <a [routerLink]="['/sistema/realizar-compra']" class="sidebar-link text-white">
                         <i class="bi bi-house-door"></i>
                         <span>Compras</span>
                     </a>

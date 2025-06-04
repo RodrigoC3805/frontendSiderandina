@@ -1,4 +1,4 @@
 export interface ITipoCliente {
-    idTipoCliente: number;
-    descripcion: string;
+    idTipoCliente?: number;
+    descripcion?: string;
 }

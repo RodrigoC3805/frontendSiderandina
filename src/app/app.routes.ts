@@ -15,6 +15,8 @@ import { RealizarVentaComponent } from './component/realizar-venta/realizar-vent
 import { LoginComponent } from './component/login/login.component';
 import { AsistenciaFormComponent } from './component/asistencia-form/asistencia-form.component';
 import { authGuard } from './guards/auth.guard';
+import { RegisterComponent } from './component/register/register.component';
+import { reverseGuard } from './guards/reverse.guard';
 
 export const routes: Routes = [
     {
@@ -24,7 +26,8 @@ export const routes: Routes = [
             { path: '', component: HomeComponent },
             { path: 'productos', component: CatalogoComponent},
             { path: 'productos/:id', component: ProductoDetalleComponent },
-            { path: 'login', component: LoginComponent}
+            { path: 'login', component: LoginComponent, canActivate: [reverseGuard]},
+            { path: 'register', component: RegisterComponent,  canActivate: [reverseGuard]}
         ]
     },
     {
