@@ -1,11 +1,22 @@
-import { IEstadoPedido } from "./estado-pedido";
-import { IProveedor } from "./proveedor";
+export interface IProveedor {
+    idProveedor: number;
+    razonSocial: string;
+    ruc: string;
+    direccion?: string;
+    email?: string;
+    telefono?: string;
+}
+
+export interface IEstadoPedido {
+  idEstadoPedido: number;
+  descripcion: string;
+}
 
 export interface IPedidoCompraResponse {
     idPedidoCompra?: number;
     codigoCompra?: number;
     fechaPedido: string;
     montoTotal: number;
-    proveedor: IProveedor;
-    estadoPedido: IEstadoPedido;
+    proveedor: { idProveedor: number; razonSocial: string; ruc: string };
+    estadoPedido: { idEstadoPedido: number; descripcion: string };
 }

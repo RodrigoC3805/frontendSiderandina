@@ -1,0 +1,38 @@
+<h2>Pedidos de Compra Recibidos</h2>
+<div>
+  <label>Filtrar por estado:</label>
+  <select [(ngModel)]="filtroEstado" (change)="cargarPedidos()">
+    <option [ngValue]="undefined">Todos</option>
+    <option [ngValue]="1">Por enviar</option>
+    <option [ngValue]="2">Enviado</option>
+    <option [ngValue]="3">Entregado</option>
+  </select>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Fecha</th>
+      <th>Proveedor</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let pedido of pedidos">
+      <td>{{ pedido.idPedidoCompra }}</td>
+      <td>{{ pedido.fechaPedido | date:'short' }}</td>
+      <td>{{ pedido.proveedor?.razonSocial }}</td>
+      <td>{{ pedido.estadoPedido?.descripcion }}</td>
+      <td>
+        <button *ngIf="pedido.estadoPedido?.idEstadoPedido !== 2"
+                (click)="onCambiarEstado(pedido, 2)">Enviado</button>
+        <button *ngIf="pedido.estadoPedido?.idEstadoPedido !== 3"
+                (click)="onCambiarEstado(pedido, 3)">Entregado</button>
+      </td>
+    </tr>
+    <tr *ngIf="pedidos.length === 0">
+      <td colspan="5" style="text-align:center;">No hay pedidos de compra registrados.</td>
+    </tr>
+  </tbody>
+</table>

@@ -3,17 +3,37 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IPedidoCompraResponse } from '../model/pedido-compra-response';
 import { BASE_URL } from '../utils/constants';
-import { ICompra } from '../model/compra';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PedidoCompraService {
   constructor(private http: HttpClient) { }
-  getPedidosCompra(): Observable<IPedidoCompraResponse[]>{
-    return this.http.get<IPedidoCompraResponse[]>(`${BASE_URL}/almacen/pedidocompra`);
+
+  getPedidosByProveedor(idProveedor: number, idEstadoPedido?: number): Observable<IPedidoCompraResponse[]> {
+    let url = `${BASE_URL}/almacen/pedidocompra/proveedor?idProveedor=${idProveedor}`;
+    if (idEstadoPedido !== undefined) {
+      url += `&idEstadoPedido=${idEstadoPedido}`;
+    }
+    return this.http.get<IPedidoCompraResponse[]>(url);
   }
-  realizarCompra(compra: ICompra): Observable<ICompra>{
-    return this.http.post<ICompra>(`${BASE_URL}/almacen/pedidocompra/comprar`, compra);
+
+  actualizarEstadoPedido(idPedidoCompra: number, idEstadoPedido: number): Observable<IPedidoCompraResponse> {
+    return this.http.put<IPedidoCompraResponse>(`${BASE_URL}/almacen/pedidocompra/actualizar-estado`, {
+      idPedidoCompra,
+      idEstadoPedido
+    });
+  }
+
+  getPedidosCompra(idEstadoPedido?: number) {
+    let url = `${BASE_URL}/almacen/pedidocompra`;
+    if (idEstadoPedido !== undefined) {
+      url += `?idEstadoPedido=${idEstadoPedido}`;
+    }
+    return this.http.get<IPedidoCompraResponse[]>(url);
+  }
+
+  realizarCompra(compra: any): Observable<any> {
+    return this.http.post(`${BASE_URL}/almacen/pedidocompra/comprar`, compra);
   }
 }
