@@ -17,6 +17,7 @@ import { AsistenciaFormComponent } from './component/asistencia-form/asistencia-
 import { authGuard } from './guards/auth.guard';
 import { RegisterComponent } from './component/register/register.component';
 import { reverseGuard } from './guards/reverse.guard';
+import { PedidoProveedorComponent } from './component/pedido-proveedor/pedido-proveedor.component';
 
 export const routes: Routes = [
     {
@@ -26,12 +27,11 @@ export const routes: Routes = [
             { path: '', component: HomeComponent },
             { path: 'productos', component: CatalogoComponent},
             { path: 'productos/:id', component: ProductoDetalleComponent },
-            { path: 'login', component: LoginComponent, canActivate: [reverseGuard]},
-            { path: 'register', component: RegisterComponent,  canActivate: [reverseGuard]}
+            { path: 'login', component: LoginComponent },
+            { path: 'register', component: RegisterComponent }
         ]
     },
     {
-        canActivate:[authGuard],
         path: 'sistema',
         component: SystemLayoutComponent,
         children: [
@@ -41,7 +41,8 @@ export const routes: Routes = [
             { path: 'trabajadores/:id', component: TrabajadorFormComponent },
             { path: 'stock-productos', component: StockProductosComponent},
             { path: 'realizar-venta', component: RealizarVentaComponent },
-            { path: 'registrar-asistencia', component: AsistenciaFormComponent }
+            { path: 'registrar-asistencia', component: AsistenciaFormComponent },
+            { path: 'pedidos-proveedor', component: PedidoProveedorComponent }
         ]
     },
     { path: '**', redirectTo: '' }

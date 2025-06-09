@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ILoginRequest } from '../model/login-request';
 import { ITokenResponse } from '../model/token-response';
 import { BASE_URL } from '../utils/constants';
-import { map, Observable, shareReplay, tap } from 'rxjs';
+import { map, Observable, of, shareReplay, tap } from 'rxjs';
 import { IRegisterRequest } from '../model/register-request';
 import { Token } from '@angular/compiler';
 import { jwtDecode } from 'jwt-decode';
@@ -68,6 +68,10 @@ export class AuthService {
   }
   findUsername() {
     const userInfo: any = this.getUserInfo();
+    if (!userInfo) {
+      // Si no hay usuario logueado, retorna un observable con un string genérico
+      return of('Invitado');
+    }
     if (userInfo && userInfo.tipoUsuario == 7)
       return this.findUsernameCliente(userInfo.email);
     return this.findUsernameTrabajador(userInfo.email);
