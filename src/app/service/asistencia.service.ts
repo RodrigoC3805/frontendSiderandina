@@ -16,6 +16,10 @@ export class AsistenciaService {
   }
 
   getAsistencias() {
-  return this.http.get<any[]>(`${BASE_URL}/rrhh/asistencia`);
-}
+    return this.http.get<any[]>(`${BASE_URL}/rrhh/asistencia`);
+  }
+
+  buscarAsistenciasPorDocumento(numeroDocumento: string) {
+    return this.http.get<any[]>(`${BASE_URL}/rrhh/asistencia/por-documento?numeroDocumento=${encodeURIComponent(numeroDocumento)}`);
+  }
 }

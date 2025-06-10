@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AsistenciaService } from '../../service/asistencia.service';
 import { CommonModule } from '@angular/common'; 
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-asistencia-lista',
-  imports: [CommonModule, NgxPaginationModule],
+  imports: [CommonModule, NgxPaginationModule, FormsModule],
   templateUrl: './asistencia-lista.component.html',
   styleUrls: ['./asistencia-lista.component.css']
 })
@@ -15,10 +16,16 @@ export class AsistenciaListaComponent implements OnInit {
   error = '';
   page = 1;
   pageSize = 5; // 15 registros por página
+  numeroDocumentoBusqueda = '';
 
   constructor(private asistenciaService: AsistenciaService) {}
 
   ngOnInit(): void {
+    this.cargarTodas();
+  }
+
+  cargarTodas() {
+    this.loading = true;
     this.asistenciaService.getAsistencias().subscribe({
       next: (data) => {
         this.asistencias = data;
@@ -30,4 +37,30 @@ export class AsistenciaListaComponent implements OnInit {
       }
     });
   }
+
+  buscarPorDocumento() {
+    if (!this.numeroDocumentoBusqueda.trim()) {
+      this.cargarTodas();
+      return;
+    }
+    this.loading = true;
+    this.asistenciaService.buscarAsistenciasPorDocumento(this.numeroDocumentoBusqueda.trim()).subscribe({
+      next: (data) => {
+        this.asistencias = data;
+        this.loading = false;
+        this.page = 1;
+      },
+      error: () => {
+        this.error = 'No se encontraron asistencias para ese documento';
+        this.asistencias = [];
+        this.loading = false;
+      }
+    });
+  }
+
+  limpiarBusqueda() {
+    this.numeroDocumentoBusqueda = '';
+    this.cargarTodas();
+  }
+
 }
