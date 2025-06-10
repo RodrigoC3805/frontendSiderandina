@@ -18,6 +18,7 @@ import { authGuard } from './guards/auth.guard';
 import { RegisterComponent } from './component/register/register.component';
 import { reverseGuard } from './guards/reverse.guard';
 import { PedidoProveedorComponent } from './component/pedido-proveedor/pedido-proveedor.component';
+import { AsistenciaListaComponent } from './component/asistencia-lista/asistencia-lista.component';
 
 export const routes: Routes = [
     {
@@ -42,7 +43,8 @@ export const routes: Routes = [
             { path: 'stock-productos', component: StockProductosComponent},
             { path: 'realizar-venta', component: RealizarVentaComponent },
             { path: 'registrar-asistencia', component: AsistenciaFormComponent },
-            { path: 'pedidos-proveedor', component: PedidoProveedorComponent }
+            { path: 'pedidos-proveedor', component: PedidoProveedorComponent },
+            { path: 'asistencias', component: AsistenciaListaComponent}
         ]
     },
     { path: '**', redirectTo: '' }

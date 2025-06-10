@@ -1,4 +1,4 @@
-/* Centra el formulario en la pantalla */
+
 .form-container {
   max-width: 400px;
   margin: 40px auto;
@@ -64,7 +64,7 @@ input:focus {
 }
 
 button {
-  background: #1976d2;
+  background: #1976d3;
   color: #fff;
   border: none;
   border-radius: 6px;

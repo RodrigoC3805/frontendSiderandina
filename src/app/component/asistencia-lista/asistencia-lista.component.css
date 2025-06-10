@@ -1,0 +1,38 @@
+.asistencia-container {
+  max-width: 98vw;
+  margin: 30px auto;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 12px #0001;
+  min-width: 900px;
+}
+
+.titulo-asistencia {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1976d2;
+  margin-bottom: 24px;
+}
+
+.tabla-asistencia {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 18px;
+}
+
+.tabla-asistencia th, .tabla-asistencia td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tabla-asistencia th {
+  background: #e3f2fd;
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.tabla-asistencia tr:nth-child(even) td {
+  background: #f6fafd;
+}

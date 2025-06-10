@@ -14,4 +14,8 @@ export class AsistenciaService {
   registrarSalida(asistencia: IAsistenciaRequest) {
     return this.http.post(`${BASE_URL}/rrhh/asistencia/salida`, asistencia);
   }
+
+  getAsistencias() {
+  return this.http.get<any[]>(`${BASE_URL}/rrhh/asistencia`);
+}
 }

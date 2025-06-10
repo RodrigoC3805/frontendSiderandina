@@ -1,0 +1,38 @@
+<div class="asistencia-container">
+  <h2 class="titulo-asistencia">Asistencia de empleados</h2>
+  <table *ngIf="!loading && asistencias.length > 0" class="tabla-asistencia">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>N° Documento</th>
+        <th>Cargo</th>
+        <th>Fecha</th>
+        <th>Hora Entrada</th>
+        <th>Hora Salida</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of asistencias | paginate: { itemsPerPage: pageSize, currentPage: page }">
+        <td>{{ a.trabajador.nombres }} {{ a.trabajador.apellidoPaterno }} {{ a.trabajador.apellidoMaterno }}</td>
+        <td>{{ a.trabajador.numeroDocumento }}</td>
+        <td>{{ a.trabajador.tipoTrabajador?.descripcion || '-' }}</td>
+        <td>{{ a.fecha }}</td>
+        <td>{{ a.horaIngreso || '-' }}</td>
+        <td>{{ a.horaSalida || '-' }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls
+    *ngIf="asistencias.length > pageSize"
+    (pageChange)="page = $event"
+    previousLabel="Anterior"
+    nextLabel="Siguiente"
+    [maxSize]="7"
+    [directionLinks]="true"
+    [autoHide]="true"
+    class="d-flex justify-content-center mt-3"
+  ></pagination-controls>
+  <div *ngIf="loading">Cargando asistencias...</div>
+  <div *ngIf="!loading && asistencias.length === 0">No hay registros de asistencia.</div>
+  <div *ngIf="error">{{ error }}</div>
+</div>

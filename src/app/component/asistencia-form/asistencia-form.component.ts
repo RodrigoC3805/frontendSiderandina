@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AsistenciaService } from '../../service/asistencia.service';
 import { TrabajadoresService } from '../../service/trabajadores.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-asistencia-form',
@@ -18,11 +19,29 @@ export class AsistenciaFormComponent {
     private asistenciaService: AsistenciaService,
     private trabajadoresService: TrabajadoresService
   ) {
+    const now = new Date();
+    const fechaActual = now.toISOString().slice(0, 10); // yyyy-MM-dd
+    const horaActual = now.toTimeString().slice(0, 5); // HH:mm
+
     this.asistenciaForm = this.fb.group({
       numeroDocumento: [''],
-      fecha: [''],
-      hora: ['']
+      fecha: [fechaActual],
+      hora: [horaActual]
     });
+
+    this.nombreCompleto = '';
+  }
+
+  private resetFormWithCurrentDateTime() {
+    const now = new Date();
+    const fechaActual = now.toISOString().slice(0, 10);
+    const horaActual = now.toTimeString().slice(0, 5);
+    this.asistenciaForm.reset({
+      numeroDocumento: '',
+      fecha: fechaActual,
+      hora: horaActual
+    });
+    this.nombreCompleto = '';
   }
 
   buscarTrabajador() {
@@ -43,7 +62,24 @@ export class AsistenciaFormComponent {
       numeroDocumento,
       fecha,
       horaIngreso: hora
-    }).subscribe(() => alert('Ingreso registrado'));
+    }).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Ingreso registrado',
+          showConfirmButton: false,
+          timer: 1800
+        });
+        this.resetFormWithCurrentDateTime();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al registrar ingreso',
+          timer: 1800
+        });
+      }
+    });
   }
 
   registrarSalida() {
@@ -52,6 +88,23 @@ export class AsistenciaFormComponent {
       numeroDocumento,
       fecha,
       horaSalida: hora
-    }).subscribe(() => alert('Salida registrada'));
+    }).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Salida registrada',
+          showConfirmButton: false,
+          timer: 1800
+        });
+        this.resetFormWithCurrentDateTime();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al registrar salida',
+          timer: 1800
+        });
+      }
+    });
   }
 }
