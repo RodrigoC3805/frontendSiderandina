@@ -1,16 +1,21 @@
 <div class="asistencia-container">
   <h2 class="titulo-asistencia">Asistencia de empleados</h2>
-  <div class="busqueda-bar mb-3" style="display: flex; gap: 10px; align-items: center;">
-    <input
-      type="text"
-      [(ngModel)]="numeroDocumentoBusqueda"
-      placeholder="Buscar por N° de documento"
-      class="form-control"
-      style="max-width: 250px;"
-      (keyup.enter)="buscarPorDocumento()"
-    />
-    <button class="btn btn-primary" (click)="buscarPorDocumento()">Buscar</button>
-    <button class="btn btn-secondary" (click)="limpiarBusqueda()" *ngIf="numeroDocumentoBusqueda">Limpiar</button>
+  <div class="barra-superior">
+    <div class="busqueda-bar">
+      <input
+        type="text"
+        [(ngModel)]="numeroDocumentoBusqueda"
+        placeholder="Buscar por documento"
+        class="form-control"
+        style="max-width: 250px;"
+        (keyup.enter)="buscarPorDocumento()"
+      />
+      <button class="btn btn-primary" (click)="buscarPorDocumento()">Buscar</button>
+      <button class="btn btn-secondary" (click)="limpiarBusqueda()" *ngIf="numeroDocumentoBusqueda">Limpiar</button>
+    </div>
+    <button class="btn btn-success" (click)="descargarExcel()">
+      <i class="bi bi-file-earmark-excel"></i> Descargar Excel
+    </button>
   </div>
   <table *ngIf="!loading && asistencias.length > 0" class="tabla-asistencia">
     <thead>

@@ -63,4 +63,8 @@ export class AsistenciaListaComponent implements OnInit {
     this.cargarTodas();
   }
 
+  descargarExcel() {
+  window.location.href = 'http://localhost:8080/api/rrhh/asistencia/excel';
+  }
+
 }

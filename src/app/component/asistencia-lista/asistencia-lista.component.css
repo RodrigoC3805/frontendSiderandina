@@ -36,3 +36,32 @@
 .tabla-asistencia tr:nth-child(even) td {
   background: #f6fafd;
 }
+
+.btn-success {
+  background: #198754;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-success:hover {
+  background: #157347;
+}
+
+.barra-superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.busqueda-bar {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
