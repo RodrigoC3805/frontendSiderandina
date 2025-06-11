@@ -12,7 +12,7 @@ import { AuthService } from '../../service/auth.service';
 export class SystemLayoutComponent {
   auth = inject(AuthService);
   username$ = this.auth.getNombreUsuario();
-
+  tipoUsuario = this.auth.getTipoUsuario();
   constructor() {
 
   }

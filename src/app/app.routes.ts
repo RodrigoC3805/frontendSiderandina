@@ -21,36 +21,74 @@ import { PedidoProveedorComponent } from './component/pedido-proveedor/pedido-pr
 import { AsistenciaListaComponent } from './component/asistencia-lista/asistencia-lista.component';
 
 export const routes: Routes = [
-    {
-        path: '',
-        component: PortalLayoutComponent,
-        children: [
-            { path: '', component: HomeComponent },
-            { path: 'productos', component: CatalogoComponent},
-            { path: 'productos/:id', component: ProductoDetalleComponent },
-            { path: 'login', component: LoginComponent },
-            { path: 'register', component: RegisterComponent }
-        ]
-    },
-    {
-        path: 'sistema',
-        component: SystemLayoutComponent,
-        children: [
-            { path: 'realizar-compra', component: RealizarCompraComponent},
-            { path: 'trabajadores', component: TrabajadoresListaComponent },
-            { path: 'trabajadores/nuevo', component: TrabajadorFormComponent },
-            { path: 'trabajadores/:id', component: TrabajadorFormComponent },
-            { path: 'stock-productos', component: StockProductosComponent},
-            { path: 'realizar-venta', component: RealizarVentaComponent },
-            { path: 'registrar-asistencia', component: AsistenciaFormComponent },
-            { path: 'pedidos-proveedor', component: PedidoProveedorComponent },
-            { path: 'asistencias', component: AsistenciaListaComponent}
-        ]
-    },
-    { path: '**', redirectTo: '' }
+  {
+    path: '',
+    component: PortalLayoutComponent,
+    children: [
+      { path: '', component: HomeComponent },
+      { path: 'productos', component: CatalogoComponent },
+      { path: 'productos/:id', component: ProductoDetalleComponent },
+      { path: 'login', component: LoginComponent, canActivate: [reverseGuard]},
+      { path: 'register', component: RegisterComponent,canActivate: [reverseGuard]},
+    ],
+  },
+  {
+    path: 'sistema',
+    component: SystemLayoutComponent,
+    canActivate: [authGuard],
+    canActivateChild: [authGuard],
+    children: [
+      {
+        path: 'realizar-compra',
+        component: RealizarCompraComponent,
+        data: { roles: ['JEFE_ALMACEN'] },
+      },
+      {
+        path: 'trabajadores',
+        component: TrabajadoresListaComponent,
+        data: { roles: ['ADMIN_RRHH'] },
+      },
+      {
+        path: 'trabajadores/nuevo',
+        component: TrabajadorFormComponent,
+        data: { roles: ['ADMIN_RRHH'] },
+      },
+      {
+        path: 'trabajadores/:id',
+        component: TrabajadorFormComponent,
+        data: { roles: ['ADMIN_RRHH'] },
+      },
+      {
+        path: 'stock-productos',
+        component: StockProductosComponent,
+        data: { roles: ['JEFE_ALMACEN'] },
+      },
+      {
+        path: 'realizar-venta',
+        component: RealizarVentaComponent,
+        data: { roles: ['CLIENTE'] },
+      },
+      {
+        path: 'registrar-asistencia',
+        component: AsistenciaFormComponent,
+        data: { roles: ['ADMIN_RRHH'] },
+      },
+      {
+        path: 'pedidos-proveedor',
+        component: PedidoProveedorComponent,
+        data: { roles: ['PROVEEDOR'] },
+      },
+      {
+        path: 'asistencias',
+        component: AsistenciaListaComponent,
+        data: { roles: ['ADMIN_RRHH'] },
+      },
+    ],
+  },
+  { path: '**', redirectTo: '' },
 ];
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule],
-  })
-  export class AppRoutingModule { }
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}

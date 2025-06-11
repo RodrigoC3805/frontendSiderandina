@@ -1,124 +1,150 @@
 <style>
-        body {
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
+    body {
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    .sidebar {
+        width: 280px;
+        transition: all 0.3s;
+        min-height: 100vh;
+        background-color: #121C3E;
+    }
+
+    .content {
+        width: calc(100% - 280px);
+        min-height: 100vh;
+    }
+
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        transition: all 0.3s;
+        text-decoration: none;
+    }
+
+    .sidebar-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-link i {
+        margin-right: 10px;
+    }
+
+    @media (max-width: 768px) {
         .sidebar {
-            width: 280px;
-            transition: all 0.3s;
-            min-height: 100vh;
-            background-color: #121C3E;
+            margin-left: -280px;
+            position: fixed;
+            z-index: 999;
         }
-        
+
+        .sidebar.active {
+            margin-left: 0;
+        }
+
         .content {
-            width: calc(100% - 280px);
-            min-height: 100vh;
-        }
-        
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-        
-        .sidebar-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .sidebar-link i {
-            margin-right: 10px;
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                margin-left: -280px;
-                position: fixed;
-                z-index: 999;
-            }
-            
-            .sidebar.active {
-                margin-left: 0;
-            }
-            
-            .content {
-                width: 100%;
-            }
-            
-            .sidebar-toggler {
-                display: block !important;
-            }
-        }
-        .sidebar-profile {
-            background-color: #0a1e3c;
-            color: white;
-            border-radius: 8px;
-
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
         }
 
-        .profile-avatar {
-            background-color: #ffba08;
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 15px;
-            border: 3px solid white;
-            flex-shrink: 0;
+        .sidebar-toggler {
+            display: block !important;
         }
+    }
 
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-        }
+    .sidebar-profile {
+        background-color: #0a1e3c;
+        color: white;
+        border-radius: 8px;
 
-        .profile-name {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 0 0 5px 0;
-        }
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-        .profile-position {
-            font-size: 16px;
-            opacity: 0.9;
-            margin: 0;
-        }
+    .profile-avatar {
+        background-color: #ffba08;
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 15px;
+        border: 3px solid white;
+        flex-shrink: 0;
+    }
 
-        /* Silueta genérica de persona (neutral) */
-        .person-silhouette {
-            width: 45px;
-            height: 45px;
-        }
-    </style>
-    <div class="d-flex">
-        <!-- Sidebar -->
-        <div class="sidebar text-white d-flex flex-column" id="sidebar" style="min-height:100vh;">
-            <div class="p-3">
-                <h3 class="text-center" style="font-family:'Lucida Sans'; font-size: larger;">SiderAndina</h3>
+    .profile-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .profile-name {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0 0 5px 0;
+    }
+
+    .profile-position {
+        font-size: 16px;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    /* Silueta genérica de persona (neutral) */
+    .person-silhouette {
+        width: 45px;
+        height: 45px;
+    }
+</style>
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="sidebar text-white d-flex flex-column" id="sidebar" style="min-height:100vh;">
+        <div class="p-3">
+            <h3 class="text-center" style="font-family:'Lucida Sans'; font-size: larger;">SiderAndina</h3>
+        </div>
+        <div class="sidebar-profile">
+            <div class="profile-avatar">
+                <!-- Silueta genérica de persona (SVG) -->
+                <svg class="person-silhouette" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"
+                        fill="#0a1e3c" />
+                </svg>
             </div>
-            <div class="sidebar-profile">
-                <div class="profile-avatar">
-                    <!-- Silueta genérica de persona (SVG) -->
-                    <svg class="person-silhouette" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"
-                            fill="#0a1e3c" />
-                    </svg>
-                </div>
-                <div class="profile-info">
-                    <h3 class="profile-name">{{ username$ | async }}</h3>
-                    <p class="profile-position">Rol en el Sistema</p>
-                </div>  </div>
-            <!-- Links del sidebar -->
-            <ul class="nav flex-column">
+            <div class="profile-info">
+                <h3 class="profile-name">{{ username$ | async }}</h3>
+                <p class="profile-position">{{ tipoUsuario }}</p>
+            </div>
+        </div>
+        <!-- Links del sidebar -->
+        <ul class="nav flex-column">
+            <div *ngIf="tipoUsuario === 'GERENTE_GENERAL'">
+                <!-- Acá irán los CUS del gerente general -->
+            </div>
+            <div *ngIf="tipoUsuario === 'ADMIN_RRHH'">
+                <li class="nav-item">
+                    <a [routerLink]="['/sistema/trabajadores']" class="sidebar-link text-white">
+                        <i class="bi bi-envelope"></i>
+                        <span>Trabajadores</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/sistema/asistencias']" class="sidebar-link text-white">
+                        <i class="bi bi-calendar-check"></i>
+                        <span>Lista de Asistencia</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/sistema/registrar-asistencia']" class="sidebar-link text-white">
+                        <i class="bi bi-calendar-check"></i>
+                        <span>Asistencia</span>
+                    </a>
+                </li>
+            </div>
+            <div *ngIf="tipoUsuario === 'JEFE_ALMACEN'">
                 <li class="nav-item">
                     <a [routerLink]="['/sistema/realizar-compra']" class="sidebar-link text-white">
                         <i class="bi bi-house-door"></i>
@@ -126,57 +152,52 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/sistema/stock-productos" class="sidebar-link text-white">
+                    <a [routerLink]="['/sistema/stock-productos']" class="sidebar-link text-white">
                         <i class="bi bi-info-circle"></i>
                         <span>Verificar Stock</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="/sistema/trabajadores" class="sidebar-link text-white">
-                        <i class="bi bi-envelope"></i>
-                        <span>Trabajadores</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/sistema/realizar-venta" class="sidebar-link text-white">
-                        <i class="bi bi-envelope"></i>
-                        <span>Cotización</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/sistema/registrar-asistencia" class="sidebar-link text-white">
-                        <i class="bi bi-calendar-check"></i>
-                        <span>Asistencia</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/sistema/asistencias" class="sidebar-link text-white">
-                        <i class="bi bi-calendar-check"></i>
-                        <span>Lista de Asistencia</span>
-                    </a>
-                </li>
+            </div>
+            <div *ngIf="tipoUsuario === 'VENDEDOR'">
+                <!-- Acá irán los CUS del vendedor -->
+            </div>
+            <div *ngIf="tipoUsuario === 'TRABAJADOR'">
+                <!-- Acá pueden ir los CUS del trabajador si lo consideramos aparte -->
+            </div>
+            <div *ngIf="tipoUsuario === 'PROVEEDOR'">
                 <li class="nav-item">
                     <a [routerLink]="['/sistema/pedidos-proveedor']" class="sidebar-link text-white">
                         <i class="bi bi-box"></i>
                         <span>Pedidos Proveedor</span>
                     </a>
                 </li>
-            </ul>
-            <div style="margin-top:auto; width:100%; display:flex; justify-content:center;">
-              <button (click)="auth.logout()" style="width:90%;background:#d32f2f;color:white;border:none;padding:12px 0;border-radius:6px;font-size:1.1rem;font-weight:bold;cursor:pointer;">Cerrar sesión</button>
             </div>
-        </div>
-
-        <!-- Contenido principal -->
-        <div class="content bg-light p-4">
-            <router-outlet></router-outlet>
+            <div *ngIf="tipoUsuario === 'CLIENTE'">
+                <li class="nav-item">
+                    <a [routerLink]="['/sistema/realizar-venta']" class="sidebar-link text-white">
+                        <i class="bi bi-envelope"></i>
+                        <span>Cotización</span>
+                    </a>
+                </li>
+            </div>
+        </ul>
+        <div style="margin-top:auto; width:100%; display:flex; justify-content:center;">
+            <button (click)="auth.logout()"
+                style="width:90%;background:#d32f2f;color:white;border:none;padding:12px 0;border-radius:6px;font-size:1.1rem;font-weight:bold;cursor:pointer;">Cerrar
+                sesión</button>
         </div>
     </div>
-    <!-- Bootstrap JS y Popper -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Botón para mostrar/ocultar sidebar en móviles
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('active');
-        });
-    </script>
+
+    <!-- Contenido principal -->
+    <div class="content bg-light p-4">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<!-- Bootstrap JS y Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Botón para mostrar/ocultar sidebar en móviles
+    document.getElementById('sidebarToggle').addEventListener('click', function () {
+        document.getElementById('sidebar').classList.toggle('active');
+    });
+</script>

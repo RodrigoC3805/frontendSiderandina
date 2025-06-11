@@ -92,4 +92,13 @@ export class AuthService {
         map((trabajador) => trabajador.nombres + ' ' + trabajador.apellidoPaterno)
       );
   }
+  getTipoUsuario() {
+    const userInfo: any = this.getUserInfo();
+    if (!userInfo) {
+      console.log('Invitado');
+      return 'INVITADO'; // Retorna 0 si no hay usuario logueado
+    }
+    console.log('Tipo de usuario: ', userInfo.tipoUsuario);
+    return userInfo.tipoUsuario.toUpperCase();
+  }
 }
