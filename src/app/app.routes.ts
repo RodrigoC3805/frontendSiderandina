@@ -19,6 +19,7 @@ import { RegisterComponent } from './component/register/register.component';
 import { reverseGuard } from './guards/reverse.guard';
 import { PedidoProveedorComponent } from './component/pedido-proveedor/pedido-proveedor.component';
 import { AsistenciaListaComponent } from './component/asistencia-lista/asistencia-lista.component';
+import { RealizarCotizacionComponent } from './component/realizar-cotizacion/realizar-cotizacion.component';
 
 export const routes: Routes = [
   {
@@ -83,6 +84,11 @@ export const routes: Routes = [
         component: AsistenciaListaComponent,
         data: { roles: ['ADMIN_RRHH'] },
       },
+      {
+        path: 'realizar-cotizacion',
+        component: RealizarCotizacionComponent,
+        data: { roles: ['VENDEDOR']},
+      }
     ],
   },
   { path: '**', redirectTo: '' },

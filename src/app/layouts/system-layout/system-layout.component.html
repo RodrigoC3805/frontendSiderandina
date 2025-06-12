@@ -159,7 +159,13 @@
                 </li>
             </div>
             <div *ngIf="tipoUsuario === 'VENDEDOR'">
-                <!-- Acá irán los CUS del vendedor -->
+                <li class="nav-item">
+                    <a [routerLink]="['/sistema/realizar-cotizacion']" class="sidebar-link text-white">
+                        <i class="bi bi-envelope"></i>
+                        <span>Realizar cotizaciones</span>
+                    </a>
+                    
+                </li>
             </div>
             <div *ngIf="tipoUsuario === 'TRABAJADOR'">
                 <!-- Acá pueden ir los CUS del trabajador si lo consideramos aparte -->
