@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ICotizacionRequest } from '../model/cotizacion-request';
 import { BASE_URL } from '../utils/constants';
+import { ICotizacionResponse } from '../model/cotizacion-response';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,14 @@ export class CotizacionService {
     return this.http.post(`${BASE_URL}/cliente/cotizacion`, request);
   }
 
+
   getCotizacionesPorCliente(idCliente: number) {
   return this.http.get<any[]>(`${BASE_URL}/cliente/cotizacion/por-cliente?idCliente=${idCliente}`);
 }
+
+  listarCotizaciones(): Observable<ICotizacionResponse> {
+    return this.http.get<ICotizacionResponse>(`${BASE_URL}/cliente/cotizacion`);
+  }
+
 
 }
