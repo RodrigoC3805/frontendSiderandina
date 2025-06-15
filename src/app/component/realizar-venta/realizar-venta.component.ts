@@ -6,7 +6,7 @@ import { IProductoResponse } from '../../model/producto-response';
 import { CotizacionService } from '../../service/cotizacion.service';
 import { ICotizacionRequest } from '../../model/cotizacion-request';
 import { AuthService } from '../../service/auth.service';
-import { AuthService } from '../../service/auth.service';
+
 
 interface ItemCarrito {
   producto: IProductoResponse;
