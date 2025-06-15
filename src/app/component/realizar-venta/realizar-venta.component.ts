@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductoService } from '../../service/producto.service';
 import { IProductoResponse } from '../../model/producto-response';
 import { CotizacionService } from '../../service/cotizacion.service';
 import { ICotizacionRequest } from '../../model/cotizacion-request';
+import { AuthService } from '../../service/auth.service';
 
 interface ItemCarrito {
   producto: IProductoResponse;
@@ -22,7 +23,7 @@ export class RealizarVentaComponent implements OnInit {
   productos: IProductoResponse[] = [];
   cantidades: { [id: number]: number } = {};
   carrito: ItemCarrito[] = [];
-
+  auth = inject(AuthService);
   // Notificación
   notificacionVisible = false;
   notificacionMensaje = '';
@@ -71,8 +72,6 @@ export class RealizarVentaComponent implements OnInit {
   }
 
   solicitarCotizacion() {
-    const idCliente = 1; // O el id real del cliente logueado
-
     const detalles = this.carrito
       .filter(item => item.cantidad > 0 && item.producto.stock >= item.cantidad)
       .map(item => ({
@@ -87,20 +86,29 @@ export class RealizarVentaComponent implements OnInit {
       return;
     }
 
-    const cotizacion: ICotizacionRequest = {
-      idCliente,
-      detalles
-    };
+    this.auth.findIdCliente().subscribe({
+      next: (idCliente: number) => {
+        const cotizacion: ICotizacionRequest = {
+          idCliente,
+          detalles
+        };
 
-    this.cotizacionService.crearCotizacion(cotizacion).subscribe({
-      next: (resp) => {
-        this.notificacionMensaje = 'Cotización enviada correctamente';
-        this.notificacionVisible = true;
-        setTimeout(() => this.notificacionVisible = false, 2000);
-        this.carrito = [];
+        this.cotizacionService.crearCotizacion(cotizacion).subscribe({
+          next: (resp) => {
+            this.notificacionMensaje = 'Cotización enviada correctamente';
+            this.notificacionVisible = true;
+            setTimeout(() => this.notificacionVisible = false, 2000);
+            this.carrito = [];
+          },
+          error: () => {
+            this.notificacionMensaje = 'Error al enviar la cotización';
+            this.notificacionVisible = true;
+            setTimeout(() => this.notificacionVisible = false, 2000);
+          }
+        });
       },
       error: () => {
-        this.notificacionMensaje = 'Error al enviar la cotización';
+        this.notificacionMensaje = 'No se pudo obtener el ID del cliente';
         this.notificacionVisible = true;
         setTimeout(() => this.notificacionVisible = false, 2000);
       }

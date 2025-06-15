@@ -1,7 +1,5 @@
-export interface IDetalleCotizacionRequest {
-  idProducto: number;
-  cantidad: number;
-}
+import { IDetalleCotizacionRequest } from "./detalle-cotizacion-request";
+
 
 export interface ICotizacionRequest {
   idCliente: number;
