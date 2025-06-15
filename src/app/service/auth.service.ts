@@ -47,7 +47,7 @@ export class AuthService {
           console.log('Register response', res);
         }),
         tap((res) => {
-          localStorage.setItem('token', res?.token);
+          localStorage.setItem('token', res.token);
           this.router.navigate(['/sistema']);
         })
       );
@@ -74,7 +74,7 @@ export class AuthService {
       // Si no hay usuario logueado, retorna un observable con un string genérico
       return of('Invitado');
     }
-    if (userInfo && userInfo.tipoUsuario == 7)
+    if (userInfo && userInfo.tipoUsuario == "cliente")
       return this.findUsernameCliente(userInfo.email);
     return this.findUsernameTrabajador(userInfo.email);
   }
