@@ -6,6 +6,7 @@ import { IProductoResponse } from '../../model/producto-response';
 import { CotizacionService } from '../../service/cotizacion.service';
 import { ICotizacionRequest } from '../../model/cotizacion-request';
 import { AuthService } from '../../service/auth.service';
+import { AuthService } from '../../service/auth.service';
 
 interface ItemCarrito {
   producto: IProductoResponse;
@@ -32,7 +33,8 @@ export class RealizarVentaComponent implements OnInit {
 
   constructor(
     private productoService: ProductoService,
-    private cotizacionService: CotizacionService
+    private cotizacionService: CotizacionService,
+    private authService: AuthService // Inyecta AuthService
   ) {}
 
   ngOnInit(): void {
@@ -79,12 +81,12 @@ export class RealizarVentaComponent implements OnInit {
         cantidad: item.cantidad
       }));
 
-    if (detalles.length === 0) {
-      this.notificacionMensaje = 'No hay productos válidos para cotizar';
-      this.notificacionVisible = true;
-      setTimeout(() => this.notificacionVisible = false, 2000);
-      return;
-    }
+        if (detalles.length === 0) {
+          this.notificacionMensaje = 'No hay productos válidos para cotizar';
+          this.notificacionVisible = true;
+          setTimeout(() => this.notificacionVisible = false, 2000);
+          return;
+        }
 
     this.auth.findIdCliente().subscribe({
       next: (idCliente: number) => {

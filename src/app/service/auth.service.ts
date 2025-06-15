@@ -60,12 +60,14 @@ export class AuthService {
       return null;
     }
   }
+
   getNombreUsuario() {
     if (!this.nombreUsuario$) {
       this.nombreUsuario$ = this.findUsername().pipe(shareReplay(1));
     }
     return this.nombreUsuario$;
   }
+
   findUsername() {
     const userInfo: any = this.getUserInfo();
     if (!userInfo) {
@@ -76,6 +78,7 @@ export class AuthService {
       return this.findUsernameCliente(userInfo.email);
     return this.findUsernameTrabajador(userInfo.email);
   }
+
   findUsernameCliente(email: string) {
     return this.http
       .get<ICliente>(`${BASE_URL}/cliente/findclientebyuseremail`, {
@@ -101,6 +104,7 @@ export class AuthService {
         map((trabajador) => trabajador.nombres + ' ' + trabajador.apellidoPaterno)
       );
   }
+  
   getTipoUsuario() {
     const userInfo: any = this.getUserInfo();
     if (!userInfo) {
@@ -110,4 +114,5 @@ export class AuthService {
     console.log('Tipo de usuario: ', userInfo.tipoUsuario);
     return userInfo.tipoUsuario.toUpperCase();
   }
+
 }

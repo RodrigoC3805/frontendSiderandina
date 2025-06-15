@@ -19,7 +19,9 @@ import { RegisterComponent } from './component/register/register.component';
 import { reverseGuard } from './guards/reverse.guard';
 import { PedidoProveedorComponent } from './component/pedido-proveedor/pedido-proveedor.component';
 import { AsistenciaListaComponent } from './component/asistencia-lista/asistencia-lista.component';
+import { MisCotizacionesComponent } from './component/mis-cotizaciones/mis-cotizaciones.component';
 import { RealizarCotizacionComponent } from './component/realizar-cotizacion/realizar-cotizacion.component';
+
 
 export const routes: Routes = [
   {
@@ -67,6 +69,11 @@ export const routes: Routes = [
       {
         path: 'realizar-venta',
         component: RealizarVentaComponent,
+        data: { roles: ['CLIENTE'] },
+      },
+      {
+        path: 'mis-cotizaciones',
+        component: MisCotizacionesComponent,
         data: { roles: ['CLIENTE'] },
       },
       {

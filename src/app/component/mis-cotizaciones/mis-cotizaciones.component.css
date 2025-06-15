@@ -1,0 +1,32 @@
+.cotizaciones-container {
+  max-width: 900px;
+  margin: 30px auto;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 12px #0001;
+}
+.titulo-cotizaciones {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1976d2;
+  margin-bottom: 24px;
+}
+.tabla-cotizaciones {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 18px;
+}
+.tabla-cotizaciones th, .tabla-cotizaciones td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.tabla-cotizaciones th {
+  background: #e3f2fd;
+  color: #1976d2;
+  font-weight: 600;
+}
+.tabla-cotizaciones tr:nth-child(even) td {
+  background: #f6fafd;
+}
