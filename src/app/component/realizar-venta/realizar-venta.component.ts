@@ -5,6 +5,7 @@ import { ProductoService } from '../../service/producto.service';
 import { IProductoResponse } from '../../model/producto-response';
 import { CotizacionService } from '../../service/cotizacion.service';
 import { ICotizacionRequest } from '../../model/cotizacion-request';
+import { AuthService } from '../../service/auth.service';
 
 interface ItemCarrito {
   producto: IProductoResponse;
@@ -31,7 +32,8 @@ export class RealizarVentaComponent implements OnInit {
 
   constructor(
     private productoService: ProductoService,
-    private cotizacionService: CotizacionService
+    private cotizacionService: CotizacionService,
+    private authService: AuthService // Inyecta AuthService
   ) {}
 
   ngOnInit(): void {
@@ -71,36 +73,55 @@ export class RealizarVentaComponent implements OnInit {
   }
 
   solicitarCotizacion() {
-    const idCliente = 1; // O el id real del cliente logueado
-
-    const detalles = this.carrito
-      .filter(item => item.cantidad > 0 && item.producto.stock >= item.cantidad)
-      .map(item => ({
-        idProducto: item.producto.idProducto,
-        cantidad: item.cantidad
-      }));
-
-    if (detalles.length === 0) {
-      this.notificacionMensaje = 'No hay productos válidos para cotizar';
+    const userInfo: any = this.authService.getUserInfo();
+    if (!userInfo || !userInfo.email) {
+      this.notificacionMensaje = 'No se pudo identificar al cliente';
       this.notificacionVisible = true;
       setTimeout(() => this.notificacionVisible = false, 2000);
       return;
     }
 
-    const cotizacion: ICotizacionRequest = {
-      idCliente,
-      detalles
-    };
+    this.authService.findUsernameCliente(userInfo.email).subscribe({
+      next: (cliente: any) => {
+        const idCliente = cliente.idCliente;
+        const detalles = this.carrito
+          .filter(item => item.cantidad > 0 && item.producto.stock >= item.cantidad)
+          .map(item => ({
+            idProducto: item.producto.idProducto,
+            cantidad: item.cantidad
+          }));
 
-    this.cotizacionService.crearCotizacion(cotizacion).subscribe({
-      next: (resp) => {
-        this.notificacionMensaje = 'Cotización enviada correctamente';
-        this.notificacionVisible = true;
-        setTimeout(() => this.notificacionVisible = false, 2000);
-        this.carrito = [];
+        if (detalles.length === 0) {
+          this.notificacionMensaje = 'No hay productos válidos para cotizar';
+          this.notificacionVisible = true;
+          setTimeout(() => this.notificacionVisible = false, 2000);
+          return;
+        }
+
+        const cotizacion: ICotizacionRequest = {
+          idCliente,
+          detalles,
+          descuento: 0 // Puedes ajustar el descuento si es necesario
+        };
+
+        console.log('Cotización enviada:', cotizacion);
+
+        this.cotizacionService.crearCotizacion(cotizacion).subscribe({
+          next: (resp) => {
+            this.notificacionMensaje = 'Cotización enviada correctamente';
+            this.notificacionVisible = true;
+            setTimeout(() => this.notificacionVisible = false, 2000);
+            this.carrito = [];
+          },
+          error: () => {
+            this.notificacionMensaje = 'Error al enviar la cotización';
+            this.notificacionVisible = true;
+            setTimeout(() => this.notificacionVisible = false, 2000);
+          }
+        });
       },
       error: () => {
-        this.notificacionMensaje = 'Error al enviar la cotización';
+        this.notificacionMensaje = 'No se pudo identificar al cliente';
         this.notificacionVisible = true;
         setTimeout(() => this.notificacionVisible = false, 2000);
       }

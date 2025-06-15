@@ -1,0 +1,29 @@
+<div class="cotizaciones-container">
+  <h2 class="titulo-cotizaciones">Mis Cotizaciones</h2>
+  <table *ngIf="!loading && cotizaciones.length > 0" class="tabla-cotizaciones">
+    <thead>
+      <tr>
+        <th>Cotización</th>
+        <th>Fecha de Emisión</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of cotizaciones">
+        <td>{{ c.codigoCotizacion }}</td>
+        <td>{{ c.fechaEmision | date:'yyyy-MM-dd HH:mm' }}</td>
+        <td>
+          <span [ngSwitch]="c.idEstadoCot">
+            <span *ngSwitchCase="1">Pendiente</span>
+            <span *ngSwitchCase="2">Aprobada</span>
+            <span *ngSwitchCase="3">Rechazada</span>
+            <span *ngSwitchDefault>Desconocido</span>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="loading">Cargando cotizaciones...</div>
+  <div *ngIf="!loading && cotizaciones.length === 0">No tienes cotizaciones registradas.</div>
+  <div *ngIf="error">{{ error }}</div>
+</div>

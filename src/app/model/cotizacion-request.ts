@@ -6,4 +6,5 @@ export interface IDetalleCotizacionRequest {
 export interface ICotizacionRequest {
   idCliente: number;
   detalles: IDetalleCotizacionRequest[];
+  descuento?: number; // opcional
 }

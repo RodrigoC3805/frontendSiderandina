@@ -13,4 +13,9 @@ export class CotizacionService {
   crearCotizacion(request: ICotizacionRequest): Observable<any> {
     return this.http.post(`${BASE_URL}/cliente/cotizacion`, request);
   }
+
+  getCotizacionesPorCliente(idCliente: number) {
+  return this.http.get<any[]>(`${BASE_URL}/cliente/cotizacion/por-cliente?idCliente=${idCliente}`);
+}
+
 }
