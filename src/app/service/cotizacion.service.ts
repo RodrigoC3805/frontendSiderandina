@@ -24,5 +24,8 @@ export class CotizacionService {
     return this.http.get<ICotizacionResponse>(`${BASE_URL}/cliente/cotizacion`);
   }
 
+  actualizarPreciosYEstado(idCotizacion: number, detalles: any[]) {
+  return this.http.put(`${BASE_URL}/cliente/cotizacion/actualizar-precios-estado?idCotizacion=${idCotizacion}`, detalles);
+}
 
 }
