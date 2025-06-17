@@ -86,6 +86,7 @@ export class AuthService {
       })
       .pipe(map((cliente) => cliente.razonSocial));
   }
+
   findIdCliente() {
     const userInfo: any = this.getUserInfo();
     const email = userInfo.email;
@@ -95,6 +96,7 @@ export class AuthService {
       })
       .pipe(map((cliente) => cliente.idCliente));
   }
+
   findUsernameTrabajador(email: string) {
     return this.http
       .get<ITrabajadorResponse>(`${BASE_URL}/auth/findtrabajadorbyuseremail`, {
@@ -105,6 +107,12 @@ export class AuthService {
       );
   }
   
+  findClienteByUserId(idUsuario: number) {
+    return this.http.get<ICliente>(`${BASE_URL}/cliente/findclientebyuserid`, {
+      params: { idUsuario }
+    });
+  }
+
   getTipoUsuario() {
     const userInfo: any = this.getUserInfo();
     if (!userInfo) {

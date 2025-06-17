@@ -9,16 +9,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let c of cotizaciones">
+      <tr *ngFor="let c of cotizaciones; let i = index">
         <td>{{ c.codigoCotizacion }}</td>
         <td>{{ c.fechaEmision | date:'yyyy-MM-dd HH:mm' }}</td>
+        <td>{{ c.estadoCotizacion?.descripcion || 'Desconocido' }}</td>
         <td>
-          <span [ngSwitch]="c.idEstadoCot">
-            <span *ngSwitchCase="1">Pendiente</span>
-            <span *ngSwitchCase="2">Aprobada</span>
-            <span *ngSwitchCase="3">Rechazada</span>
-            <span *ngSwitchDefault>Desconocido</span>
-          </span>
+          <button class="btn btn-primary" (click)="mostrarDetalles(i)">+ Detalles</button>
         </td>
       </tr>
     </tbody>
