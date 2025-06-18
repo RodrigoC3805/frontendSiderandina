@@ -4,21 +4,19 @@
 
 <div class="venta-lista-container">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="mb-0">Lista de Productos para Venta</h2>
+    <h2 class="mb-0">Lista de Productos para Cotizar</h2>
     <button class="btn btn-primary" [disabled]="carrito.length === 0" (click)="solicitarCotizacion()">
       Realizar cotización
     </button>
   </div>
   <div class="card">
     <div class="card-body p-0">
-      <table class="table mb-0">
+      <table class="tabla-venta">
         <thead>
           <tr>
             <th>Código</th>
             <th>Producto</th>
-            <th>Unidad</th>
-            <th>Stock</th>
-            <th>Precio (S/)</th>
+            <th>Unidad Medida</th>
             <th>Cantidad</th>
             <th></th>
           </tr>
@@ -26,10 +24,13 @@
         <tbody>
           <tr *ngFor="let producto of productos">
             <td>{{ producto.idProducto }}</td>
-            <td>{{ producto.nombre }}</td>
+            <td>
+              <div class="producto-info">
+                <img [src]="producto.urlImagen" alt="{{producto.nombre}}" class="producto-img-mini"/>
+                <span>{{ producto.nombre }}</span>
+              </div>
+            </td>
             <td>{{ producto.unidadesMedida?.descripcion || '-' }}</td>
-            <td>{{ producto.stock }}</td>
-            <td>{{ producto.precioVentaBase | number:'1.2-2' }}</td>
             <td style="width: 110px;">
               <input type="number"
                      min="1"
@@ -49,6 +50,7 @@
       </table>
     </div>
   </div>
+</div>
 
 <!-- Carrito flotante -->
 <div class="carrito-float-container"
@@ -56,7 +58,7 @@
      (mouseenter)="carritoVisible = true"
      (mouseleave)="carritoVisible = false">
   <div class="carrito-float-btn" (mouseenter)="carritoVisible = true" (click)="carritoVisible = !carritoVisible">
-    <span class="material-icons">shopping_cart</span>
+    <span class="material-icons">+</span>
     <span class="carrito-count" *ngIf="carrito.length > 0">{{ carrito.length }}</span>
   </div>
   <div class="carrito-float-panel" *ngIf="carritoVisible">
@@ -67,8 +69,6 @@
         <tr>
           <th>Producto</th>
           <th>Cant.</th>
-          <th>Precio</th>
-          <th>Subt.</th>
           <th></th>
         </tr>
       </thead>
@@ -76,8 +76,6 @@
         <tr *ngFor="let item of carrito">
           <td>{{ item.producto.nombre }}</td>
           <td>{{ item.cantidad }}</td>
-          <td>{{ item.producto.precioVentaBase | number:'1.2-2' }}</td>
-          <td>{{ (item.producto.precioVentaBase * item.cantidad) | number:'1.2-2' }}</td>
           <td>
             <button class="btn btn-danger btn-sm btn-xs" (click)="quitarDelCarrito(item.producto)">
               <span class="material-icons" style="font-size:16px;">delete</span>
@@ -87,7 +85,7 @@
       </tbody>
     </table>
     <div class="carrito-total" *ngIf="carrito.length > 0">
-      <strong>Total: S/ {{ getTotalCarrito() | number:'1.2-2' }}</strong>
+      <!-- <strong>Total: S/ {{ getTotalCarrito() | number:'1.2-2' }}</strong>-->
     </div>
     <button class="btn btn-primary btn-block mt-2" [disabled]="carrito.length === 0" (click)="solicitarCotizacion()">
       Realizar cotización

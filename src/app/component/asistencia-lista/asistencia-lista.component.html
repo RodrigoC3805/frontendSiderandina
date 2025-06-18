@@ -22,7 +22,7 @@
       <tr>
         <th>Nombre</th>
         <th>N° Documento</th>
-        <th>Cargo</th>
+        <!--<th>Cargo</th>-->
         <th>Fecha</th>
         <th>Hora Entrada</th>
         <th>Hora Salida</th>
@@ -32,7 +32,7 @@
       <tr *ngFor="let a of asistencias | paginate: { itemsPerPage: pageSize, currentPage: page }">
         <td>{{ a.trabajador.nombres }} {{ a.trabajador.apellidoPaterno }} {{ a.trabajador.apellidoMaterno }}</td>
         <td>{{ a.trabajador.numeroDocumento }}</td>
-        <td>{{ a.trabajador.tipoTrabajador?.descripcion || '-' }}</td>
+        <!--<td>{{ a.trabajador.tipoTrabajador?.descripcion || '-' }}</td>-->
         <td>{{ a.fecha }}</td>
         <td>{{ a.horaIngreso || '-' }}</td>
         <td>{{ a.horaSalida || '-' }}</td>

@@ -19,6 +19,7 @@ export class AsistenciaFormComponent {
     private asistenciaService: AsistenciaService,
     private trabajadoresService: TrabajadoresService
   ) {
+    // Inicializar con la fecha y hora actual
     const now = new Date();
     const fechaActual = now.toISOString().slice(0, 10); // yyyy-MM-dd
     const horaActual = now.toTimeString().slice(0, 5); // HH:mm
