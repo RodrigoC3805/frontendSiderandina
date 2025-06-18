@@ -13,4 +13,9 @@ export class PedidoVentaService {
   crearPedidoVenta(request: IPedidoVentaRequest): Observable<IPedidoVentaResponse> {
     return this.http.post<IPedidoVentaResponse>(BASE_URL, request);
   }
+
+  getPedidosPorCliente(idCliente: number): Observable<IPedidoVentaResponse[]> {
+    return this.http.get<IPedidoVentaResponse[]>(`${BASE_URL}/por-cliente?idCliente=${idCliente}`);
+  }
+
 }

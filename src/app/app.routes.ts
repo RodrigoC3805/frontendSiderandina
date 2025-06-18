@@ -21,6 +21,7 @@ import { PedidoProveedorComponent } from './component/pedido-proveedor/pedido-pr
 import { AsistenciaListaComponent } from './component/asistencia-lista/asistencia-lista.component';
 import { MisCotizacionesComponent } from './component/mis-cotizaciones/mis-cotizaciones.component';
 import { RealizarCotizacionComponent } from './component/realizar-cotizacion/realizar-cotizacion.component';
+import { MisPedidosComponent } from './component/mis-pedidos/mis-pedidos.component';
 
 
 export const routes: Routes = [
@@ -75,6 +76,11 @@ export const routes: Routes = [
         path: 'mis-cotizaciones',
         component: MisCotizacionesComponent,
         data: { roles: ['CLIENTE'] },
+      },
+      {
+        path: 'mis-pedidos',
+        component: MisPedidosComponent,
+        data: { roles: ['CLIENTE'] }
       },
       {
         path: 'registrar-asistencia',

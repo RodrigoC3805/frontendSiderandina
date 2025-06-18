@@ -1,0 +1,24 @@
+<div class="pedidos-container">
+  <h2 class="titulo-pedidos">Mis Pedidos</h2>
+  <table *ngIf="!loading && pedidos.length > 0" class="tabla-pedidos">
+    <thead>
+      <tr>
+        <th>Código de Venta</th>
+        <th>Fecha de Emision</th>
+        <th>Dirección de Entrega</th>
+        <th>Estado del Pedido</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of pedidos">
+        <td>{{ p.codigoVenta }}</td>
+        <td>{{ p.fechaPedido | date:'yyyy-MM-dd HH:mm' }}</td>
+        <td>{{ p.direccionEntrega }}</td>
+        <td>{{ p.estadoPedido?.descripcion || 'Desconocido' }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="loading">Cargando pedidos...</div>
+  <div *ngIf="!loading && pedidos.length === 0">No tienes pedidos registrados.</div>
+  <div *ngIf="error">{{ error }}</div>
+</div>
