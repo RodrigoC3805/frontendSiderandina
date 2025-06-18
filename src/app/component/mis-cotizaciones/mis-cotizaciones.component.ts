@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CotizacionService } from '../../service/cotizacion.service';
 import { AuthService } from '../../service/auth.service';
 import { CommonModule } from '@angular/common';
+import { PedidoVentaService } from '../../service/pedido-venta.service';
+import { IPedidoVentaRequest } from '../../model/pedido-venta-request';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -10,6 +12,7 @@ import Swal from 'sweetalert2';
   templateUrl: './mis-cotizaciones.component.html',
   styleUrls: ['./mis-cotizaciones.component.css']
 })
+
 export class MisCotizacionesComponent implements OnInit {
   cotizaciones: any[] = [];
   loading = true;
@@ -17,7 +20,8 @@ export class MisCotizacionesComponent implements OnInit {
 
   constructor(
     private cotizacionService: CotizacionService,
-    private authService: AuthService
+    private authService: AuthService,
+    private pedidoVentaService: PedidoVentaService
   ) {}
 
   ngOnInit(): void {
@@ -99,4 +103,60 @@ export class MisCotizacionesComponent implements OnInit {
     });
   }
 
+  abrirModalPedido(cotizacion: any) {
+  Swal.fire({
+    title: 'Realizar Pedido de Venta',
+    html: `
+      <div style="text-align:left">
+        <b>Código Cotización:</b> ${cotizacion.codigoCotizacion}<br>
+        <b>Monto Total:</b> S/ ${cotizacion.montoTotal?.toFixed(2)}<br>
+        <b>Dirección de Entrega:</b>
+        <input id="direccionEntrega" class="swal2-input" placeholder="Ingrese dirección de entrega">
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Siguiente',
+    cancelButtonText: 'Cancelar',
+    preConfirm: () => {
+      const direccionEntrega = (document.getElementById('direccionEntrega') as HTMLInputElement).value;
+      if (!direccionEntrega) {
+        Swal.showValidationMessage('Debe ingresar la dirección de entrega');
+        return false;
+      }
+      return { direccionEntrega };
+    }
+  }).then(result => {
+    if (result.isConfirmed) {
+      // Segunda ventana de confirmación
+      Swal.fire({
+        title: '¿Confirmar pedido?',
+        text: '¿Está seguro de que desea realizar el pedido?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        width: 350
+      }).then(confirmResult => {
+        if (confirmResult.isConfirmed) {
+          const request: IPedidoVentaRequest = {
+            idCotizacion: cotizacion.idCotizacion,
+            idEstadoPedido: 1, // Por enviar
+            direccionEntrega: result.value.direccionEntrega
+          };
+          this.pedidoVentaService.crearPedidoVenta(request).subscribe({
+            next: (resp) => {
+              Swal.fire('Pedido creado', `Código de venta: ${resp.codigoVenta}`, 'success');
+            },
+            error: () => {
+              Swal.fire('Error', 'No se pudo crear el pedido de venta', 'error');
+            }
+          });
+        }
+        // Si cancela, no hace nada
+      });
+    }
+  });
 }
+
+}
+

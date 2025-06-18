@@ -15,6 +15,10 @@
         <td>{{ c.estadoCotizacion?.descripcion || 'Desconocido' }}</td>
         <td>
           <button class="btn btn-primary" (click)="mostrarDetalles(i)">+ Detalles</button>
+          <button class="btn btn-secondary"
+            [disabled]="c.estadoCotizacion?.descripcion !== 'Entregada'"
+            (click)="abrirModalPedido(c)"> Realizar pedido
+          </button>
         </td>
       </tr>
     </tbody>
