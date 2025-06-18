@@ -5,5 +5,8 @@ export interface IPedidoVentaResponse {
   codigoVenta: string;
   fechaPedido: string;
   direccionEntrega: string;
-  estadoPedido?: { idEstadoPedido: number; descripcion: string };
+  //estadoPedido?: { idEstadoPedido: number; descripcion: string };
+  estadoPedidoDescripcion: string;
+  //cotizacion?: { montoTotal: number };
+  montoTotalCotizacion: number;
 }

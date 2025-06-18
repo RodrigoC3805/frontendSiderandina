@@ -14,11 +14,35 @@
         <td>{{ p.codigoVenta }}</td>
         <td>{{ p.fechaPedido | date:'yyyy-MM-dd HH:mm' }}</td>
         <td>{{ p.direccionEntrega }}</td>
-        <td>{{ p.estadoPedido?.descripcion || 'Desconocido' }}</td>
+        <td>{{ p.estadoPedidoDescripcion || 'Desconocido' }}</td>
+        <td>
+          <button class="btn btn-success" (click)="mostrarPago(p)">Realizar Pago</button>
+        </td>
       </tr>
     </tbody>
   </table>
   <div *ngIf="loading">Cargando pedidos...</div>
   <div *ngIf="!loading && pedidos.length === 0">No tienes pedidos registrados.</div>
   <div *ngIf="error">{{ error }}</div>
+  <!-- ...tabla de pedidos... -->
+
+  
 </div>
+
+<div class="leyenda-estados">
+    <h4>¿Qué significa cada estado de mi pedido?</h4>
+    <ul>
+      <li>
+        <span class="estado-circulo por-enviar"></span>
+        <b>Por enviar: </b> Debe realizar el pago y esperar que el área de ventas valide dicho pago.
+      </li>
+      <li>
+        <span class="estado-circulo enviado"></span>
+        <b>Enviado: </b> El pedido pasó al área de despacho y se está realizando el picking de sus productos.
+      </li>
+      <li>
+        <span class="estado-circulo entregado"></span>
+        <b>Entregado: </b> El pedido fue despachado al cliente.
+      </li>
+    </ul>
+  </div>

@@ -27,3 +27,21 @@
   <div *ngIf="!loading && cotizaciones.length === 0">No tienes cotizaciones registradas.</div>
   <div *ngIf="error">{{ error }}</div>
 </div>
+
+<div class="leyenda-estados-cotizacion">
+  <h4>¿Qué significa cada estado de mi cotización?</h4>
+  <ul>
+    <li>
+      <span class="estado-circulo pendiente"></span>
+      <b>Pendiente:</b> La cotización está siendo procesada y fue enviada al área de ventas.
+    </li>
+    <li>
+      <span class="estado-circulo entregada"></span>
+      <b>Entregada:</b> Ya puede ver detalles de la cotización con sus precios y montos respectivos.
+    </li>
+    <li>
+      <span class="estado-circulo rechazada"></span>
+      <b>Rechazada:</b> La cotización presenta alguna inconsistencia.
+    </li>
+  </ul>
+</div>

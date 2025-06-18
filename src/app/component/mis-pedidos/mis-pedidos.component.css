@@ -51,3 +51,66 @@
     font-size: 13px;
   }
 }
+
+.leyenda-estados {
+  margin-top: 200px;
+  background: #f4f8fb;
+  border-radius: 10px;
+  padding: 18px 22px;
+  box-shadow: 0 2px 8px #0001;
+  max-width: 740px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeIn 1s;
+  font-size: 0.97em;
+}
+
+.leyenda-estados h4 {
+  color: #0074d9;
+  margin-bottom: 14px;
+  font-weight: 700;
+  font-size: 1.08em;
+}
+
+.leyenda-estados ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.leyenda-estados li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.97em; 
+}
+
+.estado-circulo {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-right: 12px;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px #0002;
+}
+
+.por-enviar {
+  background: #ffc107;
+  border-color: #ffe082;
+}
+
+.enviado {
+  background: #2196f3;
+  border-color: #90caf9;
+}
+
+.entregado {
+  background: #43a047;
+  border-color: #a5d6a7;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: translateY(0);}
+}

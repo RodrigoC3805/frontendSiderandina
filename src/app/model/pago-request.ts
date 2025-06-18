@@ -1,5 +1,5 @@
 export interface IPagoRequest {
-    idPago: number;
+    //idPago: number;
     idMetodoPago: number;
     montoPagado: number;
 }

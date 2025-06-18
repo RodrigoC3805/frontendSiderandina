@@ -30,3 +30,66 @@
 .tabla-cotizaciones tr:nth-child(even) td {
   background: #f6fafd;
 }
+
+.leyenda-estados-cotizacion {
+  margin-top: 180px;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 18px 22px;
+  box-shadow: 0 2px 8px #0001;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeIn 1s;
+  font-size: 0.97em;
+}
+
+.leyenda-estados-cotizacion h4 {
+  color: #0074d9;
+  margin-bottom: 12px;
+  font-weight: 700;
+  font-size: 1.08em;
+}
+
+.leyenda-estados-cotizacion ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.leyenda-estados-cotizacion li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.97em;
+}
+
+.estado-circulo {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-right: 12px;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px #0002;
+}
+
+.pendiente {
+  background: #ffc107;
+  border-color: #ffe082;
+}
+
+.entregada {
+  background: #43a047;
+  border-color: #a5d6a7;
+}
+
+.rechazada {
+  background: #e53935;
+  border-color: #ffcdd2;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: translateY(0);}
+}
