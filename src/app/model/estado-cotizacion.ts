@@ -1,4 +1,4 @@
 export interface IEstadoCotizacion {
-    idEstadoCotizacion: number;
+    idEstadoCot: number;
     descripcion: string;
 }

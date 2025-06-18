@@ -9,7 +9,7 @@ export interface ICotizacionResponse {
     codigoCotizacion: string;
     fechaEmision: string;
     montoSubtotal: number;
-    montoIGV: number;
+    montoIgv: number;
     montoTotal: number;
     descuento: number;
     detalles: IDetalleCotizacionResponse[];
