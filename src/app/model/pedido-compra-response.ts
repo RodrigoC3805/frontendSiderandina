@@ -13,10 +13,10 @@ export interface IEstadoPedido {
 }
 
 export interface IPedidoCompraResponse {
-    idPedidoCompra?: number;
-    codigoCompra?: number;
-    fechaPedido: string;
-    montoTotal: number;
-    proveedor: { idProveedor: number; razonSocial: string; ruc: string };
-    estadoPedido: { idEstadoPedido: number; descripcion: string };
+  idPedidoCompra: number;
+  codigoCompra: number;
+  fechaPedido: string;
+  montoTotal: number;
+  proveedor: { razonSocial: string; ruc: string }; // <-- agrega ruc aquí
+  estadoPedido: { descripcion: string };
 }

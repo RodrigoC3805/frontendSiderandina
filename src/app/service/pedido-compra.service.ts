@@ -11,18 +11,18 @@ export class PedidoCompraService {
   constructor(private http: HttpClient) { }
 
   getPedidosByProveedor(idProveedor: number, idEstadoPedido?: number): Observable<IPedidoCompraResponse[]> {
-    let url = `${BASE_URL}/almacen/pedidocompra/proveedor?idProveedor=${idProveedor}`;
+    let url = `http://localhost:8080/api/almacen/pedidocompra/proveedor?idProveedor=${idProveedor}`;
     if (idEstadoPedido !== undefined) {
       url += `&idEstadoPedido=${idEstadoPedido}`;
     }
     return this.http.get<IPedidoCompraResponse[]>(url);
   }
 
-  actualizarEstadoPedido(idPedidoCompra: number, idEstadoPedido: number): Observable<IPedidoCompraResponse> {
-    return this.http.put<IPedidoCompraResponse>(`${BASE_URL}/almacen/pedidocompra/actualizar-estado`, {
-      idPedidoCompra,
-      idEstadoPedido
-    });
+  actualizarEstadoPedido(idPedidoCompra: number, idEstadoPedido: number) {
+    return this.http.put(
+      'http://localhost:8080/api/almacen/pedidocompra/actualizar-estado',
+      { idPedidoCompra, idEstadoPedido }
+    );
   }
 
   getPedidosCompra(idEstadoPedido?: number) {

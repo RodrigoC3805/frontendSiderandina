@@ -87,7 +87,7 @@ export class RealizarCompraComponent {
     });
   }
   getProveedores(): void {
-    this.proveedorService.getProveedor().subscribe((result: any) => {
+    this.proveedorService.getProveedores().subscribe((result: any) => {
       this.proveedorArray = result;
       console.log(this.proveedorArray);
     });
