@@ -14,17 +14,26 @@
       <tr>
         <th>N°</th>
         <th>Fecha</th>
-        <th>Proveedor</th>
+        <th>Monto</th>
         <th>Estado</th>
         <th>Acciones</th>
+        <th>Info</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let pedido of pedidos; let i = index">
         <td>{{ i + 1 }}</td>
         <td>{{ pedido.fechaPedido | date:'M/d/yy, h:mm a' }}</td>
-        <td>{{ pedido.proveedor?.razonSocial }}</td>
-        <td>{{ pedido.estadoPedido?.descripcion }}</td>
+        <td>S/ {{ pedido.montoTotal?.toFixed(2) }}</td> <!-- Cambiado -->
+        <td>
+          <span [ngClass]="{
+            'estado-por-enviar': pedido.estadoPedido?.descripcion === 'Por enviar',
+            'estado-enviado': pedido.estadoPedido?.descripcion === 'Enviado',
+            'estado-entregado': pedido.estadoPedido?.descripcion === 'Entregado'
+          }">
+            {{ pedido.estadoPedido?.descripcion }}
+          </span>
+        </td>
         <td>
           <button
             *ngIf="pedido.estadoPedido?.descripcion === 'Por enviar'"
@@ -37,9 +46,15 @@
             Entregado
           </button>
         </td>
+        <td class="info-cell">
+          <div class="info-tooltip-container" (mouseenter)="setInfoMensaje(pedido)" (mouseleave)="clearInfoMensaje()">
+            <button>Info</button>
+            <div class="info-tooltip" *ngIf="infoTooltipVisible && infoTooltipPedidoId === pedido.idPedidoCompra" [innerHTML]="infoMensaje"></div>
+          </div>
+        </td>
       </tr>
       <tr *ngIf="pedidos.length === 0">
-        <td colspan="5" style="text-align:center;">No hay pedidos de compra registrados.</td>
+        <td colspan="6" style="text-align:center;">No hay pedidos de compra registrados.</td>
       </tr>
     </tbody>
   </table>

@@ -12,6 +12,7 @@ import { IProveedor } from '../../model/proveedor';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './pedido-proveedor.component.html',
+  styleUrls: ['./pedido-proveedor.component.css'],
 })
 export class PedidoProveedorComponent implements OnInit {
   pedidos: IPedidoCompraResponse[] = [];
@@ -19,6 +20,9 @@ export class PedidoProveedorComponent implements OnInit {
   filtroEstado: number | undefined = undefined;
   notificacionVisible = false;
   notificacionMensaje = '';
+  infoTooltipVisible = false;
+  infoTooltipPedidoId: number | null = null;
+  infoMensaje = '';
 
   constructor(
     private pedidoService: PedidoCompraService,
@@ -84,5 +88,23 @@ export class PedidoProveedorComponent implements OnInit {
         this.mostrarNotificacion('¡Pedido marcado como Entregado!');
       }
     });
+  }
+
+  setInfoMensaje(pedido: IPedidoCompraResponse) {
+    this.infoMensaje = `
+      <b>Código:</b> ${pedido.codigoCompra || '-'}<br>
+      <b>Proveedor:</b> ${pedido.proveedor?.razonSocial || '-'}<br>
+      <b>RUC:</b> ${pedido.proveedor?.ruc || '-'}<br>
+      <b>Fecha:</b> ${pedido.fechaPedido ? (pedido.fechaPedido as string).replace('T', ' ').substring(0, 16) : '-'}<br>
+      <b>Estado:</b> ${pedido.estadoPedido?.descripcion || '-'}<br>
+      <b>Monto Total:</b> S/ ${pedido.montoTotal?.toFixed(2) || '-'}
+    `;
+    this.infoTooltipVisible = true;
+    this.infoTooltipPedidoId = pedido.idPedidoCompra;
+  }
+
+  clearInfoMensaje() {
+    this.infoTooltipVisible = false;
+    this.infoTooltipPedidoId = null;
   }
 }
