@@ -37,3 +37,13 @@
     </div>
   </div>
 </div>
+<div *ngIf="!loading && !error && pieChartOptions.series && pieChartOptions.series.length > 0">
+  <apx-chart 
+    [series]="pieChartOptions.series"
+    [chart]="pieChartOptions.chart"
+    [labels]="pieChartOptions.labels"
+    [responsive]="pieChartOptions.responsive"
+    [legend]="pieChartOptions.legend"
+    [title]="pieChartOptions.title">
+  </apx-chart>
+</div>
