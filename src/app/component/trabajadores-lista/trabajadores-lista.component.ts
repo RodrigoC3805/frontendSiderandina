@@ -28,7 +28,7 @@ export type PieChartOptions = {
 @Component({
   selector: 'app-trabajadores-lista',
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule, NgApexchartsModule],
+  imports: [CommonModule, RouterModule, NgApexchartsModule],
   templateUrl: './trabajadores-lista.component.html',
   styleUrls: ['./trabajadores-lista.component.css'],
   providers: [TrabajadoresService]
