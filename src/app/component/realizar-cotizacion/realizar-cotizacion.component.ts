@@ -162,6 +162,7 @@ export class RealizarCotizacionComponent {
             ) as HTMLInputElement;
             return {
               idDetalleCotizacion: detalle.idDetalleCotizacion,
+              idProducto: detalle.producto.idProducto,
               cantidad: detalle.cantidad,
               precioCotizado: input ? parseFloat(input.value) : 0,
             };
@@ -176,6 +177,11 @@ export class RealizarCotizacionComponent {
             .subscribe({
               next: () => {
                 Swal.close();
+                Swal.fire({
+                  title: 'Cotización entregada correctamente',
+                  icon: 'success',
+                  confirmButtonText: 'OK',
+                });
                 this.getCotizaciones(); // Refresca la tabla
               },
               error: () => {
