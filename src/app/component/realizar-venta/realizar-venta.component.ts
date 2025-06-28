@@ -75,7 +75,7 @@ export class RealizarVentaComponent implements OnInit {
 
   solicitarCotizacion() {
     const detalles = this.carrito
-      .filter(item => item.cantidad > 0 && item.producto.stock >= item.cantidad)
+      .filter(item => item.cantidad > 0)
       .map(item => ({
         idProducto: item.producto.idProducto,
         cantidad: item.cantidad
