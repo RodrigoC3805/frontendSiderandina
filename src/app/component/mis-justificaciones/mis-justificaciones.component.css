@@ -1,0 +1,9 @@
+.centrar-card-container {
+    min-height: 60vh;         
+    display: flex;
+    justify-content: center;   
+    background: #f8f9fa;       
+  }
+  .card-header{
+    color:#0d6efd;
+  }
