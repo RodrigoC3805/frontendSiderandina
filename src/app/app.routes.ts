@@ -23,7 +23,7 @@ import { MisCotizacionesComponent } from './component/mis-cotizaciones/mis-cotiz
 import { RealizarCotizacionComponent } from './component/realizar-cotizacion/realizar-cotizacion.component';
 import { MisPedidosComponent } from './component/mis-pedidos/mis-pedidos.component';
 import { MisJustificacionesComponent } from './component/mis-justificaciones/mis-justificaciones.component';
-
+import { GestionarDespachoComponent } from './component/gestionar-despacho/gestionar-despacho.component';
 
 export const routes: Routes = [
   {
@@ -111,6 +111,11 @@ export const routes: Routes = [
         path: 'mis-justificaciones',
         component: MisJustificacionesComponent,
         data: { roles: ['VENDEDOR', 'JEFE_ALMACEN', 'GERENTE_GENERAL'] },
+      },
+      {
+        path: 'gestionar-despacho',
+        component: GestionarDespachoComponent,
+        data: { roles: ['VENDEDOR'] },
       },
     ],
   },

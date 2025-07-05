@@ -1,0 +1,43 @@
+<div class="despachos-container">
+  <h2>Gestionar Despachos</h2>
+  <h3>Pedidos de venta pendientes de despacho</h3>
+  <table class="tabla-despachos">
+    <thead>
+      <tr>
+        <th>ID Pedido Venta</th>
+        <th>Código Venta</th>
+        <th>Fecha Pedido</th>
+        <th>Dirección Entrega</th>
+        <th>Monto Total</th>
+        <th>Programar Despacho</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of pedidosSinDespacho">
+        <td>{{p.idPedidoVenta}}</td>
+        <td>{{p.codigoVenta}}</td>
+        <td>{{p.fechaPedido | date:'yyyy-MM-dd HH:mm'}}</td>
+        <td>{{p.direccionEntrega}}</td>
+        <td>{{p.montoTotalCotizacion | currency}}</td>
+        <td>
+          <button (click)="seleccionarPedidoParaDespacho(p)">Programar</button>
+        </td>
+      </tr>
+      <tr *ngIf="pedidosSinDespacho.length === 0">
+        <td colspan="6">No hay pedidos pendientes de despacho.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <form (ngSubmit)="programarDespacho()" style="margin-top: 20px;">
+    <label>ID Pedido Venta:
+      <input type="number" [(ngModel)]="nuevoDespacho.idPedidoVenta" name="idPedidoVenta" required />
+    </label>
+    <label>Fecha Programada:
+      <input type="datetime-local" [(ngModel)]="nuevoDespacho.fechaProgramada" name="fechaProgramada" required />
+    </label>
+    <button type="submit">Programar Despacho</button>
+  </form>
+
+  <!-- Aquí puedes mostrar la tabla de despachos existentes -->
+</div>
