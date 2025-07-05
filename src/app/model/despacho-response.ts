@@ -4,5 +4,4 @@ export interface IDespachoResponse {
   codigoVenta: string;
   fechaProgramada: string;
   estado: string;
-  montoTotalCotizacion: number;
 }

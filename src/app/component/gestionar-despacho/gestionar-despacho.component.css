@@ -1,3 +1,30 @@
+.toast {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  z-index: 9999;
+  padding: 16px 28px;
+  border-radius: 6px;
+  font-size: 1.1em;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  animation: fadein 0.3s, fadeout 0.3s 2.7s;
+}
+.toast-success {
+  background: #43a047;
+}
+.toast-error {
+  background: #e53935;
+}
+@keyframes fadein {
+  from { opacity: 0; right: 0; }
+  to { opacity: 1; right: 30px; }
+}
+@keyframes fadeout {
+  from { opacity: 1; right: 30px; }
+  to { opacity: 0; right: 0; }
+}
+
 .despachos-container {
   max-width: 900px;
   margin: 30px auto;
@@ -23,7 +50,13 @@
   background: #eaf3fb;
   color: #0074d9;
 }
-.error {
-  color: #d32f2f;
-  margin-top: 10px;
+
+/* Zebra striping for table rows */
+.tabla-despachos tr.zebra {
+  background-color: #f2f6fa;
+}
+
+/* Fila seleccionada */
+.selected-row {
+  background-color: #b3d4fc !important;
 }

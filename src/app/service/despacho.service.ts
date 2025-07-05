@@ -1,5 +1,3 @@
-// frontendSiderandina/src/app/service/despacho.service.ts
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -15,11 +13,21 @@ export class DespachoService {
   constructor(private http: HttpClient) {}
 
   programar(request: IDespachoRequest): Observable<IDespachoResponse> {
-    return this.http.post<IDespachoResponse>(`${this.apiUrl}/programar`, request);
+    // Enviar los datos como parámetros, no en el body
+    return this.http.post<IDespachoResponse>(
+      `${this.apiUrl}/programar`,
+      null,
+      {
+        params: {
+          idPedidoVenta: request.idPedidoVenta,
+          fechaProgramada: request.fechaProgramada
+        }
+      }
+    );
   }
 
   actualizarEstado(id: number, estado: string): Observable<IDespachoResponse> {
-    return this.http.put<IDespachoResponse>(`${this.apiUrl}/${id}/estado?estado=${estado}`, {});
+    return this.http.put<IDespachoResponse>(`${this.apiUrl}/${id}/estado`, null, { params: { estado } });
   }
 
   listarTodos(): Observable<IDespachoResponse[]> {
@@ -27,9 +35,9 @@ export class DespachoService {
   }
 
   listarPorEstado(estado: string): Observable<IDespachoResponse[]> {
-    return this.http.get<IDespachoResponse[]>(`${this.apiUrl}/estado?estado=${estado}`);
+    return this.http.get<IDespachoResponse[]>(`${this.apiUrl}/estado`, { params: { estado } });
   }
-  
+
   listarPedidosVentaSinDespacho(): Observable<IPedidoVentaResponse[]> {
     return this.http.get<IPedidoVentaResponse[]>(`${BASE_URL}/cliente/pedidoventa/sin-despacho`);
   }
