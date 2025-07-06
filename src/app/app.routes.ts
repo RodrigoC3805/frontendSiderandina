@@ -24,6 +24,7 @@ import { RealizarCotizacionComponent } from './component/realizar-cotizacion/rea
 import { MisPedidosComponent } from './component/mis-pedidos/mis-pedidos.component';
 import { MisJustificacionesComponent } from './component/mis-justificaciones/mis-justificaciones.component';
 import { GestionarDespachoComponent } from './component/gestionar-despacho/gestionar-despacho.component';
+import { GestionarPlanillaComponent } from './component/gestionar-planilla/gestionar-planilla.component';
 
 export const routes: Routes = [
   {
@@ -117,6 +118,11 @@ export const routes: Routes = [
         component: GestionarDespachoComponent,
         data: { roles: ['VENDEDOR'] },
       },
+      {
+        path: 'gestionar-planilla',
+        component: GestionarPlanillaComponent,
+        data: { roles: ['ADMIN_RRHH'] }
+      }
     ],
   },
   { path: '**', redirectTo: '' },
