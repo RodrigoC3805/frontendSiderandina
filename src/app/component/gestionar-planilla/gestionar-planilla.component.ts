@@ -4,11 +4,13 @@ import { PlanillaResponse } from '../../model/planilla-response';
 import { DetallePlanillaResponse } from '../../model/detalle-planilla-response';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle } from 'ng-apexcharts';
 
 @Component({
   selector: 'app-gestionar-planilla',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgApexchartsModule],
   templateUrl: './gestionar-planilla.component.html',
   styleUrls: ['./gestionar-planilla.component.css']
 })
@@ -77,4 +79,25 @@ export class GestionarPlanillaComponent implements OnInit {
       return 0;
     });
   }
+  // ApexCharts config
+  public chartSeries: ApexAxisChartSeries = [
+    {
+      name: "Sueldos",
+      data: [1200, 1400, 1300, 1500, 1700, 1600, 1800, 1750, 1900, 2000, 2100, 2200]
+    }
+  ];
+  public chartDetails: ApexChart = {
+    type: "line",
+    height: 350
+  };
+  public chartTitle: ApexTitleSubtitle = {
+    text: "Evolución de Sueldos por Mes (Ejemplo Estático)"
+  };
+  public chartXAxis: ApexXAxis = {
+    categories: [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ]
+  };
+
 }
