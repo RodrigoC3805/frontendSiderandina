@@ -131,5 +131,11 @@ export class AuthService {
     console.log('Tipo de usuario: ', userInfo.tipoUsuario);
     return userInfo.tipoUsuario.toUpperCase();
   }
-
+  findTrabajadorByUserEmail(): Observable<ITrabajadorResponse> {
+    const userInfo: any = this.getUserInfo();
+    const email = userInfo.email;
+    return this.http.get<ITrabajadorResponse>(`${BASE_URL}/auth/findtrabajadorbyuseremail`, {
+      params: { email }
+    });
+  }
 }
