@@ -25,6 +25,9 @@ import { MisPedidosComponent } from './component/mis-pedidos/mis-pedidos.compone
 import { MisJustificacionesComponent } from './component/mis-justificaciones/mis-justificaciones.component';
 import { GestionarDespachoComponent } from './component/gestionar-despacho/gestionar-despacho.component';
 import { GestionarPlanillaComponent } from './component/gestionar-planilla/gestionar-planilla.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { ReporteAsistenciaComponent } from './component/reporte-asistencia/reporte-asistencia';
+import { ReporteComercial } from './component/reporte-comercial/reporte-comercial';
 
 export const routes: Routes = [
   {
@@ -122,13 +125,23 @@ export const routes: Routes = [
         path: 'gestionar-planilla',
         component: GestionarPlanillaComponent,
         data: { roles: ['ADMIN_RRHH'] }
-      }
+      },
+      {
+        path: 'reporte-asistencia',
+        component: ReporteAsistenciaComponent,
+        data: { roles: ['GERENTE_GENERAL'] }
+      },
+      {
+        path: 'reporte-comercial',
+        component: ReporteComercial,
+        data: { roles: ['GERENTE_GENERAL'] }
+      },
     ],
   },
   { path: '**', redirectTo: '' },
 ];
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), NgApexchartsModule],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

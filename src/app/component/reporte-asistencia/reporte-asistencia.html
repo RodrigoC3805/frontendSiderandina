@@ -1,0 +1,41 @@
+<div class="filtros-reporte">
+  <label>Fecha inicio:
+    <input type="date" [(ngModel)]="fechaInicio">
+  </label>
+  <button (click)="filtrarPorDia()" [disabled]="!fechaInicio">Filtrar por día</button>
+  <button (click)="filtrarPorSemana()" [disabled]="!fechaInicio">Filtrar por semana</button>
+  <button (click)="limpiarFiltro()">Limpiar filtro</button>
+</div>
+
+<div *ngIf="loading">Cargando reporte...</div>
+
+<div *ngIf="!loading" class="reporte-seccion">
+  <div class="reporte-titulo">Horas trabajadas por empleado</div>
+  <apx-chart
+    [series]="chartSeries"
+    [chart]="chartDetails"
+    [title]="chartTitle"
+    [xaxis]="chartXAxis">
+  </apx-chart>
+</div>
+
+<div *ngIf="!loading" class="pie-section">
+  <div class="reporte-titulo">Puntualidad General</div>
+  <apx-chart
+    [series]="pieSeries"
+    [chart]="pieChartDetails"
+    [labels]="pieChartLabels"
+    [title]="pieChartTitle"
+    [responsive]="pieChartResponsive">
+  </apx-chart>
+</div>
+
+<div *ngIf="!loading" class="extras-section">
+  <div class="reporte-titulo">Horas extras por empleado</div>
+  <apx-chart
+    [series]="chartExtrasSeries"
+    [chart]="chartExtrasDetails"
+    [title]="chartExtrasTitle"
+    [xaxis]="chartExtrasXAxis">
+  </apx-chart>
+</div>

@@ -1,0 +1,33 @@
+<div *ngIf="loading">Cargando reporte...</div>
+
+<div *ngIf="!loading">
+  <apx-chart
+    [series]="chartSeries"
+    [chart]="chartDetails"
+    [title]="chartTitle"
+    [xaxis]="chartXAxis">
+  </apx-chart>
+</div>
+
+<div *ngIf="!loading" class="tabla-responsive">
+  <table>
+    <thead>
+      <tr>
+        <th>RUC</th>
+        <th>Razón Social</th>
+        <th>Total Pedidos</th>
+        <th>Monto Total</th>
+        <th>Promedio por Pedido</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of proveedores">
+        <td>{{ p.ruc }}</td>
+        <td>{{ p.razonSocial }}</td>
+        <td>{{ p.totalPedidos }}</td>
+        <td>S/ {{ p.montoTotalCompras | number:'1.2-2' }}</td>
+        <td>S/ {{ p.promedioPorPedido | number:'1.2-2' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,122 @@
+/* Fondo y tipografía general */
+:host {
+  display: block;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f4f6f8;
+  min-height: 100vh;
+  padding: 32px 0;
+}
+
+/* Filtros */
+.filtros-reporte {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #fff;
+  padding: 18px 28px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.07);
+  margin-bottom: 32px;
+}
+
+.filtros-reporte label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-right: 8px;
+}
+
+.filtros-reporte input[type="date"] {
+  border: 1px solid #bfc9d1;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 15px;
+  background: #f8fafc;
+  color: #2c3e50;
+  transition: border 0.2s;
+}
+
+.filtros-reporte input[type="date"]:focus {
+  border: 1.5px solid #0077b6;
+  outline: none;
+}
+
+.filtros-reporte button {
+  background: linear-gradient(90deg, #0077b6 60%, #00b4d8 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.filtros-reporte button:disabled {
+  background: #bfc9d1;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.filtros-reporte button:not(:disabled):hover {
+  background: linear-gradient(90deg, #005f87 60%, #0096c7 100%);
+}
+
+/* Gráfico */
+apx-chart {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(44, 62, 80, 0.08);
+  padding: 28px 18px 18px 18px;
+  display: block;
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+/* Mensaje de carga */
+[ngIf="loading"], .cargando-reporte {
+  color: #0077b6;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* Separador visual entre reportes */
+.reporte-seccion {
+  margin-bottom: 40px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e0e6ed;
+}
+
+.reporte-titulo {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0077b6;
+  margin-bottom: 18px;
+  margin-top: 0;
+  letter-spacing: 0.5px;
+}
+
+/* Espaciado extra para el pie chart */
+.pie-section {
+  margin-top: 48px;
+  padding-top: 12px;
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 700px) {
+  .reporte-seccion, .pie-section {
+    margin-bottom: 24px;
+    margin-top: 24px;
+    padding: 0;
+    border: none;
+  }
+}
+
+.extras-section {
+  margin-top: 48px;
+  padding-top: 12px;
+  border-top: 2px solid #e0e6ed;
+}

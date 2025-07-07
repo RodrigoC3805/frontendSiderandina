@@ -1,0 +1,33 @@
+.tabla-responsive {
+  overflow-x: auto;
+  margin-top: 32px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.07);
+}
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e0e6ed;
+}
+th {
+  background: #0077b6;
+  color: #fff;
+  font-weight: 600;
+}
+tr:last-child td {
+  border-bottom: none;
+}
+@media (max-width: 700px) {
+  th, td {
+    padding: 8px 6px;
+    font-size: 13px;
+  }
+  .tabla-responsive {
+    margin-top: 18px;
+  }
+}
