@@ -1,0 +1,84 @@
+<div *ngIf="notificacionVisible" [ngClass]="{'toast-success': notificacionTipo === 'success', 'toast-error': notificacionTipo === 'error'}" class="toast">
+  {{ notificacionMensaje }}
+</div>
+
+<div class="despachos-container">
+  <h2>Gestionar Despachos</h2>
+
+  <!-- Lista de pedidos de venta pendientes de despacho -->
+  <h3>Pedidos de venta pendientes de despacho</h3>
+  <table class="tabla-despachos">
+    <thead>
+      <tr>
+        <th>Código Venta</th>
+        <th>Fecha Pedido</th>
+        <th>Dirección Entrega</th>
+        <th>Monto Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of pedidosSinDespacho; let i = index"
+          [class.zebra]="i % 2 === 1"
+          [class.selected-row]="pedidoSeleccionado && pedidoSeleccionado.idPedidoVenta === p.idPedidoVenta"
+          (click)="seleccionarPedidoParaDespacho(p)">
+        <td>{{p.codigoVenta}}</td>
+        <td>{{p.fechaPedido | date:'yyyy-MM-dd'}}</td>
+        <td>{{p.direccionEntrega}}</td>
+        <td>{{p.montoTotalCotizacion | currency}}</td>
+      </tr>
+      <tr *ngIf="pedidosSinDespacho.length === 0">
+        <td colspan="4">No hay pedidos pendientes de despacho.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Formulario para programar despacho debajo de la lista -->
+  <div *ngIf="pedidoSeleccionado" style="margin-top: 20px;">
+    <h4>Programar despacho para:</h4>
+    <form (ngSubmit)="programarDespacho()">
+      <label>
+        Código Venta:
+        <input type="text" [value]="pedidoSeleccionado.codigoVenta" disabled />
+      </label>
+      <label>
+        Fecha Programada:
+        <input type="date" [(ngModel)]="nuevoDespacho.fechaProgramada" name="fechaProgramada" required />
+      </label>
+      <button type="submit">Programar Despacho</button>
+    </form>
+  </div>
+
+  <!-- Filtro y listado de despachos programados -->
+  <h3 style="margin-top: 40px;">Despachos programados</h3>
+  <label>Filtrar por estado:
+    <select [(ngModel)]="estadoFiltro" (change)="cargarDespachos()">
+      <option value="">Todos</option>
+      <option value="Pendiente">Pendiente</option>
+      <option value="Finalizado">Finalizado</option>
+    </select>
+  </label>
+
+  <table class="tabla-despachos" style="margin-top: 10px;">
+    <thead>
+      <tr>
+        <th>Código Venta</th>
+        <th>Fecha Programada</th>
+        <th>Estado</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of despachos; let i = index" [class.zebra]="i % 2 === 1">
+        <td>{{d.codigoVenta}}</td>
+        <td>{{d.fechaProgramada | date:'yyyy-MM-dd'}}</td>
+        <td>{{d.estado}}</td>
+        <td>
+          <button *ngIf="d.estado === 'Pendiente'" (click)="actualizarEstadoDespacho(d, 'Finalizado')">Entregado</button>
+        </td>
+      </tr>
+      <tr *ngIf="despachos.length === 0">
+        <td colspan="4">No hay despachos para mostrar.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

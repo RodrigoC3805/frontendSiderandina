@@ -1,38 +1,64 @@
-<h2>Pedidos de Compra Recibidos</h2>
-<div>
-  <label>Filtrar por estado:</label>
-  <select [(ngModel)]="filtroEstado" (change)="cargarPedidos()">
-    <option [ngValue]="undefined">Todos</option>
-    <option [ngValue]="1">Por enviar</option>
-    <option [ngValue]="2">Enviado</option>
-    <option [ngValue]="3">Entregado</option>
-  </select>
+<h2 style="margin-bottom: 18px;">Pedidos de Compra Recibidos</h2>
+<div class="card-pedidos">
+  <div class="filtros-pedidos">
+    <label for="filtroEstado"><b>Filtrar por estado:</b></label>
+    <select id="filtroEstado" [(ngModel)]="filtroEstado" (change)="cargarPedidos()">
+      <option [ngValue]="undefined">Todos</option>
+      <option [ngValue]="1">Por enviar</option>
+      <option [ngValue]="2">Enviado</option>
+      <option [ngValue]="3">Entregado</option>
+    </select>
+  </div>
+  <table class="table-pedidos">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Fecha</th>
+        <th>Monto</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+        <th>Info</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pedido of pedidos; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ pedido.fechaPedido | date:'M/d/yy, h:mm a' }}</td>
+        <td>S/ {{ pedido.montoTotal?.toFixed(2) }}</td> <!-- Cambiado -->
+        <td>
+          <span [ngClass]="{
+            'estado-por-enviar': pedido.estadoPedido?.descripcion === 'Por enviar',
+            'estado-enviado': pedido.estadoPedido?.descripcion === 'Enviado',
+            'estado-entregado': pedido.estadoPedido?.descripcion === 'Entregado'
+          }">
+            {{ pedido.estadoPedido?.descripcion }}
+          </span>
+        </td>
+        <td>
+          <button
+            *ngIf="pedido.estadoPedido?.descripcion === 'Por enviar'"
+            (click)="marcarEnviado(pedido)">
+            Enviado
+          </button>
+          <button
+            *ngIf="pedido.estadoPedido?.descripcion === 'Por enviar' || pedido.estadoPedido?.descripcion === 'Enviado'"
+            (click)="marcarEntregado(pedido)">
+            Entregado
+          </button>
+        </td>
+        <td class="info-cell">
+          <div class="info-tooltip-container" (mouseenter)="setInfoMensaje(pedido)" (mouseleave)="clearInfoMensaje()">
+            <button>Info</button>
+            <div class="info-tooltip" *ngIf="infoTooltipVisible && infoTooltipPedidoId === pedido.idPedidoCompra" [innerHTML]="infoMensaje"></div>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="pedidos.length === 0">
+        <td colspan="6" style="text-align:center;">No hay pedidos de compra registrados.</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
-<table class="table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Fecha</th>
-      <th>Proveedor</th>
-      <th>Estado</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let pedido of pedidos">
-      <td>{{ pedido.idPedidoCompra }}</td>
-      <td>{{ pedido.fechaPedido | date:'short' }}</td>
-      <td>{{ pedido.proveedor?.razonSocial }}</td>
-      <td>{{ pedido.estadoPedido?.descripcion }}</td>
-      <td>
-        <button *ngIf="pedido.estadoPedido?.idEstadoPedido !== 2"
-                (click)="onCambiarEstado(pedido, 2)">Enviado</button>
-        <button *ngIf="pedido.estadoPedido?.idEstadoPedido !== 3"
-                (click)="onCambiarEstado(pedido, 3)">Entregado</button>
-      </td>
-    </tr>
-    <tr *ngIf="pedidos.length === 0">
-      <td colspan="5" style="text-align:center;">No hay pedidos de compra registrados.</td>
-    </tr>
-  </tbody>
-</table>
+<div class="notificacion" *ngIf="notificacionVisible">
+  {{ notificacionMensaje }}
+</div>

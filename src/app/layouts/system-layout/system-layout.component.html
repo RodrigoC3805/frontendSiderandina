@@ -143,6 +143,12 @@
                         <span>Asistencia</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/sistema/gestionar-planilla']" class="sidebar-link text-white">
+                        <i class="bi bi-cash-coin"></i>
+                        <span>Gestionar Planillas</span>
+                    </a>
+                </li>
             </div>
             <div *ngIf="tipoUsuario === 'JEFE_ALMACEN'">
                 <li class="nav-item">
@@ -164,12 +170,15 @@
                         <i class="bi bi-envelope"></i>
                         <span>Cotizaciones</span>
                     </a>
-                    
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/sistema/gestionar-despacho']" class="sidebar-link text-white">
+                        <i class="bi bi-truck"></i>
+                        <span>Gestionar Despachos</span>
+                    </a>
                 </li>
             </div>
-            <div *ngIf="tipoUsuario === 'TRABAJADOR'">
-                <!-- Acá pueden ir los CUS del trabajador si lo consideramos aparte -->
-            </div>
+            
             <div *ngIf="tipoUsuario === 'PROVEEDOR'">
                 <li class="nav-item">
                     <a [routerLink]="['/sistema/pedidos-proveedor']" class="sidebar-link text-white">
@@ -195,6 +204,14 @@
                     <a [routerLink]="['/sistema/mis-pedidos']" class="sidebar-link text-white">
                         <i class="bi bi-box"></i>
                         <span>Mis Pedidos</span>
+                    </a>
+                </li>
+            </div>
+            <div *ngIf="tipoUsuario !== 'CLIENTE' && tipoUsuario !== 'PROVEEDOR' && tipoUsuario !== 'ADMIN_RRHH'">
+                <li class="nav-item">
+                    <a [routerLink]="['/sistema/mis-justificaciones']" class="sidebar-link text-white">
+                        <i class="bi bi-envelope"></i>
+                        <span>Mis justificaciones</span>
                     </a>
                 </li>
             </div>

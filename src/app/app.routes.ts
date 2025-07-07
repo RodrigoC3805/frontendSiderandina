@@ -22,7 +22,9 @@ import { AsistenciaListaComponent } from './component/asistencia-lista/asistenci
 import { MisCotizacionesComponent } from './component/mis-cotizaciones/mis-cotizaciones.component';
 import { RealizarCotizacionComponent } from './component/realizar-cotizacion/realizar-cotizacion.component';
 import { MisPedidosComponent } from './component/mis-pedidos/mis-pedidos.component';
-
+import { MisJustificacionesComponent } from './component/mis-justificaciones/mis-justificaciones.component';
+import { GestionarDespachoComponent } from './component/gestionar-despacho/gestionar-despacho.component';
+import { GestionarPlanillaComponent } from './component/gestionar-planilla/gestionar-planilla.component';
 
 export const routes: Routes = [
   {
@@ -32,8 +34,12 @@ export const routes: Routes = [
       { path: '', component: HomeComponent },
       { path: 'productos', component: CatalogoComponent },
       { path: 'productos/:id', component: ProductoDetalleComponent },
-      { path: 'login', component: LoginComponent, canActivate: [reverseGuard]},
-      { path: 'register', component: RegisterComponent,canActivate: [reverseGuard]},
+      { path: 'login', component: LoginComponent, canActivate: [reverseGuard] },
+      {
+        path: 'register',
+        component: RegisterComponent,
+        canActivate: [reverseGuard],
+      },
     ],
   },
   {
@@ -80,7 +86,7 @@ export const routes: Routes = [
       {
         path: 'mis-pedidos',
         component: MisPedidosComponent,
-        data: { roles: ['CLIENTE'] }
+        data: { roles: ['CLIENTE'] },
       },
       {
         path: 'registrar-asistencia',
@@ -100,7 +106,22 @@ export const routes: Routes = [
       {
         path: 'realizar-cotizacion',
         component: RealizarCotizacionComponent,
-        data: { roles: ['VENDEDOR']},
+        data: { roles: ['VENDEDOR'] },
+      },
+      {
+        path: 'mis-justificaciones',
+        component: MisJustificacionesComponent,
+        data: { roles: ['VENDEDOR', 'JEFE_ALMACEN', 'GERENTE_GENERAL'] },
+      },
+      {
+        path: 'gestionar-despacho',
+        component: GestionarDespachoComponent,
+        data: { roles: ['VENDEDOR'] },
+      },
+      {
+        path: 'gestionar-planilla',
+        component: GestionarPlanillaComponent,
+        data: { roles: ['ADMIN_RRHH'] }
       }
     ],
   },

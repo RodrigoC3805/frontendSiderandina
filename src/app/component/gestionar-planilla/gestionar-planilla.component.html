@@ -1,0 +1,56 @@
+<div *ngIf="!selectedPlanilla">
+  <h2>Generar Planilla</h2>
+  <form (ngSubmit)="generarPlanilla()">
+    <label>Mes: <input type="number" [(ngModel)]="mes" name="mes" min="1" max="12" required></label>
+    <label>Año: <input type="number" [(ngModel)]="anio" name="anio" min="2000" max="2100" required></label>
+    <button type="submit">Generar</button>
+  </form>
+
+  <h2>Histórico de Planillas</h2>
+  <table>
+    <tr>
+      <th (click)="sortBy('anio')" style="cursor:pointer">Año</th>
+      <th (click)="sortBy('mes')" style="cursor:pointer">Mes</th>
+      <th (click)="sortBy('cantidadTrabajadores')" style="cursor:pointer">Cant. Trabajadores</th>
+      <th>Total Sueldos</th>
+      <th>Acciones</th>
+    </tr>
+    <tr *ngFor="let p of planillas">
+      <td>{{p.anio}}</td>
+      <td>{{meses[p.mes]}}</td>
+      <td>{{p.cantidadTrabajadores}}</td>
+      <td>{{p.totalSueldos | currency}}</td>
+      <td><button (click)="verDetalle(p)">Ver Detalle</button></td>
+    </tr>
+  </table>
+</div>
+
+<div *ngIf="selectedPlanilla">
+  <button (click)="selectedPlanilla = null">Volver</button>
+  <h2>Detalle de Planilla</h2>
+  <table>
+    <tr>
+      <th>Trabajador</th>
+      <th>Sueldo Base</th>
+      <th>Bonos</th>
+      <th>Descuentos</th>
+      <th>Sueldo Neto</th>
+    </tr>
+    <tr *ngFor="let d of detallePlanilla">
+      <td>{{d.nombres}} {{d.apellidoPaterno}} {{d.apellidoMaterno}}</td>
+      <td>{{d.sueldoBase | currency}}</td>
+      <td>{{d.bonos | currency}}</td>
+      <td>{{d.descuentos | currency}}</td>
+      <td>{{d.sueldoNeto | currency}}</td>
+    </tr>
+  </table>
+</div>
+
+<div style="margin-bottom: 2rem;">
+  <apx-chart
+    [series]="chartSeries"
+    [chart]="chartDetails"
+    [title]="chartTitle"
+    [xaxis]="chartXAxis">
+  </apx-chart>
+</div>

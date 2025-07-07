@@ -10,6 +10,7 @@ import { Token } from '@angular/compiler';
 import { jwtDecode } from 'jwt-decode';
 import { ITrabajadorResponse } from '../model/trabajador-response';
 import { ICliente } from '../model/cliente';
+import { IProveedor } from '../model/proveedor';
 
 @Injectable({
   providedIn: 'root',
@@ -76,6 +77,8 @@ export class AuthService {
     }
     if (userInfo && userInfo.tipoUsuario == "cliente")
       return this.findUsernameCliente(userInfo.email);
+    if (userInfo && userInfo.tipoUsuario == "proveedor")
+      return this.findUsernameProveedor(userInfo.idUsuario);
     return this.findUsernameTrabajador(userInfo.email);
   }
 
@@ -106,7 +109,13 @@ export class AuthService {
         map((trabajador) => trabajador.nombres + ' ' + trabajador.apellidoPaterno)
       );
   }
-  
+  findUsernameProveedor(idUsuario: number) {
+    return this.http
+      .get<IProveedor>(`${BASE_URL}/v1/proveedor/findproveedorbyuserid`, {
+        params: { idUsuario },
+      })
+      .pipe(map((proveedor) => proveedor.razonSocial));
+  }
   findClienteByUserId(idUsuario: number) {
     return this.http.get<ICliente>(`${BASE_URL}/cliente/findclientebyuserid`, {
       params: { idUsuario }
@@ -122,5 +131,11 @@ export class AuthService {
     console.log('Tipo de usuario: ', userInfo.tipoUsuario);
     return userInfo.tipoUsuario.toUpperCase();
   }
-
+  findTrabajadorByUserEmail(): Observable<ITrabajadorResponse> {
+    const userInfo: any = this.getUserInfo();
+    const email = userInfo.email;
+    return this.http.get<ITrabajadorResponse>(`${BASE_URL}/auth/findtrabajadorbyuseremail`, {
+      params: { email }
+    });
+  }
 }

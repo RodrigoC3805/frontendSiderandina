@@ -5,7 +5,7 @@ import { CotizacionService } from '../../service/cotizacion.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import Swal from 'sweetalert2';
-import { IDetalleCotizacionResponse } from '../../model/detalle-cotizacion-response';
+import { errorContext } from 'rxjs/internal/util/errorContext';
 
 @Component({
   selector: 'app-realizar-cotizacion',
@@ -162,6 +162,7 @@ export class RealizarCotizacionComponent {
             ) as HTMLInputElement;
             return {
               idDetalleCotizacion: detalle.idDetalleCotizacion,
+              idProducto: detalle.producto.idProducto,
               cantidad: detalle.cantidad,
               precioCotizado: input ? parseFloat(input.value) : 0,
             };
@@ -176,11 +177,27 @@ export class RealizarCotizacionComponent {
             .subscribe({
               next: () => {
                 Swal.close();
+                Swal.fire({
+                  title: 'Cotización entregada correctamente',
+                  icon: 'success',
+                  confirmButtonText: 'OK',
+                });
                 this.getCotizaciones(); // Refresca la tabla
               },
-              error: () => {
+              error: (err) => {
                 Swal.close();
-                alert('Error al actualizar la cotización');
+                let mensaje = 'Error al entregar la cotización';
+                if (err?.error?.message) {
+                  mensaje = err.error.message;
+                } else if (err?.error) {
+                  mensaje = typeof err.error === 'string' ? err.error : mensaje;
+                }
+                Swal.fire({
+                  title: 'Ha ocurrido un error',
+                  text: mensaje,
+                  icon: 'error',
+                  confirmButtonText: 'OK',
+                });
               },
             });
         });
