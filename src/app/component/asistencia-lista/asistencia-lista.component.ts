@@ -15,7 +15,7 @@ export class AsistenciaListaComponent implements OnInit {
   loading = true;
   error = '';
   page = 1;
-  pageSize = 5; // 15 registros por página
+  pageSize = 5; // 5 registros por página
   numeroDocumentoBusqueda = '';
 
   constructor(private asistenciaService: AsistenciaService) {}
