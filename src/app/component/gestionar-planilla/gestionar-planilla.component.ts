@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { PlanillaService } from '../../service/planilla.service';
 import { PlanillaResponse } from '../../model/planilla-response';
 import { DetallePlanillaResponse } from '../../model/detalle-planilla-response';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle } from 'ng-apexcharts';
 
@@ -21,12 +21,30 @@ export class GestionarPlanillaComponent implements OnInit {
   anio: number;
   anioFiltro: number = new Date().getFullYear();
   selectedPlanilla: PlanillaResponse | null = null;
+
   meses: string[] = [
     '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
   ];
 
-  // Ordenamiento
+  // ApexCharts config
+  public chartSeries: ApexAxisChartSeries = [
+    { name: "Sueldos", data: [] }
+  ];
+  public chartDetails: ApexChart = {
+    type: "line",
+    height: 350
+  };
+  public chartTitle: ApexTitleSubtitle = {
+    text: "Evolución de Sueldos por Mes"
+  };
+  public chartXAxis: ApexXAxis = {
+    categories: [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ]
+  };
+
   sortColumn: string = 'anio';
   sortDirection: 'asc' | 'desc' = 'desc';
 
@@ -46,7 +64,28 @@ export class GestionarPlanillaComponent implements OnInit {
     this.planillaService.listarPlanillas(this.anioFiltro).subscribe(data => {
       this.planillas = data;
       this.sortPlanillas();
+      this.updateChart();
     });
+  }
+
+  // Actualiza el gráfico con los datos del año filtrado
+  updateChart() {
+    // Inicializa los sueldos por mes en 0
+    const sueldosPorMes = Array(12).fill(0);
+    this.planillas.forEach(p => {
+      if (p.mes >= 1 && p.mes <= 12) {
+        sueldosPorMes[p.mes - 1] = p.totalSueldos || 0;
+      }
+    });
+    this.chartSeries = [
+      {
+        name: "Sueldos",
+        data: sueldosPorMes
+      }
+    ];
+    this.chartTitle = {
+      text: `Evolución de Sueldos por Mes (${this.anioFiltro})`
+    };
   }
 
   verDetalle(planilla: PlanillaResponse) {
@@ -64,6 +103,7 @@ export class GestionarPlanillaComponent implements OnInit {
       this.sortDirection = 'asc';
     }
     this.sortPlanillas();
+    this.updateChart();
   }
 
   sortPlanillas() {
@@ -79,25 +119,4 @@ export class GestionarPlanillaComponent implements OnInit {
       return 0;
     });
   }
-  // ApexCharts config
-  public chartSeries: ApexAxisChartSeries = [
-    {
-      name: "Sueldos",
-      data: [1200, 1400, 1300, 1500, 1700, 1600, 1800, 1750, 1900, 2000, 2100, 2200]
-    }
-  ];
-  public chartDetails: ApexChart = {
-    type: "line",
-    height: 350
-  };
-  public chartTitle: ApexTitleSubtitle = {
-    text: "Evolución de Sueldos por Mes (Ejemplo Estático)"
-  };
-  public chartXAxis: ApexXAxis = {
-    categories: [
-      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-    ]
-  };
-
 }

@@ -47,6 +47,10 @@
 </div>
 
 <div style="margin-bottom: 2rem;">
+  <label>
+    Filtrar por año:
+    <input type="number" [(ngModel)]="anioFiltro" name="anioFiltro" min="2000" max="2100" (change)="listarPlanillas()">
+  </label>
   <apx-chart
     [series]="chartSeries"
     [chart]="chartDetails"
