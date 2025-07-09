@@ -1,0 +1,39 @@
+<div>
+    <h1 style="font-weight: 900;">Recibir pedido</h1>
+    <div class="card">
+        <div class="header">
+            <h4><b>Pedidos de Compra enviados</b></h4>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Código</th>
+                    <th scope="col">Proveedor</th>
+                    <th scope="col">Fecha Pedido</th>
+                    <th scope="col">Estado Pedido</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="
+                                                    let pedidoCompra of pedidoCompraArray
+                                                    | paginate : { itemsPerPage: 10, currentPage: page };
+                                                    let i = index
+                                                  ">
+                    <td>{{ pedidoCompra.codigoCompra }}</td>
+                    <td>{{ pedidoCompra.proveedor.razonSocial }}</td>
+                    <td>{{ pedidoCompra.fechaPedido | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+                    <td>{{ pedidoCompra.estadoPedido.descripcion }}</td>
+                    
+                    <td>
+                        <button style="margin-right: 30px; background-color: #252169; color: white" class="btn-primary"
+                        (click)="showDetallePedido(pedidoCompra.idPedidoCompra)">Detalle Pedido</button>
+                    </td>
+                </tr>
+            </tbody>
+    
+        </table>
+        <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente">
+        </pagination-controls>
+    
+    </div>
+</div>

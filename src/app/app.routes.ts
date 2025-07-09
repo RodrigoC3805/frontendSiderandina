@@ -28,6 +28,7 @@ import { GestionarPlanillaComponent } from './component/gestionar-planilla/gesti
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ReporteAsistenciaComponent } from './component/reporte-asistencia/reporte-asistencia';
 import { ReporteComercial } from './component/reporte-comercial/reporte-comercial';
+import { RecibirPedidoComponent } from './component/recibir-pedido/recibir-pedido.component';
 
 export const routes: Routes = [
   {
@@ -136,6 +137,11 @@ export const routes: Routes = [
         component: ReporteComercial,
         data: { roles: ['GERENTE_GENERAL'] }
       },
+      {
+        path: 'recibir-pedido',
+        component: RecibirPedidoComponent,
+        data: { roles: ['JEFE_ALMACEN'] },
+      }
     ],
   },
   { path: '**', redirectTo: '' },

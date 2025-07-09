@@ -36,4 +36,7 @@ export class PedidoCompraService {
   realizarCompra(compra: any): Observable<any> {
     return this.http.post(`${BASE_URL}/almacen/pedidocompra/comprar`, compra);
   }
+  getPedidosEnviadosYEntregados(): Observable<IPedidoCompraResponse[]> {
+    return this.http.get<IPedidoCompraResponse[]>(`${BASE_URL}/almacen/pedidocompra/pedidosenviados-entregados`);
+  }
 }

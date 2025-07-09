@@ -11,6 +11,6 @@ export class EstadoDetalleCompraService {
 
   constructor(private http: HttpClient) { }
   getEstadosDetalleCompra(): Observable<IEstadoDetalleCompra[]>{
-      return this.http.get<IEstadoDetalleCompra[]>(`${BASE_URL}/v1/estadodetallecompra`);
+      return this.http.get<IEstadoDetalleCompra[]>(`${BASE_URL}/almacen/detallecompra/estados`);
     }
 }
